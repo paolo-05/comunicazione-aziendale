@@ -1,9 +1,14 @@
 import Head from "next/head";
+import { useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Layout({
   children,
   title = "This is the default title",
-}) {
+})
+{ useEffect(() => {
+    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
   return (
     <div>
       <Head>
