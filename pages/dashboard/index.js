@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import Layout from "@/components/layout";
+import Navbar from "@/components/navbar";
 
 import "./../global.css";
 
@@ -34,6 +35,7 @@ export default function Dashboard() {
 
   return (
     <Layout title="Admin Dashboard">
+      <Navbar/>
       <h1>Dashboard</h1>
       {user ? (
         <div>
