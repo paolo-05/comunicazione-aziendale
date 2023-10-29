@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Layout from "@/components/layout";
-import "./global.css";
 
 export default function Index() {
   return (

@@ -1,6 +1,6 @@
 // pages/api/login.js
 import jwt from "jsonwebtoken";
-import User from "@/models/userModel";
+import { User } from "@/models/userModel";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {

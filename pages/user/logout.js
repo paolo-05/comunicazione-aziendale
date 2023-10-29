@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import Layout from "@/components/layout";
 
+import { constants } from "@/constants";
+
 export default function Logout() {
   useEffect(() => {
-    if (window.sessionStorage.getItem("token")) {
-      window.sessionStorage.removeItem("token");
+    if (window.sessionStorage.getItem(constants.appTokenName)) {
+      window.sessionStorage.removeItem(constants.appTokenName);
     }
     window.location.href = "/";
   }, []);

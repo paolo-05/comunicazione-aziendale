@@ -1,8 +1,14 @@
-// userModel.js
-const db = require("./db");
-const bcrypt = require("bcrypt");
+// Paolo Bianchessi, 29/10/2023
+// The following code provides the methods about the user
 
-const User = {
+import { db } from "./db";
+import bcrypt from "bcrypt";
+
+/**
+ * This object is responsible for all the db interaction methods
+ * about the User
+ */
+export const User = {
   findByEmail: async (email) => {
     const [rows] = await db
       .promise()
@@ -22,5 +28,3 @@ const User = {
     return await bcrypt.compare(password, hashedPassword);
   },
 };
-
-module.exports = User;

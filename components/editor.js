@@ -1,37 +1,54 @@
+// Paolo Bianchessi, 28/10/2023
+// This component provides a rich text editor for creating and editing posts
+
 import React, { useEffect, useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "./editor.css";
 
-function Editor() {
+function Editor({ context }) {
   let [loaded, setLoaded] = useState(false);
+  const [data, setData] = useState("");
 
   useEffect(() => {
-    setLoaded(true);
-  }, []); // run on mounting
+    switch (context) {
+      case "edit":
+        // editing a post so load data from db
+        break;
+      default:
+        // create a new post so no data
+        break;
+    }
 
-  if (loaded) {
-    return (
-      <CKEditor
-        editor={ClassicEditor}
-        data="<p>Hello from CKEditor 5!</p>"
-        onReady={(editor) => {
-          // You can store the "editor" and use when it is needed.
-          console.log("Editor is ready to use!", editor);
-        }}
-        onChange={(event, editor) => {  // do something when editor's content changed
-          const data = editor.getData();
-          console.log({ event, editor, data });
-        }}
-        onBlur={(event, editor) => {
-          console.log("Blur.", editor);
-        }}
-        onFocus={(event, editor) => {
-          console.log("Focus.", editor);
-        }}
-      />
-    );
-  } else {
+    setLoaded(true);
+  }, [context]); // run on mounting
+
+  if (!loaded) {
     return <h2> Editor is loading </h2>;
+  } else {
+    return (
+      <div className="editor-container">
+        <CKEditor
+          editor={ClassicEditor}
+          data={data}
+          onReady={(editor) => {
+            // You can store the "editor" and use when it is needed.
+            console.log("Editor is ready to use!", editor);
+          }}
+          onChange={(event, editor) => {
+            // do something when editor's content changed
+            const data = editor.getData();
+            console.log({ event, editor, data });
+          }}
+          onBlur={(event, editor) => {
+            console.log("Blur.", editor);
+          }}
+          onFocus={(event, editor) => {
+            console.log("Focus.", editor);
+          }}
+        />
+      </div>
+    );
   }
 }
 

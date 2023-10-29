@@ -1,12 +1,16 @@
-// db.js
-const mysql = require("mysql2");
+// Paolo Bianchessi, 24/10/2023
+// The following code creates a new connection to the mysql server
 
-const db = mysql.createConnection({
-  host: "localhost",
-  //host: "database",
+import mysql from "mysql2";
+
+import { constants } from "@/constants";
+
+/**
+ * Rapresents the connection object
+ */
+export const db = mysql.createConnection({
+  host: constants.dbHost,
   user: "root",
   password: "PasswordRoot",
   database: "comunicazione-aziendale",
 });
-
-module.exports = db;

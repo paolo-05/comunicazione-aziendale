@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Image from "next/image";
-import { FaEye } from "react-icons/fa6";
-import { FaEyeSlash } from "react-icons/fa6";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 import logoBig from "@/public/logo-big.png";
 import Layout from "@/components/layout";
-import "./../global.css";
 import "./login.css";
+
+import { constants } from "@/constants";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -25,7 +25,7 @@ export default function Login() {
 
     if (response.status === 200) {
       const data = await response.json();
-      window.sessionStorage.setItem("token", data.message);
+      window.sessionStorage.setItem(constants.appTokenName, data.message);
       window.location.href = "/dashboard";
     } else {
       const data = await response.json();
