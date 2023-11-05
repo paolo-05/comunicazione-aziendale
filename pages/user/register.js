@@ -1,6 +1,7 @@
 import Layout from "@/components/layout";
 import Navbar from "@/components/navbar";
 import { useState } from "react";
+import { constants } from "@/constants";
 
 const RegisterForm = () => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
