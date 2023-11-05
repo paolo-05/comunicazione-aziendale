@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
   // Create a JWT token
   const secret = "secret"; // Replace with the same secret used in the auth middleware
-  const token = jwt.sign({ email: user.email }, secret, { expiresIn: "24h" });
+  const token = jwt.sign({ email: user.email }, secret, { expiresIn: "1h" });
 
   res.status(200).json({ message: token });
 }

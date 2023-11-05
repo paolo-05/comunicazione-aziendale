@@ -2,9 +2,9 @@
 // This component is used in every page for creating a
 // dinamic page title and importing only once the Boostrap's JS
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import Head from "next/head";
 import { useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./layout.css";
 
 export default function Layout({

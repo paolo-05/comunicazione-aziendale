@@ -3,8 +3,8 @@
 
 import { useEffect, useState } from "react";
 
-import ColorModeToggler from "./colorModeToggler";
 import Link from "next/link";
+import ColorModeToggler from "./colorModeToggler";
 
 export default function Navbar() {
   return (

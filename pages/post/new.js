@@ -1,9 +1,9 @@
 // Paolo Bianchessi, 25/10/2023
 // This is the page for creating a new post
 
-import dynamic from "next/dynamic";
 import Layout from "@/components/layout";
 import Navbar from "@/components/navbar";
+import dynamic from "next/dynamic";
 
 var Editor = dynamic(() => import("@/components/editor"), {
   ssr: false,

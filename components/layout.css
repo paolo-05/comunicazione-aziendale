@@ -32,3 +32,9 @@ a {
   text-decoration: none;
   color: var(--main-color);
 }
+
+span.error {
+  color: red;
+  font-weight: bold;
+  font-size: 18px;
+}

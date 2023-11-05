@@ -1,9 +1,9 @@
-import { useState } from "react";
 import Image from "next/image";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-import logoBig from "@/public/logo-big.png";
 import Layout from "@/components/layout";
+import logoBig from "@/public/logo-big.png";
 import "./login.css";
 
 import { constants } from "@/constants";
