@@ -1,19 +1,21 @@
+import { constants } from "@/constants";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
+  FaArrowRightFromBracket,
   FaUser,
   FaUserPlus,
   FaUsersViewfinder,
-  FaArrowRightFromBracket,
 } from "react-icons/fa6";
-import { constants } from "@/constants";
-import Link from "next/link";
 export default function User() {
+  const router = useRouter();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const token = window.sessionStorage.getItem(constants.appTokenName);
     if (!token) {
-      return (window.location.href = "/user/login");
+      return router.push("/user/login");
     }
     const fetchUser = async () => {
       const response = await fetch("/api/resolve", {
@@ -26,11 +28,11 @@ export default function User() {
         const data = await response.json();
         setUser(data.message);
       } else {
-        window.location.href = "/user/login";
+        router.push("/user/login");
       }
     };
     fetchUser().catch(console.error);
-  }, []);
+  }, [router]);
 
   return (
     <div className="dropdown">

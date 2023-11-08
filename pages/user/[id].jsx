@@ -24,11 +24,11 @@ export default function Page() {
         const data = await response.json();
         setUser(data.message);
       } else {
-        window.location.href = "/user/list-all";
+        router.push("/user/list-all");
       }
     };
     fetchUser().catch(console.error);
-  }, [id]);
+  }, [id, router]);
 
   return (
     <Layout title="Modifica Utente">

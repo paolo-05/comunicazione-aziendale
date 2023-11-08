@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
@@ -9,6 +10,7 @@ import "./login.css";
 import { constants } from "@/constants";
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,7 +28,7 @@ export default function Login() {
     if (response.status === 200) {
       const data = await response.json();
       window.sessionStorage.setItem(constants.appTokenName, data.message);
-      window.location.href = "/dashboard";
+      router.push("/dashboard");
     } else {
       const data = await response.json();
       setError(data.message);

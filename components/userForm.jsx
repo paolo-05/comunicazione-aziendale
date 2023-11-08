@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const UserForm = ({ initialUserData }) => {
+  const router = useRouter();
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
@@ -73,12 +75,15 @@ const UserForm = ({ initialUserData }) => {
       });
 
       if (response.status === 201) {
-        window.location.href = "/user/list-all";
+        router.push("/user/list-all");
       } else {
         const data = await response.json();
         setError(data.message);
       }
     } else {
+      /**
+       * Edit a user.
+       */
       const response = await fetch("/api/edit", {
         method: "POST",
         headers: {
@@ -95,7 +100,7 @@ const UserForm = ({ initialUserData }) => {
         }),
       });
       if (response.status === 201) {
-        window.location.href = "/user/list-all";
+        router.push("/user/list-all");
       } else {
         const data = await response.json();
         setError(data.message);
@@ -134,7 +139,7 @@ const UserForm = ({ initialUserData }) => {
               </label>
 
               <input
-                type="password"
+                type={showOldPassword ? "text" : "password"}
                 className="form-control"
                 id="old-password"
                 value={oldPassword}
@@ -152,7 +157,7 @@ const UserForm = ({ initialUserData }) => {
               </label>
               <div className="input-group">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="form-control"
                   id="password"
                   value={password}
