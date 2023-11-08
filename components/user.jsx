@@ -26,8 +26,7 @@ export default function User() {
         const data = await response.json();
         setUser(data.message);
       } else {
-        const data = await response.json();
-        setError(data.message);
+        window.location.href = "/user/login";
       }
     };
     fetchUser().catch(console.error);
@@ -42,7 +41,7 @@ export default function User() {
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        <div className="bi ms-2">
+        <div className="bi my-1 theme-icon-active">
           <FaUser />
         </div>
         <span className="d-lg-none ms-2">

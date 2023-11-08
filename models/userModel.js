@@ -15,6 +15,12 @@ export const User = {
       .query("SELECT * FROM users WHERE email = ?", [email]);
     return rows[0];
   },
+  findById: async (id) => {
+    const [rows] = await db
+      .promise()
+      .query("SELECT * FROM users WHERE id = ?", [id]);
+    return rows[0];
+  },
   createUser: async (email, password, canModifyUsers, name, lastName) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     await db
@@ -26,5 +32,27 @@ export const User = {
   },
   comparePassword: async (password, hashedPassword) => {
     return await bcrypt.compare(password, hashedPassword);
+  },
+  listAll: async () => {
+    const [rows] = await db.promise().query("SELECT * FROM users");
+    return rows;
+  },
+  editUser: async (id, email, password, canModifyUsers, name, lastName) => {
+    if (password !== "") {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await db
+        .promise()
+        .query(
+          "UPDATE users SET email = ?, password = ?, can_modifiy_users = ?, name = ?, lastname = ? WHERE id = ?",
+          [email, hashedPassword, canModifyUsers, name, lastName, id]
+        );
+    } else {
+      await db
+        .promise()
+        .query(
+          "UPDATE users SET email = ?, can_modifiy_users = ?, name = ?, lastname = ? WHERE id = ?",
+          [email, canModifyUsers, name, lastName, id]
+        );
+    }
   },
 };

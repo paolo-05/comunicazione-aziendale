@@ -35,6 +35,8 @@ a {
 
 span.error {
   color: red;
-  font-weight: bold;
-  font-size: 18px;
+}
+
+.table {
+  background-color: var(--third-level-background-color);
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: database:3306
--- Generation Time: Oct 25, 2023 at 08:29 AM
+-- Generation Time: Nov 08, 2023 at 09:40 AM
 -- Server version: 5.7.43
 -- PHP Version: 8.2.8
 
@@ -24,44 +24,48 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admins`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `admins` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `can_modifiy_users` tinyint(1) NOT NULL,
   `name` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `admins`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `admins` (`id`, `email`, `password`, `name`, `lastname`, `created_at`) VALUES
-(1, 'paolo@example.com', '$2b$10$Mim5ntWf1sVQdacDy776PORhD4c2EuIgqEopdbWaF9T4n66WE3R6C', 'Paolo', 'Bianchessi', '2023-10-25 06:53:53');
+INSERT INTO `users` (`id`, `email`, `password`, `can_modifiy_users`, `name`, `lastname`, `created_at`) VALUES
+(1, 'paolo@example.com', '$2b$10$Mim5ntWf1sVQdacDy776PORhD4c2EuIgqEopdbWaF9T4n66WE3R6C', 1, 'Paolo', 'Bianchessi', '2023-10-25 06:53:53'),
+(2, 'alexis@example.com', '$2b$10$FKqYU69cFCq6FXa8pQJo6.MOcxXJKed0hzZXEAPxgbSBjwa3I7prG', 0, 'Alexis', 'Rossi', '2023-10-31 10:17:58'),
+(3, 'tedi@exeample.com', '$2b$10$Whzpv4Rz.3oRxM4j34r5C.vJ07bJKhNFM/Q3BM8c/VYp1I6W11oxm', 0, 'Tedi', 'Shiku', '2023-11-07 07:56:40');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `admins`
+-- Indexes for table `users`
 --
-ALTER TABLE `admins`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `admins`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
