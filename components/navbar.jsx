@@ -1,10 +1,9 @@
 // Paolo Bianchessi, 28/10/2023
 // This is the Navbar Component, used for the navigation in the dashboard section
 
+import User from "@/components/user";
 import Link from "next/link";
-import { FaHouse } from "react-icons/fa6";
 import ColorModeToggler from "./colorModeToggler";
-import User from "./user";
 
 export default function Navbar() {
   return (

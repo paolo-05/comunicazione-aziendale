@@ -14,7 +14,7 @@ export default function Page() {
   useEffect(() => {
     const token = window.sessionStorage.getItem(constants.appTokenName);
     const fetchUser = async () => {
-      const response = await fetch("/api/get-by-id", {
+      const response = await fetch("/api/user/get-by-id", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, id }),

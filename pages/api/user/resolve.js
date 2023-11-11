@@ -1,6 +1,7 @@
 // Paolo Bianchessi, 2/11/2023
 // This is the resolve API endpoint, using the jwt library
 // we verify the user's token
+
 import { User } from "@/models/userModel";
 import jwt from "jsonwebtoken";
 

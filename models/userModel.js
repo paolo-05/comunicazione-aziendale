@@ -29,6 +29,7 @@ export const User = {
         "INSERT INTO users (email, password, can_modifiy_users, name, lastname) VALUES (?, ?, ?, ?, ?)",
         [email, hashedPassword, canModifyUsers, name, lastName]
       );
+    return true;
   },
   comparePassword: async (password, hashedPassword) => {
     return await bcrypt.compare(password, hashedPassword);
@@ -38,6 +39,9 @@ export const User = {
     return rows;
   },
   editUser: async (id, email, password, canModifyUsers, name, lastName) => {
+    if (findByEmail(email) === undefined) {
+      return false;
+    }
     if (password !== "") {
       const hashedPassword = await bcrypt.hash(password, 10);
       await db
@@ -46,6 +50,7 @@ export const User = {
           "UPDATE users SET email = ?, password = ?, can_modifiy_users = ?, name = ?, lastname = ? WHERE id = ?",
           [email, hashedPassword, canModifyUsers, name, lastName, id]
         );
+      return true;
     } else {
       await db
         .promise()
@@ -53,6 +58,10 @@ export const User = {
           "UPDATE users SET email = ?, can_modifiy_users = ?, name = ?, lastname = ? WHERE id = ?",
           [email, canModifyUsers, name, lastName, id]
         );
+      return true;
     }
+  },
+  deleteUser: async (id) => {
+    await db.promise().query("DELETE FROM users WHERE id = ?", [id]);
   },
 };

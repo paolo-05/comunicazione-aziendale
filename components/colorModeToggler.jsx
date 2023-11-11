@@ -1,10 +1,9 @@
 // Paolo Bianchessi, 28/10/2023
 // This component provides a dropdown menu for choosing the color theme of the app
 
+import { constants } from "@/constants";
 import { useCallback, useEffect, useState } from "react";
 import { FaCheck, FaMoon, FaStarHalfStroke, FaSun } from "react-icons/fa6";
-
-import { constants } from "@/constants";
 
 export default function ColorModeToggler() {
   const [iconTheme, setIconTheme] = useState(FaSun);

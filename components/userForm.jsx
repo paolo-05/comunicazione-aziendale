@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import PasswordForm from "@/components/passwordForm";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const UserForm = ({ initialUserData }) => {
@@ -18,21 +19,14 @@ const UserForm = ({ initialUserData }) => {
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showOldPassword, setShowOldPassword] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handlePasswordChange = (value) => {
+    setPassword(value);
   };
-
-  const toggleOldPasswordVisibility = () => {
-    setShowOldPassword(!showPassword);
+  const handleOldPasswordChange = (value) => {
+    setOldPassword(value);
   };
-
   const errors = {
     email: "Invalid Email.",
-    password:
-      "Password must contain at least 8 characters, including lower and upper case letters, numbers, and special symbols.",
     name: "Name can only contain alphabetic characters.",
     lastName: "Last name can only contain alphabetic characters.",
   };
@@ -66,7 +60,7 @@ const UserForm = ({ initialUserData }) => {
       /**
        * Register a new user.
        */
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +78,7 @@ const UserForm = ({ initialUserData }) => {
       /**
        * Edit a user.
        */
-      const response = await fetch("/api/edit", {
+      const response = await fetch("/api/user/edit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,16 +103,18 @@ const UserForm = ({ initialUserData }) => {
   };
 
   return (
-    <div className="container">
-      <h1>{initialUserData ? "Edit User" : "Register"}</h1>
+    <div className="container mt-5">
+      <h1 className="display-1">
+        {initialUserData ? "Edit User" : "Register"}
+      </h1>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
+        <div className="mt-3 mb-3">
           <label htmlFor="email" className="form-label">
             Email: {"(Richiesto)"}
           </label>
           <input
             type="email"
-            className="form-control"
+            className="form-control form-control-lg"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -133,74 +129,15 @@ const UserForm = ({ initialUserData }) => {
         </div>
         {initialUserData ? (
           <>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Vecchia Password: {"(Richiesto)"}
-              </label>
-
-              <input
-                type={showOldPassword ? "text" : "password"}
-                className="form-control"
-                id="old-password"
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-              />
-
-              <div id="pswHelp" className="form-text">
-                {/* to do: chek if the old psw is correct */}
-              </div>
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Nuova Password: {"(Richiesto)"}
-              </label>
-              <div className="input-group">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="form-control"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <span class="input-group-text" id="basic-addon2">
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    onClick={togglePasswordVisibility}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                </span>
-              </div>
-            </div>
+            <PasswordForm id="old" onPasswordChange={handleOldPasswordChange} />
+            <PasswordForm id="new" onPasswordChange={handlePasswordChange} />
           </>
         ) : (
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password: {"(Richiesto)"}
-            </label>
-
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            {/* <div id="pswHelp" className="form-text">
-            {isValidPassword(password) || password === "" ? (
-              ""
-            ) : (
-              <span className="error">{errors.password}</span>
-            )}
-          </div> */}
-          </div>
+          <PasswordForm id="" onPasswordChange={handlePasswordChange} />
         )}
         <div className="mb-3">
           <label htmlFor="power" className="form-label">
-            Seleziona i privilegi per questo utente {"(Richiesto)"}
+            Seleziona il ruolo per questo utente {"(Richiesto)"}
           </label>
           <select
             className="form-select"

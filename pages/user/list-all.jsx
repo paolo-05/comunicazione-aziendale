@@ -1,30 +1,56 @@
 import Layout from "@/components/layout";
 import Navbar from "@/components/navbar";
 import { constants } from "@/constants";
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const ListAll = () => {
+  const router = useRouter();
   const [users, setUsers] = useState([]);
+
   useEffect(() => {
     const token = window.sessionStorage.getItem(constants.appTokenName);
+    if (!token) {
+      router.push("/user/login");
+    }
     const fetchUsers = async () => {
-      const response = await fetch("/api/list-users", {
+      const response = await fetch("/api/user/list-users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
       });
-
-      if (response.status === 200) {
-        const data = await response.json();
-        setUsers(data.message);
-      } else {
-        const data = await response.json();
-        console.log(data.message);
+      let data = null;
+      switch (response.status) {
+        case 200:
+          data = await response.json();
+          setUsers(data.message);
+          break;
+        case 401:
+          router.push("/user/login");
+          break;
+        default:
+          data = await response.json();
+          console.log(data.message);
+          break;
       }
     };
     fetchUsers().catch(console.error);
-  }, []);
+  }, [router]);
+
+  const deleteUser = async (id) => {
+    const response = await fetch("/api/user/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    if (response.status === 200) {
+      router.reload();
+    } else {
+      const data = await response.json();
+      console.error(data.message);
+    }
+  };
 
   return (
     <Layout title="Gestione utenti">
@@ -56,13 +82,13 @@ const ListAll = () => {
                   </Link>
                 </td>
                 <td>
-                  <a
-                    href={`/user/${user.id}`}
+                  <button
+                    onClick={() => deleteUser(user.id)}
                     type="button"
                     className="btn btn-danger"
                   >
                     Elimina
-                  </a>
+                  </button>
                 </td>
               </tr>
             ))}

@@ -8,6 +8,7 @@ import {
   FaUserPlus,
   FaUsersViewfinder,
 } from "react-icons/fa6";
+
 export default function User() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -18,7 +19,7 @@ export default function User() {
       return router.push("/user/login");
     }
     const fetchUser = async () => {
-      const response = await fetch("/api/resolve", {
+      const response = await fetch("/api/user/resolve", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
