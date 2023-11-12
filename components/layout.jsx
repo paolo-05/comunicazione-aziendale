@@ -5,7 +5,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import Head from "next/head";
 import { useEffect } from "react";
-import "./layout.css";
+import "@/styles/layout.css";
 
 export default function Layout({
   children,
