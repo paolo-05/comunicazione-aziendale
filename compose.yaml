@@ -9,7 +9,7 @@ services:
       - database
 
   database:
-    image: mysql:5.7
+    image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: PasswordRoot
       MYSQL_DATABASE: comunicazione-aziendale
