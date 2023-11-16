@@ -1,7 +1,4 @@
-// Paolo Bianchessi, 24/10/2023
-// This component is used in every page for creating a
-// dinamic page title and importing only once the Boostrap's JS
-
+"use client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -10,6 +7,9 @@ import "@/styles/layout.css";
 export default function Layout({
   children,
   title = "Comunicazione Aziendale",
+}: {
+  children: React.ReactNode;
+  title: string;
 }) {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");

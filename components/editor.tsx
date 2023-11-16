@@ -6,22 +6,26 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import React, { useEffect, useState } from "react";
 import "@/styles/editor.css";
 
-function Editor({ context }) {
+function Editor(
+  {
+    /*context */
+  }
+) {
   let [loaded, setLoaded] = useState(false);
   const [data, setData] = useState("");
 
-  useEffect(() => {
-    switch (context) {
-      case "edit":
-        // editing a post so load data from db
-        break;
-      default:
-        // create a new post so no data
-        break;
-    }
+  // useEffect(() => {
+  //   switch (context) {
+  //     case "edit":
+  //       // editing a post so load data from db
+  //       break;
+  //     default:
+  //       // create a new post so no data
+  //       break;
+  //   }
 
-    setLoaded(true);
-  }, [context]); // run on mounting
+  //   setLoaded(true);
+  // }, [context]); // run on mounting
 
   if (!loaded) {
     return <h2> Editor is loading </h2>;

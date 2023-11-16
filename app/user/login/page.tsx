@@ -1,33 +1,37 @@
+"use client";
+
 import ColorModeToggler from "@/components/colorModeToggler";
-import Layout from "@/components/layout";
 import { constants } from "@/constants";
 import logoBig from "@/public/logo-big.png";
 import "@/styles/login.module.css";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-export default function NewLogin() {
+export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    console.log(formData);
     const response = await fetch("/api/user/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: formData,
     });
 
     if (response.status === 200) {
       const data = await response.json();
       window.sessionStorage.setItem(constants.appTokenName, data.message);
-      router.push("/dashboard");
+      //router.push("/dashboard");
+      console.log("Login success!");
     } else {
       const data = await response.json();
       setError(data.message);
@@ -39,7 +43,7 @@ export default function NewLogin() {
   };
 
   return (
-    <Layout title="Login">
+    <div>
       <ColorModeToggler />
       <section className=" text-center text-lg-start">
         <form onSubmit={handleSubmit}>
@@ -48,7 +52,7 @@ export default function NewLogin() {
               <div className="col-lg-4 d-none d-lg-flex">
                 <Image
                   src={logoBig}
-                  alt="Trendy Pants and Shoes"
+                  alt="Logo Big"
                   className="w-100 rounded-t-5 rounded-tr-lg-0 rounded-bl-lg-5"
                 />
               </div>
@@ -74,7 +78,7 @@ export default function NewLogin() {
                   </div>
 
                   <div className="form-outline mb-4">
-                    <label className="form-label" for="form2Example2">
+                    <label className="form-label" htmlFor="form2Example2">
                       Password
                     </label>
                     <div className="input-group">
@@ -100,7 +104,6 @@ export default function NewLogin() {
                     <button
                       type="submit"
                       className="btn btn-primary btn-block mb-4"
-                      onClick={handleSubmit}
                     >
                       Login
                     </button>
@@ -118,6 +121,6 @@ export default function NewLogin() {
           </div>
         </form>
       </section>
-    </Layout>
+    </div>
   );
 }

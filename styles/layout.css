@@ -40,3 +40,9 @@ span.error {
 .table {
   background-color: var(--third-level-background-color);
 }
+
+.theme-toggler {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
