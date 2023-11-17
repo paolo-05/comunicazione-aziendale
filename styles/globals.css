@@ -1,0 +1,39 @@
+:root {
+  --main-color: #024edb;
+  --background-color: #fff;
+  --secondary-background-color: #c9d6ff;
+  --third-level-background-color: #eee;
+  --text-color: #000;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #111;
+    --secondary-background-color: #222;
+    --third-level-background-color: #454545;
+    --text-color: #fff;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: var(--third-level-background-color);
+  color: var(--text-color);
+}
+a {
+  text-decoration: none;
+  color: var(--main-color);
+}
+
+span.error {
+  color: red;
+}
+
+.table {
+  background-color: var(--third-level-background-color);
+}
