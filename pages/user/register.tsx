@@ -1,13 +1,14 @@
-import Layout from "@/components/layout";
+import Loading from "@/components/loading";
 import Navbar from "@/components/navbar";
 import UserForm from "@/components/userForm";
 
 const RegisterForm = () => {
   return (
-    <Layout title="Registra un nuovo utente">
-      <Navbar />
-      <UserForm />
-    </Layout>
+    <div>
+      {/* <Navbar />
+      <UserForm /> */}
+      <Loading/>
+    </div>
   );
 };
 

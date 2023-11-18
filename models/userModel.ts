@@ -4,7 +4,7 @@
 import bcrypt from "bcrypt";
 import { db } from "./db";
 import { RowDataPacket } from "mysql2";
-import { UserType } from "./types";
+import { UserType } from "@/types";
 
 /**
  * This object is responsible for all the db interaction methods

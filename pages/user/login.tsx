@@ -1,7 +1,6 @@
 import ColorModeToggler from "@/components/colorModeToggler";
-import Layout from "@/components/layout";
 import logoBig from "@/public/logo-big.png";
-import "@/styles/login.module.css";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -9,28 +8,25 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 export default function NewLogin() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
-    const response = await fetch("/api/user/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+    setLoading(true);
+    axios.post("/api/user/login", {
+      formData: {
+        email:email,
+        password: password
+      }
+    }).then((resp) => {
+      setLoading(false);
+      // redirect to dashboard
+      router.push('/dashboard');
     });
-
-    if (response.status === 200) {
-      const data = await response.json();
-      window.sessionStorage.setItem("token", data.message);
-      router.push("/dashboard");
-    } else {
-      const data = await response.json();
-      setError(data.message);
-    }
   };
 
   const togglePasswordVisibility = () => {
@@ -38,7 +34,7 @@ export default function NewLogin() {
   };
 
   return (
-    <Layout title="Login">
+    <div>
       <ColorModeToggler />
       <section className=" text-center text-lg-start">
         <form onSubmit={handleSubmit}>
@@ -49,6 +45,9 @@ export default function NewLogin() {
                   src={logoBig}
                   alt="Trendy Pants and Shoes"
                   className="w-100 rounded-t-5 rounded-tr-lg-0 rounded-bl-lg-5"
+                  height={1080}
+                  width={470}
+                  placeholder="blur"
                 />
               </div>
               <div className="col-lg-8">
@@ -105,7 +104,7 @@ export default function NewLogin() {
                     </button>
                     <div className="form-text">
                       {error !== "" ? (
-                        <span className="error">{error}</span>
+                        <span className="text-danger">{error}</span>
                       ) : (
                         ""
                       )}
@@ -117,6 +116,6 @@ export default function NewLogin() {
           </div>
         </form>
       </section>
-    </Layout>
+    </div>
   );
 }

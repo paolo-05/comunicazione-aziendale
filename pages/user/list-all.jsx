@@ -1,6 +1,4 @@
-import Layout from "@/components/layout";
 import Navbar from "@/components/navbar";
-import { constants } from "@/constants";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -10,7 +8,7 @@ const ListAll = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const token = window.sessionStorage.getItem(constants.appTokenName);
+    const token = window.sessionStorage.getItem(process.env.APP_TOKEN_NAME);
     if (!token) {
       router.push("/user/login");
     }
@@ -53,7 +51,7 @@ const ListAll = () => {
   };
 
   return (
-    <Layout title="Gestione utenti">
+    <div>
       <Navbar />
       <div className="container mt-3">
         <h1>Mostrando tutti i {users.length} utenti</h1>
@@ -95,7 +93,7 @@ const ListAll = () => {
           </tbody>
         </table>
       </div>
-    </Layout>
+    </div>
   );
 };
 

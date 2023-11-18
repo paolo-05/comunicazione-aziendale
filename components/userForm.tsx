@@ -19,10 +19,10 @@ const UserForm = ({ initialUserData }) => {
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
 
-  const handlePasswordChange = (value) => {
+  const handlePasswordChange = (value:string) => {
     setPassword(value);
   };
-  const handleOldPasswordChange = (value) => {
+  const handleOldPasswordChange = (value:string) => {
     setOldPassword(value);
   };
   const errors = {
@@ -37,11 +37,11 @@ const UserForm = ({ initialUserData }) => {
       setEmail(initialUserData.email || "");
       setPower(initialUserData.power || -1);
       setName(initialUserData.name || "");
-      setLastName(initialUserData.lastname || "");
+      setLastName(initialUserData.lastName || "");
     }
   }, [initialUserData]);
 
-  function isValidEmail(email) {
+  function isValidEmail(email:string) {
     return emailRegex.test(email);
   }
 
@@ -49,11 +49,11 @@ const UserForm = ({ initialUserData }) => {
   //   return passwordRegex.test(password);
   // }
 
-  function isValidName(name) {
+  function isValidName(name:string) {
     return nameRegex.test(name);
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
 
     if (!initialUserData) {

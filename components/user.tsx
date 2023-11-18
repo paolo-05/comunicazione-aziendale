@@ -1,4 +1,5 @@
-import { constants } from "@/constants";
+import { UserType } from "@/types";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -8,34 +9,33 @@ import {
   FaUserPlus,
   FaUsersViewfinder,
 } from "react-icons/fa6";
+import Loading from "./loading";
 
 export default function User() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<UserType | null>(null);
 
   useEffect(() => {
-    const token = window.sessionStorage.getItem(constants.appTokenName);
+    const token = window.sessionStorage.getItem(process.env.APP_TOKEN_NAME!);
     if (!token) {
-      return router.push("/user/login");
+      router.push("/user/login");
+      return;
     }
-    const fetchUser = async () => {
-      const response = await fetch("/api/user/resolve", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      });
-
-      if (response.status === 200) {
-        const data = await response.json();
-        setUser(data.message);
-      } else {
-        router.push("/user/login");
+    axios.post("/api/user/resolve", {
+      formData: {
+        token: token
       }
-    };
-    fetchUser().catch(console.error);
+    }).then((resp) => {
+      setLoading(false);
+      const user: UserType = resp.data;
+      setUser(user);
+    });
   }, [router]);
 
+  
   return (
+    loading ? (<Loading/>):(
     <div className="dropdown">
       <button
         className="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center show"
@@ -49,7 +49,7 @@ export default function User() {
         </div>
         <span className="d-lg-none ms-2">
           {user ? (
-            <div>Logato come {user.name + " " + user.lastname}</div>
+            <div>Logato come {user.name + " " + user.lastName}</div>
           ) : (
             <div>Loading... </div>
           )}
@@ -102,6 +102,6 @@ export default function User() {
           </Link>
         </li>
       </ul>
-    </div>
+    </div>)
   );
 }

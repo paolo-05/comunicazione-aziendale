@@ -1,19 +1,18 @@
 // Paolo Bianchessi, 28/10/2023
 // This component provides a dropdown menu for choosing the color theme of the app
 
-import { constants } from "@/constants";
 import { useCallback, useEffect, useState } from "react";
 import { FaCheck, FaMoon, FaStarHalfStroke, FaSun } from "react-icons/fa6";
 
 export default function ColorModeToggler() {
   const [iconTheme, setIconTheme] = useState(FaSun);
-  const [theme, setPreferredTheme] = useState(null);
+  const [theme, setPreferredTheme] = useState("");
 
   function getStoredTheme() {
-    return localStorage.getItem(constants.appThemeName);
+    return localStorage.getItem(process.env.APP_THEME_NAME!);
   }
-  function setStoredTheme(theme) {
-    return localStorage.setItem(constants.appThemeName, theme);
+  function setStoredTheme(theme: string) {
+    return localStorage.setItem(process.env.APP_THEME_NAME!, theme);
   }
 
   const getPreferredTheme = useCallback(() => {
@@ -27,7 +26,7 @@ export default function ColorModeToggler() {
       : "";
   }, []);
 
-  const setTheme = (theme) => {
+  const setTheme = (theme: string) => {
     if (theme === "auto") {
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
         document.documentElement.setAttribute("data-bs-theme", "dark");
@@ -94,7 +93,7 @@ export default function ColorModeToggler() {
     }
   };
 
-  const showActiveTheme = useCallback((theme) => {
+  const showActiveTheme = useCallback((theme: string) => {
     switch (theme) {
       case "light":
         setIconTheme(FaSun);
@@ -108,10 +107,10 @@ export default function ColorModeToggler() {
     }
   }, []);
 
-  const handleThemeChange = (theme) => {
+  const handleThemeChange = (theme: string) => {
     setStoredTheme(theme);
     setTheme(theme);
-    showActiveTheme(theme, true);
+    showActiveTheme(theme);
     setPreferredTheme(theme);
   };
 
