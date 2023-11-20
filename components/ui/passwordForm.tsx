@@ -1,7 +1,21 @@
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import CapsLock from "./capsLock";
 
-export default function PasswordForm({ id, onPasswordChange, error }) {
+export default function PasswordForm({
+  id,
+  onPasswordChange,
+  error,
+  placeholder,
+}: {
+  id: string;
+  onPasswordChange: Function;
+  error: number | null;
+  placeholder: string;
+}) {
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [pswError, setPswError] = useState("");
@@ -9,6 +23,10 @@ export default function PasswordForm({ id, onPasswordChange, error }) {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  // function isValidPassword(password) {
+  //   return passwordRegex.test(password);
+  // }
 
   useEffect(() => {
     switch (error) {
@@ -23,6 +41,9 @@ export default function PasswordForm({ id, onPasswordChange, error }) {
         break;
       case 2:
         setPswError("Le password non possono essere uguali.");
+        break;
+      case 3:
+        setPswError("Email o password non corrette");
         break;
       default:
         break;
@@ -45,6 +66,7 @@ export default function PasswordForm({ id, onPasswordChange, error }) {
           id={`${id}-password`}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder={placeholder}
         />
         <span className="input-group-text" id="basic-addons2">
           <button
@@ -56,8 +78,11 @@ export default function PasswordForm({ id, onPasswordChange, error }) {
           </button>
         </span>
       </div>
-      <div id="pswHelp" className="form-text" style={{ color: "red" }}>
-        {pswError}
+      <div id="pswHelp" className="form-text">
+        <div className="text-danger mb-1">{pswError}</div>
+        <div className="mt-1">
+          <CapsLock />
+        </div>
       </div>
     </div>
   );

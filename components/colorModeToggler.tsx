@@ -2,17 +2,46 @@
 // This component provides a dropdown menu for choosing the color theme of the app
 
 import { useCallback, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { FaCheck, FaMoon, FaStarHalfStroke, FaSun } from "react-icons/fa6";
 
 export default function ColorModeToggler() {
   const [iconTheme, setIconTheme] = useState(FaSun);
   const [theme, setPreferredTheme] = useState("");
+  const [cookies, setCookie] = useCookies(["theme"]);
 
-  function getStoredTheme() {
-    return localStorage.getItem(process.env.APP_THEME_NAME!);
-  }
+  const getStoredTheme = useCallback(() => {
+    return cookies.theme;
+  }, [cookies.theme]);
+
   function setStoredTheme(theme: string) {
-    return localStorage.setItem(process.env.APP_THEME_NAME!, theme);
+    return setCookie("theme", theme);
+  }
+  function setLightTheme() {
+    document.documentElement.setAttribute("data-bs-theme", "light");
+    document.documentElement.style.setProperty("--background-color", "#fff");
+    document.documentElement.style.setProperty(
+      "--secondary-background-color",
+      "#c9d6ff"
+    );
+    document.documentElement.style.setProperty(
+      "--third-level-background-color",
+      "#eee"
+    );
+    document.documentElement.style.setProperty("--text-color", "#000");
+  }
+  function setDarkTheme() {
+    document.documentElement.setAttribute("data-bs-theme", "dark");
+    document.documentElement.style.setProperty("--background-color", "#000011");
+    document.documentElement.style.setProperty(
+      "--secondary-background-color",
+      "#222"
+    );
+    document.documentElement.style.setProperty(
+      "--third-level-background-color",
+      "#454545"
+    );
+    document.documentElement.style.setProperty("--text-color", "#fff");
   }
 
   const getPreferredTheme = useCallback(() => {
@@ -24,74 +53,24 @@ export default function ColorModeToggler() {
     return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "auto"
       : "";
-  }, []);
+  }, [getStoredTheme]);
 
-  const setTheme = (theme: string) => {
+  const setTheme = useCallback((theme: string) => {
     if (theme === "auto") {
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.setAttribute("data-bs-theme", "dark");
-        document.documentElement.style.setProperty(
-          "--background-color",
-          "#000011"
-        );
-        document.documentElement.style.setProperty(
-          "--secondary-background-color",
-          "#222"
-        );
-        document.documentElement.style.setProperty(
-          "--third-level-background-color",
-          "#454545"
-        );
-        document.documentElement.style.setProperty("--text-color", "#fff");
+        setDarkTheme();
       } else {
-        document.documentElement.setAttribute("data-bs-theme", "light");
-        document.documentElement.style.setProperty(
-          "--background-color",
-          "#fff"
-        );
-        document.documentElement.style.setProperty(
-          "--secondary-background-color",
-          "#c9d6ff"
-        );
-        document.documentElement.style.setProperty(
-          "--third-level-background-color",
-          "#eee"
-        );
-        document.documentElement.style.setProperty("--text-color", "#000");
+        setLightTheme();
       }
     } else {
       document.documentElement.setAttribute("data-bs-theme", theme);
       if (theme === "dark") {
-        document.documentElement.style.setProperty(
-          "--background-color",
-          "#000011"
-        );
-        document.documentElement.style.setProperty(
-          "--secondary-background-color",
-          "#222"
-        );
-        document.documentElement.style.setProperty(
-          "--third-level-background-color",
-          "#454545"
-        );
-        document.documentElement.style.setProperty("--text-color", "#fff");
+        setDarkTheme();
       } else {
-        document.documentElement.style.setProperty(
-          "--background-color",
-          "#fff"
-        );
-        document.documentElement.style.setProperty(
-          "--secondary-background-color",
-          "#c9d6ff"
-        );
-        document.documentElement.style.setProperty(
-          "--third-level-background-color",
-          "#eee"
-        );
-        document.documentElement.style.setProperty("--text-color", "#000");
+        setLightTheme();
       }
     }
-  };
+  }, []);
 
   const showActiveTheme = useCallback((theme: string) => {
     switch (theme) {
@@ -128,7 +107,7 @@ export default function ColorModeToggler() {
           setPreferredTheme(getPreferredTheme());
         }
       });
-  }, [getPreferredTheme, showActiveTheme, setPreferredTheme]);
+  }, [setTheme, getPreferredTheme, showActiveTheme, getStoredTheme]);
 
   return (
     <div className="dropdown">

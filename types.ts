@@ -6,3 +6,11 @@ export interface UserType {
   name: string;
   lastName: string;
 }
+
+export interface UserSecure {
+  id: number;
+  email: string;
+  canModifyUsers: boolean;
+  name: string;
+  lastName: string;
+}

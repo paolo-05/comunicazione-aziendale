@@ -1,9 +1,12 @@
 import jwt from "jsonwebtoken";
 
 export default function isTokenExpired(token: string): jwt.JwtPayload {
-  const data: jwt.JwtPayload = jwt.verify(token, "secret", { complete: true });
-  if (data.payload.exp && data.payload.exp < Math.floor(Date.now() / 1000)) {
-    data.payload.email = "";
+  try {
+    const data: jwt.JwtPayload = jwt.verify(token, "secret", {
+      complete: true,
+    });
+    return data;
+  } catch (err) {
+    throw new Error("Token is expired");
   }
-  return data;
 }

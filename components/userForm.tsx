@@ -1,28 +1,26 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import PasswordForm from "@/components/passwordForm";
-import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import PasswordForm from "@/components/ui/passwordForm";
+import { UserType } from "@/types";
 
-const UserForm = ({ initialUserData }) => {
+function UserForm({ initialUserData }: { initialUserData: UserType | null }) {
   const router = useRouter();
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
   const nameRegex = /^[A-Za-z]+$/;
 
-  const [id, setId] = useState(null);
+  const [id, setId] = useState(-1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
-  const [power, setPower] = useState(-1);
+  const [power, setPower] = useState(0);
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
 
-  const handlePasswordChange = (value:string) => {
+  const handlePasswordChange = (value: string) => {
     setPassword(value);
   };
-  const handleOldPasswordChange = (value:string) => {
+  const handleOldPasswordChange = (value: string) => {
     setOldPassword(value);
   };
   const errors = {
@@ -33,27 +31,23 @@ const UserForm = ({ initialUserData }) => {
 
   useEffect(() => {
     if (initialUserData) {
-      setId(initialUserData.id || "");
+      setId(initialUserData.id || -1);
       setEmail(initialUserData.email || "");
-      setPower(initialUserData.power || -1);
+      setPower(initialUserData.canModifyUsers ? 1 : 0 || 0);
       setName(initialUserData.name || "");
       setLastName(initialUserData.lastName || "");
     }
   }, [initialUserData]);
 
-  function isValidEmail(email:string) {
+  function isValidEmail(email: string) {
     return emailRegex.test(email);
   }
 
-  // function isValidPassword(password) {
-  //   return passwordRegex.test(password);
-  // }
-
-  function isValidName(name:string) {
+  function isValidName(name: string) {
     return nameRegex.test(name);
   }
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (!initialUserData) {
@@ -129,11 +123,26 @@ const UserForm = ({ initialUserData }) => {
         </div>
         {initialUserData ? (
           <>
-            <PasswordForm id="old" onPasswordChange={handleOldPasswordChange} />
-            <PasswordForm id="new" onPasswordChange={handlePasswordChange} />
+            <PasswordForm
+              id="old"
+              onPasswordChange={handleOldPasswordChange}
+              error={null}
+              placeholder=""
+            />
+            <PasswordForm
+              id="new"
+              onPasswordChange={handlePasswordChange}
+              error={null}
+              placeholder=""
+            />
           </>
         ) : (
-          <PasswordForm id="" onPasswordChange={handlePasswordChange} />
+          <PasswordForm
+            id=""
+            onPasswordChange={handlePasswordChange}
+            error={null}
+            placeholder=""
+          />
         )}
         <div className="mb-3">
           <label htmlFor="power" className="form-label">
@@ -144,12 +153,12 @@ const UserForm = ({ initialUserData }) => {
             aria-label="Seleziona i privilegi per questo utente"
             id="power"
             value={power}
-            onChange={(e) => setPower(e.target.value)}
+            onChange={(e) => setPower(Number(e.target.value))}
           >
-            <option value="0">
+            <option value={0}>
               Può inserire annunci, modificarli, eliminarli
             </option>
-            <option value="1">
+            <option value={1}>
               Oltre a fare ciò che è descritto sopra, può inserire utenti,
               modificarli ed eliminarli
             </option>
@@ -204,6 +213,6 @@ const UserForm = ({ initialUserData }) => {
       </form>
     </div>
   );
-};
+}
 
 export default UserForm;
