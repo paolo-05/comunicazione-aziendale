@@ -3,10 +3,15 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { FaCheck, FaMoon, FaStarHalfStroke, FaSun } from "react-icons/fa6";
 
-export default function ColorModeToggler() {
-  const [iconTheme, setIconTheme] = useState(FaSun);
+import {
+  FaSun as Light,
+  FaMoon as Dark,
+  FaStarHalfStroke as Auto,
+  FaCheck as Check,
+} from "react-icons/fa6";
+
+export default function ColorModeToggler({ direction }: { direction: string }) {
   const [theme, setPreferredTheme] = useState("");
   const [cookies, setCookie] = useCookies(["theme"]);
 
@@ -32,7 +37,7 @@ export default function ColorModeToggler() {
   }
   function setDarkTheme() {
     document.documentElement.setAttribute("data-bs-theme", "dark");
-    document.documentElement.style.setProperty("--background-color", "#000011");
+    document.documentElement.style.setProperty("--background-color", "#111");
     document.documentElement.style.setProperty(
       "--secondary-background-color",
       "#222"
@@ -72,30 +77,14 @@ export default function ColorModeToggler() {
     }
   }, []);
 
-  const showActiveTheme = useCallback((theme: string) => {
-    switch (theme) {
-      case "light":
-        setIconTheme(FaSun);
-        break;
-      case "dark":
-        setIconTheme(FaMoon);
-        break;
-      default:
-        setIconTheme(FaStarHalfStroke);
-        break;
-    }
-  }, []);
-
   const handleThemeChange = (theme: string) => {
     setStoredTheme(theme);
     setTheme(theme);
-    showActiveTheme(theme);
     setPreferredTheme(theme);
   };
 
   useEffect(() => {
     setTheme(getPreferredTheme());
-    showActiveTheme(getPreferredTheme());
     setPreferredTheme(getPreferredTheme());
 
     window
@@ -107,10 +96,10 @@ export default function ColorModeToggler() {
           setPreferredTheme(getPreferredTheme());
         }
       });
-  }, [setTheme, getPreferredTheme, showActiveTheme, getStoredTheme]);
+  }, [setTheme, getPreferredTheme, getStoredTheme]);
 
   return (
-    <div className="dropdown">
+    <div className={`dropdown ${direction === "up" ? "dropup" : ""}`}>
       <button
         className="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center show"
         type="button"
@@ -118,7 +107,15 @@ export default function ColorModeToggler() {
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        <div className="bi my-1 theme-icon-active">{iconTheme}</div>
+        <div className="bi my-1 theme-icon-active">
+          {theme === "dark" ? (
+            <Dark />
+          ) : theme === "light" ? (
+            <Light />
+          ) : (
+            <Auto />
+          )}
+        </div>
         <span className="d-lg-none ms-2" id="bd-theme-text">
           Cambia Tema
         </span>
@@ -135,11 +132,11 @@ export default function ColorModeToggler() {
             aria-pressed="false"
           >
             <div className="bi me-2 opacity-50 theme-icon">
-              <FaSun />
+              <Light />
             </div>
             Chiaro
             <div className={`bi ms-auto ${theme === "light" ? "" : " d-none"}`}>
-              <FaCheck />
+              <Check />
             </div>
           </button>
         </li>
@@ -151,11 +148,11 @@ export default function ColorModeToggler() {
             aria-pressed="false"
           >
             <div className="bi me-2 opacity-50 theme-icon">
-              <FaMoon />
+              <Dark />
             </div>
             Scuro
             <div className={`bi ms-auto ${theme === "dark" ? "" : " d-none"}`}>
-              <FaCheck />
+              <Check />
             </div>
           </button>
         </li>
@@ -167,11 +164,11 @@ export default function ColorModeToggler() {
             aria-pressed="true"
           >
             <div className="bi me-2 opacity-50 theme-icon">
-              <FaStarHalfStroke />
+              <Auto />
             </div>
             Preferenze di Sistema
             <div className={`bi ms-auto ${theme === "auto" ? "" : " d-none"}`}>
-              <FaCheck />
+              <Check />
             </div>
           </button>
         </li>

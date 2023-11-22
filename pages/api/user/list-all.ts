@@ -1,6 +1,11 @@
 import { User } from "@/models/userModel";
+import isTokenExpired from "@/models/verifyToken";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== "POST") {
     return res.status(405).end();
   }
@@ -11,9 +16,10 @@ export default async function handler(req, res) {
   }
 
   try {
+    isTokenExpired(token);
     const users = await User.listAll();
     return res.status(200).json({ message: users });
-  } catch (err) {
+  } catch (err: any) {
     return res.status(500).json({ message: err.message });
   }
 }

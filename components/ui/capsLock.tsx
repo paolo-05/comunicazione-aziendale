@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function CapsLock() {
   const [capsLockOn, setCapsLockOn] = useState(false);
+
   useEffect(() => {
     const handleKeyPress = (event: any) => {
-      const capsLockIsOn = event.getModifierState("CapsLock");
-      setCapsLockOn(capsLockIsOn);
+      if (event.getModifierState) {
+        const capsLockIsOn = event.getModifierState("CapsLock");
+        setCapsLockOn(capsLockIsOn);
+      }
     };
 
     // Add event listener when the component mounts
@@ -15,7 +18,7 @@ export default function CapsLock() {
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
-  }, []);
+  });
 
   return <div>{capsLockOn ? "Caps Lock è attivo." : ""}</div>;
 }

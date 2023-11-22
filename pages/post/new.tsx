@@ -1,8 +1,7 @@
 // Paolo Bianchessi, 25/10/2023
 // This is the page for creating a new post
 
-import Layout from "@/components/layout";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/index";
 import dynamic from "next/dynamic";
 
 var Editor = dynamic(() => import("@/components/editor"), {
@@ -11,12 +10,12 @@ var Editor = dynamic(() => import("@/components/editor"), {
 
 function New() {
   return (
-    <Layout title="Nuovo annuncio">
-      <Navbar />
+    <>
+      <Navbar position={""} shouldFetch={false} />
       <div className="container mt-3">
         <Editor context="new" />
       </div>
-    </Layout>
+    </>
   );
 }
 

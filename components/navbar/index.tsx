@@ -1,9 +1,9 @@
 // Paolo Bianchessi, 28/10/2023
 // This is the Navbar Component, used for the navigation in the dashboard section
 
-import ColorModeToggler from "@/components/colorModeToggler";
+import ColorModeToggler from "@/components/navbar/colorModeToggler";
 import NavLinks from "@/components/navbar/navLinks";
-import User from "@/components/user";
+import User from "@/components/navbar/user";
 import Link from "next/link";
 
 export default function Navbar({
@@ -18,7 +18,7 @@ export default function Navbar({
       <div className="container-fluid">
         <Link
           className="navbar-brand h1"
-          href="/dashboard"
+          href={`/${shouldFetch ? "dashboard" : ""}`}
           style={{ color: "var(--main-color)" }}
         >
           Il Tuo Software Per La Comunicazone Aziendale
@@ -47,7 +47,9 @@ export default function Navbar({
               <div className="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
               <hr className="d-lg-none my-2 text-white-50" />
             </li>
-            <ColorModeToggler />
+            <ColorModeToggler
+              direction={position.includes("bottom") ? "up" : ""}
+            />
           </ul>
         </div>
       </div>

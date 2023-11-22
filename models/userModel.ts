@@ -4,7 +4,7 @@
 import bcrypt from "bcrypt";
 import { db } from "./db";
 import { RowDataPacket } from "mysql2";
-import { UserType } from "@/types";
+import { UserSecure, UserType } from "@/types";
 
 /**
  * This object is responsible for all the db interaction methods
@@ -45,11 +45,13 @@ export const User = {
   ): Promise<boolean> => {
     return await bcrypt.compare(password, hashedPassword);
   },
-  listAll: async (): Promise<UserType[]> => {
+  listAll: async (): Promise<UserSecure[]> => {
     const [rows] = await db
       .promise()
-      .query<RowDataPacket[]>("SELECT * FROM users");
-    return rows as UserType[];
+      .query<RowDataPacket[]>(
+        "SELECT id, email, canModifyUsers, name, lastName FROM users"
+      );
+    return rows as UserSecure[];
   },
   editUser: async (
     id: number,

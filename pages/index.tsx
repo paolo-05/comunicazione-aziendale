@@ -1,9 +1,8 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import Loading from "@/components/ui/loading";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/index";
+import Modal from "@/components/ui/modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,14 +11,27 @@ export default function Home() {
     <>
       <Head>
         <title>Homepage</title>
-
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className={inter.className}>
         <div className="container">
           <h1 className="display-1">Homepage</h1>
           <Link href="/user/login">Login</Link>
-          <Loading height={50} width={50} />
+          <button
+            type="button"
+            className="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#example"
+          >
+            Launch demo modal
+          </button>
+          <Modal
+            id="example"
+            title="Title"
+            description="This is the description"
+            discardText="Discard"
+            saveText="Save"
+          />
         </div>
         <Navbar position="fixed-bottom" shouldFetch={false} />
       </main>

@@ -1,6 +1,6 @@
-import Loading from "@/components/loading";
-import Navbar from "@/components/navbar";
-import UserForm from "@/components/ui/userForm";
+import Loading from "@/components/ui/loading";
+import Navbar from "@/components/navbar/index";
+import UserForm from "@/components/userForm";
 import { UserType } from "@/types";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -35,8 +35,12 @@ export default function Page() {
 
   return (
     <div>
-      <Navbar />
-      {loading ? <Loading /> : <UserForm initialUserData={user} />}
+      <Navbar position={"sticky-top"} shouldFetch={false} />
+      {loading ? (
+        <Loading height={150} width={150} />
+      ) : (
+        <UserForm initialUserData={user} />
+      )}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import Loading from "@/components/ui/loading";
 import { UserSecure } from "@/types";
 import axios from "axios";
 import Link from "next/link";
@@ -10,23 +11,21 @@ import {
   FaUserPlus,
   FaUsersViewfinder,
 } from "react-icons/fa6";
-import Loading from "@/components/ui/loading";
 
 export default function User({ shouldFetch }: { shouldFetch: boolean }) {
   const router = useRouter();
-  const { pathname } = router;
-  console.log(pathname);
   const [loading, setLoading] = useState<boolean>(true);
   const [user, setUser] = useState<UserSecure | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   useEffect(() => {
+    if (!shouldFetch) {
+      return;
+    }
     setLoading(true);
     const token = cookies.token;
     if (!token) {
-      if (pathname !== "/") {
-        router.push("/user/login");
-      }
+      router.push("/user/login");
       return;
     }
     axios
@@ -38,15 +37,13 @@ export default function User({ shouldFetch }: { shouldFetch: boolean }) {
         setUser(user);
         setLoading(false);
       })
-      .catch((promise) => {
-        switch (promise.response.status) {
-          case 401:
-            removeCookie("token");
-            router.push("/user/login");
-        }
+      .catch((err) => {
+        removeCookie("token");
+        router.push("/user/login");
+
         setLoading(false);
       });
-  }, [cookies, pathname, removeCookie, router]);
+  }, [cookies, removeCookie, router, shouldFetch]);
 
   return (
     <div className="dropdown">
