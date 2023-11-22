@@ -85,7 +85,6 @@ export default function Login() {
         <section className="text-center text-lg-start">
           <div className="position-absolute top-50 start-50 translate-middle">
             <div className="card">
-              {/* <div className="row g-0 d-flex align-items-center"> */}
               <div className="row g-0">
                 <div className="col-lg-5 d-none d-lg-flex">
                   <Image

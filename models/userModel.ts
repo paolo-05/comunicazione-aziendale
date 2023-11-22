@@ -17,11 +17,14 @@ export const User = {
       .query<RowDataPacket[]>("SELECT * FROM users WHERE email = ?", [email]);
     return rows[0] as UserType | undefined;
   },
-  findById: async (id: number): Promise<UserType | undefined> => {
+  findById: async (id: number): Promise<UserSecure | undefined> => {
     const [rows] = await db
       .promise()
-      .query<RowDataPacket[]>("SELECT * FROM users WHERE id = ?", [id]);
-    return rows[0] as UserType | undefined;
+      .query<RowDataPacket[]>(
+        "SELECT id, email, canModifyUsers, name, lastName FROM users WHERE id = ?",
+        [id]
+      );
+    return rows[0] as UserSecure | undefined;
   },
   createUser: async (
     email: string,

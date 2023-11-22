@@ -13,7 +13,7 @@ function New() {
     <>
       <Navbar position={""} shouldFetch={false} />
       <div className="container mt-3">
-        <Editor context="new" />
+        <Editor mode="new" />
       </div>
     </>
   );

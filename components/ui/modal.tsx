@@ -4,12 +4,14 @@ export default function Modal({
   description,
   discardText,
   saveText,
+  action,
 }: {
   id: string;
   title: string;
   description: string;
   discardText: string;
   saveText: string;
+  action: Function;
 }) {
   return (
     <div
@@ -43,7 +45,13 @@ export default function Modal({
             >
               {discardText}
             </button>
-            <button type="button" className="btn btn-primary">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={(e) => {
+                action(true);
+              }}
+            >
               {saveText}
             </button>
           </div>

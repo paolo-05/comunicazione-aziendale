@@ -12,8 +12,8 @@ const ListAll = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<Array<UserSecure> | null>(null);
+  const [deletingID, setDeletingID] = useState<number | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-
   const fetchUsers = useCallback(() => {
     const token = cookies.token;
     if (!token) {
@@ -40,23 +40,29 @@ const ListAll = () => {
 
   const deleteUser = (id: number) => {
     setLoading(true);
-    axios
-      .post("/api/user/delete", {
-        id: id,
-      })
-      .then((response) => {})
-      .catch((error) => {});
+    // axios
+    //   .post("/api/user/delete", {
+    //     id: id,
+    //   })
+    //   .then((response) => {})
+    //   .catch((error) => {});
     setLoading(false);
   };
-
+  const handleModal = (confirm: boolean) => {
+    if (confirm && deletingID) {
+      // delete the user
+      deleteUser(deletingID);
+    }
+  };
   return (
-    <div>
+    <>
       <Modal
         id="deleteUser"
         title="Attenzione!"
         description="L'eliminazione di un utente è un'azione irreversibile."
-        discardText="Annulla."
-        saveText="Ho capito. Voglio proseguire."
+        discardText="Annulla"
+        saveText="Ho capito. Voglio proseguire"
+        action={handleModal}
       />
       <Navbar position={"sticky-top"} shouldFetch={true} />
       <div className="container mt-3">
@@ -93,10 +99,13 @@ const ListAll = () => {
                   <td>
                     <button
                       data-bs-toggle="modal"
-                      data-bs-target="#delete"
+                      data-bs-target="#deleteUser"
                       type="button"
                       className="btn btn-danger"
                       disabled={loading}
+                      onClick={(e) => {
+                        setDeletingID(user.id);
+                      }}
                     >
                       Elimina
                     </button>
@@ -107,7 +116,7 @@ const ListAll = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   );
 };
 
