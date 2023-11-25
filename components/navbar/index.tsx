@@ -6,6 +6,12 @@ import NavLinks from "@/components/navbar/navLinks";
 import User from "@/components/navbar/user";
 import Link from "next/link";
 
+/**
+ *  This component is the navbar, it requires some arguments to be passed:
+ * @param position according to Bootstrap's docs
+ * @param shouldFetch true or false, rapresents whether fetch or not the user data
+ */
+
 export default function Navbar({
   position,
   shouldFetch,

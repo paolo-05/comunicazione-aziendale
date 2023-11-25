@@ -12,6 +12,10 @@ import {
   FaUsersViewfinder,
 } from "react-icons/fa6";
 
+/**
+ * This is a dropdown menu used that contains all the links for user managment
+ * @param shouldFetch
+ */
 export default function User({ shouldFetch }: { shouldFetch: boolean }) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);

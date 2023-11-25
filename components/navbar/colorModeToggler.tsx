@@ -11,6 +11,10 @@ import {
   FaCheck as Check,
 } from "react-icons/fa6";
 
+/**
+ * This is a dropdown menu used for toggling theme
+ * @param direction according to Booststrap's docs, the direction where the menu will be dropped
+ */
 export default function ColorModeToggler({ direction }: { direction: string }) {
   const [theme, setPreferredTheme] = useState("");
   const [cookies, setCookie] = useCookies(["theme"]);

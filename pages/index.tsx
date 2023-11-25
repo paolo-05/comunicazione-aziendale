@@ -7,6 +7,9 @@ import Modal from "@/components/ui/modal";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const handleConfirm = () => {
+    return;
+  };
   return (
     <>
       <Head>
@@ -31,6 +34,7 @@ export default function Home() {
             description="This is the description"
             discardText="Discard"
             saveText="Save"
+            action={handleConfirm}
           />
         </div>
         <Navbar position="fixed-bottom" shouldFetch={false} />

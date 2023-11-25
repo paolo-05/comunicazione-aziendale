@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
+/**
+ * A resizable spinning loading progress indicator
+ * @param height
+ * @param width
+ */
 export default function Loading({
   height,
   width,

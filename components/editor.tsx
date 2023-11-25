@@ -4,7 +4,7 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import React, { useEffect, useState } from "react";
-import "@/styles/editor.css";
+import "@/styles/editor.module.css";
 
 function Editor({ mode }: { mode: string }) {
   let [loaded, setLoaded] = useState(false);

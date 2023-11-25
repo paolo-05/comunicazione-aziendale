@@ -2,16 +2,23 @@ import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import CapsLock from "./capsLock";
 
+/**
+ * A dynamic password input form
+ * @param id a string that rapresents the element in the DOM
+ * @param placeholder for helping the user
+ * @param error a number rapresenting the possible errors
+ * @param onPasswordChange a function for handling password change
+ */
 export default function PasswordForm({
   id,
-  onPasswordChange,
-  error,
   placeholder,
+  error,
+  onPasswordChange,
 }: {
   id: string;
-  onPasswordChange: Function;
-  error: number | null;
   placeholder: string;
+  error: number | null;
+  onPasswordChange: Function;
 }) {
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
@@ -35,7 +42,6 @@ export default function PasswordForm({
           "La Password deve contenere almeno 8 caratteri, con maiuscole, minuscole, numeri e caratteri speciali."
         );
         break;
-
       case 1:
         setPswError("La vecchia password non corrisponde.");
         break;
