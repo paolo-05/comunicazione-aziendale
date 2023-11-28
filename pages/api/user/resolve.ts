@@ -4,6 +4,8 @@
 
 import { User } from "@/models/userModel";
 import isTokenExpired from "@/models/verifyToken";
+import cookie from "cookie";
+import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -34,7 +36,14 @@ export default async function handler(
       name: userAll.name,
       lastName: userAll.lastName,
     };
-    res.status(200).json({ message: user });
+
+    // Re-generate the token so the session doesn't end
+    const secret = "secret"; // Replace with the same secret used in the auth middleware
+    const newToken = jwt.sign({ email: user.email }, secret, {
+      expiresIn: "1h",
+    });
+    const cookies = cookie.serialize("token", newToken);
+    res.status(200).json({ message: user, cookies });
   } catch (err) {
     res.status(401).json({ message: err });
   }

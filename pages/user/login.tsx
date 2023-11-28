@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar/index";
-import PasswordForm from "@/components/ui/passwordForm";
+import PasswordForm from "@/components/ui/forms/passwordForm";
 import logoBig from "@/public/logo-big.png";
 import "@/styles/login.module.css";
 import axios from "axios";
@@ -35,7 +35,6 @@ export default function Login() {
         // just don't make a empty request so return
         return;
       }
-      e.preventDefault();
       axios
         .post("/api/user/login", {
           email: email,
@@ -49,6 +48,7 @@ export default function Login() {
             // sameSite: true,
             maxAge: 3600,
           });
+          setLoading(false);
           setError(false);
           router.push("/dashboard");
         })
@@ -124,7 +124,8 @@ export default function Login() {
                     <PasswordForm
                       id=""
                       onPasswordChange={handlePasswordChange}
-                      error={error ? 3 : null}
+                      pswError={error ? "Email o Password Errate." : null}
+                      checkRegex={false}
                       placeholder="Password"
                     />
                     <div className="form-outline mb-4">

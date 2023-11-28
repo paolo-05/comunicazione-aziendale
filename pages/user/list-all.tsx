@@ -14,6 +14,7 @@ const ListAll = () => {
   const [users, setUsers] = useState<Array<UserSecure> | null>(null);
   const [deletingID, setDeletingID] = useState<number | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+
   const fetchUsers = useCallback(() => {
     const token = cookies.token;
     if (!token) {
@@ -36,6 +37,8 @@ const ListAll = () => {
 
   useEffect(() => {
     fetchUsers();
+
+    return;
   }, [fetchUsers]);
 
   const deleteUser = (id: number) => {

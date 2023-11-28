@@ -1,12 +1,23 @@
+import EmailForm from "@/components/ui/forms/emailForm";
+import PasswordForm from "@/components/ui/forms/passwordForm";
+import { UserErrors, UserSecure, UserType } from "@/types";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import PasswordForm from "@/components/ui/passwordForm";
-import { UserType } from "@/types";
+import { useCallback, useEffect, useState } from "react";
+import NameForm from "./ui/forms/nameForm";
 
-function UserForm({ initialUserData }: { initialUserData: UserType | null }) {
+function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
   const router = useRouter();
-  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const nameRegex = /^[A-Za-z]+$/;
+  const [loading, setLoading] = useState(false);
+
+  const [form, setForm] = useState<UserType>({
+    id: -1,
+    email: "",
+    password: "",
+    canModifyUsers: false,
+    name: "",
+    lastName: "",
+  });
 
   const [id, setId] = useState(-1);
   const [email, setEmail] = useState("");
@@ -15,21 +26,115 @@ function UserForm({ initialUserData }: { initialUserData: UserType | null }) {
   const [power, setPower] = useState(0);
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [error, setError] = useState("");
+
+  const [errors, setErrors] = useState<UserErrors>({
+    email: "",
+    password: "",
+    oldPassword: "",
+    name: "",
+    lastName: "",
+  });
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+  };
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
   };
+
   const handleOldPasswordChange = (value: string) => {
     setOldPassword(value);
   };
-  const errors = {
-    email: "Invalid Email.",
-    name: "Name can only contain alphabetic characters.",
-    lastName: "Last name can only contain alphabetic characters.",
+
+  const handleNameChange = (value: string) => {
+    setName(value);
   };
 
+  const handleLastNameChange = (value: string) => {
+    setLastName(value);
+  };
+
+  const handleErrors = useCallback(
+    (error: string) => {
+      if (error.includes("Email")) {
+        setErrors({
+          ...errors,
+          email: "Email già registrata",
+        });
+        return;
+      }
+      if (error.includes("campi")) {
+        setErrors({
+          email: "Campo richiesto.",
+          password: "Campo richiesto.",
+          oldPassword: "Campo richiesto.",
+          name: "Campo richiesto.",
+          lastName: "Campo richiesto.",
+        });
+      }
+    },
+    [errors]
+  );
+
+  const handleSubmit = useCallback(
+    (e: any) => {
+      if (email === "" && password === "" && name === "" && lastName === "") {
+        handleErrors("I campi non possono essere vuoti");
+        return;
+      }
+      if (!initialUserData) {
+        axios
+          .post("/api/user/register", {
+            email: email,
+            password: password,
+            canModifyUsers: power,
+            name: name,
+            lastName: lastName,
+          })
+          .then((response: any) => {
+            console.log(response.data.message);
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
+      } else {
+        axios
+          .post("/api/user/edit", {
+            email: email,
+            oldPassword: oldPassword,
+            password: password,
+            canModifyUsers: power,
+            name: name,
+            lastName: lastName,
+          })
+          .then((response: any) => {
+            console.log(response.data.message);
+          })
+          .catch((error: any) => {});
+      }
+    },
+    [
+      email,
+      password,
+      name,
+      lastName,
+      initialUserData,
+      handleErrors,
+      power,
+      oldPassword,
+    ]
+  );
+
   useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      if (e.keyCode === 13) {
+        handleSubmit(e);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
     if (initialUserData) {
       setId(initialUserData.id || -1);
       setEmail(initialUserData.email || "");
@@ -37,180 +142,101 @@ function UserForm({ initialUserData }: { initialUserData: UserType | null }) {
       setName(initialUserData.name || "");
       setLastName(initialUserData.lastName || "");
     }
-  }, [initialUserData]);
-
-  function isValidEmail(email: string) {
-    return emailRegex.test(email);
-  }
-
-  function isValidName(name: string) {
-    return nameRegex.test(name);
-  }
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    if (!initialUserData) {
-      /**
-       * Register a new user.
-       */
-      const response = await fetch("/api/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, power, name, lastName }),
-      });
-
-      if (response.status === 201) {
-        router.push("/user/list-all");
-      } else {
-        const data = await response.json();
-        setError(data.message);
-      }
-    } else {
-      /**
-       * Edit a user.
-       */
-      const response = await fetch("/api/user/edit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          email,
-          oldPassword,
-          password,
-          power,
-          name,
-          lastName,
-        }),
-      });
-      if (response.status === 201) {
-        router.push("/user/list-all");
-      } else {
-        const data = await response.json();
-        setError(data.message);
-      }
-    }
-  };
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleSubmit, initialUserData]);
 
   return (
     <div className="container mt-5">
-      <h1 className="display-1">
-        {initialUserData ? "Edit User" : "Register"}
-      </h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mt-3 mb-3">
-          <label htmlFor="email" className="form-label">
-            Email: {"(Richiesto)"}
-          </label>
-          <input
-            type="email"
-            className="form-control form-control-lg"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <div id="emailHelp" className="form-text">
-            {isValidEmail(email) || email === "" ? (
-              ""
-            ) : (
-              <span className="error">{errors.email}</span>
-            )}
+      <div className="card bg-body">
+        <div className="card-body">
+          <div className="card-title">
+            <h1 className="display-1">
+              {initialUserData
+                ? "Modifica un Utente"
+                : "Registra un nuovo Utente"}
+            </h1>
           </div>
-        </div>
-        {initialUserData ? (
-          <>
-            <PasswordForm
-              id="old"
-              onPasswordChange={handleOldPasswordChange}
-              error={null}
+          <div>
+            <input type="hidden" value={id} />
+            <EmailForm
+              id="email"
               placeholder=""
+              emailError={errors.email}
+              handleValueChange={handleEmailChange}
             />
-            <PasswordForm
-              id="new"
-              onPasswordChange={handlePasswordChange}
-              error={null}
+            {initialUserData ? (
+              <>
+                <PasswordForm
+                  id="old"
+                  onPasswordChange={handleOldPasswordChange}
+                  pswError={errors.oldPassword}
+                  checkRegex={false}
+                  placeholder=""
+                />
+                <PasswordForm
+                  id="new"
+                  onPasswordChange={handlePasswordChange}
+                  pswError={errors.password}
+                  checkRegex={true}
+                  placeholder=""
+                />
+              </>
+            ) : (
+              <PasswordForm
+                id=""
+                onPasswordChange={handlePasswordChange}
+                pswError={errors.password}
+                checkRegex={true}
+                placeholder=""
+              />
+            )}
+            <div className="mb-3">
+              <label htmlFor="power" className="form-label">
+                Seleziona il ruolo per questo utente {"(Richiesto)"}
+              </label>
+              <select
+                className="form-select"
+                aria-label="Seleziona i privilegi per questo utente"
+                id="power"
+                value={power}
+                onChange={(e) => setPower(Number(e.target.value))}
+              >
+                <option value={0}>
+                  Può inserire annunci, modificarli, eliminarli
+                </option>
+                <option value={1}>
+                  Oltre a fare ciò che è descritto sopra, può inserire utenti,
+                  modificarli ed eliminarli
+                </option>
+              </select>
+            </div>
+            <NameForm
+              id="name"
               placeholder=""
+              nameError={errors.name}
+              handleValueChange={handleNameChange}
             />
-          </>
-        ) : (
-          <PasswordForm
-            id=""
-            onPasswordChange={handlePasswordChange}
-            error={null}
-            placeholder=""
-          />
-        )}
-        <div className="mb-3">
-          <label htmlFor="power" className="form-label">
-            Seleziona il ruolo per questo utente {"(Richiesto)"}
-          </label>
-          <select
-            className="form-select"
-            aria-label="Seleziona i privilegi per questo utente"
-            id="power"
-            value={power}
-            onChange={(e) => setPower(Number(e.target.value))}
-          >
-            <option value={0}>
-              Può inserire annunci, modificarli, eliminarli
-            </option>
-            <option value={1}>
-              Oltre a fare ciò che è descritto sopra, può inserire utenti,
-              modificarli ed eliminarli
-            </option>
-          </select>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">
-            Nome: {"(Richiesto)"}
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <div id="nameHelp" className="form-text">
-            {isValidName(name) || name === "" ? (
-              ""
-            ) : (
-              <span className="error">{errors.name}</span>
-            )}
+            <NameForm
+              id="LastName"
+              placeholder=""
+              nameError={errors.lastName}
+              handleValueChange={handleLastNameChange}
+            />
+            <div className="mb-3">
+              <button
+                type="button"
+                className="btn btn-primary btn-lg"
+                onClick={handleSubmit}
+              >
+                {initialUserData ? "Update" : "Register"}
+              </button>
+              <div className="form-text">{/* {error} */}</div>
+            </div>
           </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="lastName" className="form-label">
-            Cognome: {"(Richiesto)"}
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <div id="lastnameHelp" className="form-text">
-            {isValidName(lastName) || lastName === "" ? (
-              ""
-            ) : (
-              <span className="error">{errors.lastName}</span>
-            )}
-          </div>
-        </div>
-        <div className="mb-3">
-          <button type="submit" className="btn btn-primary">
-            {initialUserData ? "Update" : "Register"}
-          </button>
-          <div className="form-text">
-            {error !== "" ? <span className="error">{error}</span> : ""}
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
   );
 }

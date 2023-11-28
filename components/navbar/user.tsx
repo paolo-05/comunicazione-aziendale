@@ -37,6 +37,14 @@ export default function User({ shouldFetch }: { shouldFetch: boolean }) {
         token: token,
       })
       .then((response) => {
+        const cookie = response.data.cookies.split("=")[1];
+        setCookie("token", cookie, {
+          path: "/",
+          // secure: true,
+          // sameSite: true,
+          maxAge: 3600,
+        });
+
         const user: UserSecure = response.data.message;
         setUser(user);
         setLoading(false);
@@ -47,7 +55,7 @@ export default function User({ shouldFetch }: { shouldFetch: boolean }) {
 
         setLoading(false);
       });
-  }, [cookies, removeCookie, router, shouldFetch]);
+  }, [cookies, removeCookie, router, setCookie, shouldFetch]);
 
   return (
     <div className="dropdown">
@@ -61,7 +69,8 @@ export default function User({ shouldFetch }: { shouldFetch: boolean }) {
       >
         <div className="bi my-1 theme-icon-active">
           {loading && shouldFetch ? (
-            <Loading width={30} height={30} />
+            // <Loading width={30} height={30} />
+            ""
           ) : (
             <Link href="/user/login">
               <FaUser />

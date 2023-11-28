@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import Navbar from "@/components/navbar/index";
 
 export default function Dashboard() {
