@@ -1,7 +1,6 @@
 // pages/api/register.js
 import { User } from "@/models/userModel";
 import isTokenExpired from "@/models/verifyToken";
-import { UserType } from "@/types";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(

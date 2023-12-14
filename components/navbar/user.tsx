@@ -1,4 +1,4 @@
-import Loading from "@/components/ui/loading";
+import ReservedLinks from "@/components/navbar/reservedLinks";
 import { UserSecure } from "@/types";
 import axios from "axios";
 import Link from "next/link";
@@ -7,9 +7,8 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import {
   FaArrowRightFromBracket,
+  FaPenToSquare,
   FaUser,
-  FaUserPlus,
-  FaUsersViewfinder,
 } from "react-icons/fa6";
 
 /**
@@ -69,7 +68,6 @@ export default function User({ shouldFetch }: { shouldFetch: boolean }) {
       >
         <div className="bi my-1 theme-icon-active">
           {loading && shouldFetch ? (
-            // <Loading width={30} height={30} />
             ""
           ) : (
             <Link href="/user/login">
@@ -92,40 +90,26 @@ export default function User({ shouldFetch }: { shouldFetch: boolean }) {
           className="dropdown-menu dropdown-menu-end"
           aria-labelledby="themeDropdown"
         >
+          {user?.canModifyUsers ? <ReservedLinks /> : ""}
           <li>
             <Link
-              href="/user/register"
+              href={`/user/${user?.id}/change-password`}
               type="button"
               className="dropdown-item d-flex align-items-center"
-              data-bs-theme-value="light"
-              aria-pressed="false"
+              aria-pressed="true"
             >
               <div className="bi me-2 opacity-50 theme-icon">
-                <FaUserPlus />
+                <FaPenToSquare />
               </div>
-              Registra un nuovo gestore per gli annunci
+              Cambia Password
             </Link>
           </li>
-          <li>
-            <Link
-              href="/user/list-all"
-              type="button"
-              className="dropdown-item d-flex align-items-center"
-              data-bs-theme-value="dark"
-              aria-pressed="false"
-            >
-              <div className="bi me-2 opacity-50 theme-icon">
-                <FaUsersViewfinder />
-              </div>
-              Mostra tutti gli utenti registati
-            </Link>
-          </li>
+
           <li>
             <Link
               href="/user/logout"
               type="button"
               className="dropdown-item d-flex align-items-center"
-              data-bs-theme-value="auto"
               aria-pressed="true"
             >
               <div className="bi me-2 opacity-50 theme-icon">

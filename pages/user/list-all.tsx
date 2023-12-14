@@ -1,8 +1,8 @@
 import Navbar from "@/components/navbar/index";
 import Modal from "@/components/ui/modal";
+import Delete from "@/components/ui/delete";
 import { UserSecure } from "@/types";
 import axios from "axios";
-import { error } from "console";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -10,10 +10,9 @@ import { useCookies } from "react-cookie";
 
 const ListAll = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<Array<UserSecure> | null>(null);
-  const [deletingID, setDeletingID] = useState<number | null>(null);
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookies, setCookie] = useCookies(["token"]);
 
   const fetchUsers = useCallback(() => {
     const token = cookies.token;
@@ -29,6 +28,7 @@ const ListAll = () => {
       .then((response) => {
         const users: Array<UserSecure> = response.data.message;
         setUsers(users);
+        setLoading(false);
       })
       .catch((err: any) => {
         console.log(err);
@@ -36,37 +36,13 @@ const ListAll = () => {
   }, [cookies.token, router, setUsers]);
 
   useEffect(() => {
-    fetchUsers();
+    if (loading) fetchUsers();
 
     return;
-  }, [fetchUsers]);
+  }, [fetchUsers, loading]);
 
-  const deleteUser = (id: number) => {
-    setLoading(true);
-    // axios
-    //   .post("/api/user/delete", {
-    //     id: id,
-    //   })
-    //   .then((response) => {})
-    //   .catch((error) => {});
-    setLoading(false);
-  };
-  const handleModal = (confirm: boolean) => {
-    if (confirm && deletingID) {
-      // delete the user
-      deleteUser(deletingID);
-    }
-  };
   return (
     <>
-      <Modal
-        id="deleteUser"
-        title="Attenzione!"
-        description="L'eliminazione di un utente è un'azione irreversibile."
-        discardText="Annulla"
-        saveText="Ho capito. Voglio proseguire"
-        action={handleModal}
-      />
       <Navbar position={"sticky-top"} shouldFetch={true} />
       <div className="container mt-3">
         <h1>Mostrando tutti i {users ? users.length : ".."} utenti</h1>
@@ -100,18 +76,7 @@ const ListAll = () => {
                     </Link>
                   </td>
                   <td>
-                    <button
-                      data-bs-toggle="modal"
-                      data-bs-target="#deleteUser"
-                      type="button"
-                      className="btn btn-danger"
-                      disabled={loading}
-                      onClick={(e) => {
-                        setDeletingID(user.id);
-                      }}
-                    >
-                      Elimina
-                    </button>
+                    <Delete id={user.id} token={cookies.token} />
                   </td>
                 </tr>
               ))

@@ -1,14 +1,19 @@
+import BackButton from "@/components/ui/backButton";
 import EmailForm from "@/components/ui/forms/emailForm";
 import PasswordForm from "@/components/ui/forms/passwordForm";
+import Loading from "@/components/ui/loading";
 import { UserErrors, UserSecure, UserType } from "@/types";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import NameForm from "./ui/forms/nameForm";
 
 function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [cookies, setCookie] = useCookies(["token"]);
+  const [oldPassword, setOldPassword] = useState("");
 
   const [form, setForm] = useState<UserType>({
     id: -1,
@@ -19,14 +24,6 @@ function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
     lastName: "",
   });
 
-  const [id, setId] = useState(-1);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [oldPassword, setOldPassword] = useState("");
-  const [power, setPower] = useState(0);
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-
   const [errors, setErrors] = useState<UserErrors>({
     email: "",
     password: "",
@@ -35,28 +32,46 @@ function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
     lastName: "",
   });
 
-  const handleEmailChange = (value: string) => {
-    setEmail(value);
-  };
+  const handleEmailChange = useCallback((value: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      email: value,
+    }));
+  }, []);
 
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-  };
+  const handlePasswordChange = useCallback((value: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      password: value,
+    }));
+  }, []);
 
-  const handleOldPasswordChange = (value: string) => {
+  const handleOldPasswordChange = useCallback((value: string) => {
     setOldPassword(value);
-  };
+  }, []);
 
-  const handleNameChange = (value: string) => {
-    setName(value);
-  };
+  const handleNameChange = useCallback((value: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      name: value,
+    }));
+  }, []);
 
-  const handleLastNameChange = (value: string) => {
-    setLastName(value);
-  };
+  const handleLastNameChange = useCallback((value: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      lastName: value,
+    }));
+  }, []);
+
+  const handleSuccess = useCallback(() => {
+    router.push("/user/list-all");
+  }, [router]);
 
   const handleErrors = useCallback(
     (error: string) => {
+      console.log("handle errors");
+
       if (error.includes("Email")) {
         setErrors({
           ...errors,
@@ -79,34 +94,42 @@ function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
 
   const handleSubmit = useCallback(
     (e: any) => {
-      if (email === "" && password === "" && name === "" && lastName === "") {
+      if (
+        form.email === "" &&
+        form.password === "" &&
+        form.name === "" &&
+        form.lastName === ""
+      ) {
         handleErrors("I campi non possono essere vuoti");
         return;
       }
       if (!initialUserData) {
         axios
           .post("/api/user/register", {
-            email: email,
-            password: password,
-            canModifyUsers: power,
-            name: name,
-            lastName: lastName,
+            token: cookies.token,
+            email: form.email,
+            password: form.password,
+            canModifyUsers: form.canModifyUsers,
+            name: form.name,
+            lastName: form.lastName,
           })
           .then((response: any) => {
             console.log(response.data.message);
+            handleSuccess();
           })
           .catch((error: any) => {
-            console.log(error);
+            handleErrors(error.response.data.message);
           });
       } else {
         axios
           .post("/api/user/edit", {
-            email: email,
+            token: cookies.token,
+            email: form.email,
+            password: form.password,
             oldPassword: oldPassword,
-            password: password,
-            canModifyUsers: power,
-            name: name,
-            lastName: lastName,
+            canModifyUsers: form.canModifyUsers,
+            name: form.name,
+            lastName: form.lastName,
           })
           .then((response: any) => {
             console.log(response.data.message);
@@ -115,16 +138,28 @@ function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
       }
     },
     [
-      email,
-      password,
-      name,
-      lastName,
+      form,
       initialUserData,
       handleErrors,
-      power,
+      cookies.token,
       oldPassword,
+      handleSuccess,
     ]
   );
+
+  const setData = useCallback(() => {
+    if (initialUserData && loading) {
+      setForm({
+        id: initialUserData.id || -1,
+        email: initialUserData.email || "",
+        password: "",
+        canModifyUsers: initialUserData.canModifyUsers || false,
+        name: initialUserData.name || "",
+        lastName: initialUserData.lastName || "",
+      });
+    }
+    setLoading(false);
+  }, [initialUserData, loading]);
 
   useEffect(() => {
     const handleKeyDown = (e: any) => {
@@ -134,107 +169,105 @@ function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
     };
 
     document.addEventListener("keydown", handleKeyDown);
-
-    if (initialUserData) {
-      setId(initialUserData.id || -1);
-      setEmail(initialUserData.email || "");
-      setPower(initialUserData.canModifyUsers ? 1 : 0 || 0);
-      setName(initialUserData.name || "");
-      setLastName(initialUserData.lastName || "");
-    }
+    setData();
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleSubmit, initialUserData]);
+  }, [handleSubmit, setData]);
 
   return (
     <div className="container mt-5">
       <div className="card bg-body">
         <div className="card-body">
-          <div className="card-title">
-            <h1 className="display-1">
-              {initialUserData
-                ? "Modifica un Utente"
-                : "Registra un nuovo Utente"}
-            </h1>
-          </div>
-          <div>
-            <input type="hidden" value={id} />
-            <EmailForm
-              id="email"
-              placeholder=""
-              emailError={errors.email}
-              handleValueChange={handleEmailChange}
-            />
-            {initialUserData ? (
-              <>
-                <PasswordForm
-                  id="old"
-                  onPasswordChange={handleOldPasswordChange}
-                  pswError={errors.oldPassword}
-                  checkRegex={false}
+          {loading ? (
+            <Loading height={150} width={150} />
+          ) : (
+            <>
+              <div className="card-title">
+                <h1 className="display-1">
+                  {initialUserData
+                    ? "Modifica un utente"
+                    : "Registra un nuovo utente"}
+                </h1>
+              </div>
+              <div>
+                <input type="hidden" value={form.id} />
+                <EmailForm
+                  id="email"
+                  initialValue={form.email}
                   placeholder=""
+                  emailError={errors.email}
+                  handleValueChange={handleEmailChange}
                 />
-                <PasswordForm
-                  id="new"
-                  onPasswordChange={handlePasswordChange}
-                  pswError={errors.password}
-                  checkRegex={true}
+                {initialUserData ? (
+                  ""
+                ) : (
+                  <PasswordForm
+                    id=""
+                    onPasswordChange={handlePasswordChange}
+                    pswError={errors.password}
+                    checkRegex={true}
+                    placeholder=""
+                  />
+                )}
+                <div className="mb-3">
+                  <label htmlFor="power" className="form-label">
+                    Seleziona il ruolo per questo utente {"(Richiesto)"}
+                  </label>
+                  <select
+                    className="form-select"
+                    aria-label="Seleziona i privilegi per questo utente"
+                    id="power"
+                    value={String(form.canModifyUsers)}
+                    onChange={(e) =>
+                      setForm((prevForm) => ({
+                        ...prevForm,
+                        canModifyUsers: Boolean(e.target.value),
+                      }))
+                    }
+                  >
+                    <option value={String(false)}>
+                      Può inserire annunci, modificarli, eliminarli
+                    </option>
+                    <option value={String(true)}>
+                      Oltre a fare ciò che è descritto sopra, può inserire
+                      utenti, modificarli ed eliminarli
+                    </option>
+                  </select>
+                </div>
+                <NameForm
+                  id="name"
+                  initialValue={form.name}
                   placeholder=""
+                  nameError={errors.name}
+                  handleValueChange={handleNameChange}
                 />
-              </>
-            ) : (
-              <PasswordForm
-                id=""
-                onPasswordChange={handlePasswordChange}
-                pswError={errors.password}
-                checkRegex={true}
-                placeholder=""
-              />
-            )}
-            <div className="mb-3">
-              <label htmlFor="power" className="form-label">
-                Seleziona il ruolo per questo utente {"(Richiesto)"}
-              </label>
-              <select
-                className="form-select"
-                aria-label="Seleziona i privilegi per questo utente"
-                id="power"
-                value={power}
-                onChange={(e) => setPower(Number(e.target.value))}
-              >
-                <option value={0}>
-                  Può inserire annunci, modificarli, eliminarli
-                </option>
-                <option value={1}>
-                  Oltre a fare ciò che è descritto sopra, può inserire utenti,
-                  modificarli ed eliminarli
-                </option>
-              </select>
-            </div>
-            <NameForm
-              id="name"
-              placeholder=""
-              nameError={errors.name}
-              handleValueChange={handleNameChange}
-            />
-            <NameForm
-              id="LastName"
-              placeholder=""
-              nameError={errors.lastName}
-              handleValueChange={handleLastNameChange}
-            />
-            <div className="mb-3">
-              <button
-                type="button"
-                className="btn btn-primary btn-lg"
-                onClick={handleSubmit}
-              >
-                {initialUserData ? "Update" : "Register"}
-              </button>
-              <div className="form-text">{/* {error} */}</div>
-            </div>
-          </div>
+                <NameForm
+                  id="LastName"
+                  initialValue={form.lastName}
+                  placeholder=""
+                  nameError={errors.lastName}
+                  handleValueChange={handleLastNameChange}
+                />
+                <div className="mb-3 container px-4 text-center">
+                  <div className="row gx-5">
+                    <div className="col">
+                      <BackButton text="Annulla" />
+                    </div>
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-lg"
+                        onClick={handleSubmit}
+                      >
+                        {initialUserData ? "Aggiorna i dati" : "Registra"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

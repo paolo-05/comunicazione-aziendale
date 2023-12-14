@@ -39,18 +39,7 @@ export default function Page() {
       {loading || !user ? (
         <Loading height={150} width={150} />
       ) : (
-        // <UserForm initialUserData={user} />
-        <p>
-          {user.id}
-          <br />
-          {user.email}
-          <br />
-          {user.canModifyUsers}
-          <br />
-          {user.name}
-          <br />
-          {user.lastName}
-        </p>
+        <UserForm initialUserData={user} />
       )}
     </div>
   );

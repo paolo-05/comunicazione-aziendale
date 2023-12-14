@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 
 export default function NameForm({
   id,
+  initialValue,
   placeholder,
   nameError,
   handleValueChange,
 }: {
   id: string;
+  initialValue: string;
   placeholder: string;
   nameError: string | null;
   handleValueChange: Function;
 }) {
   const nameRegex = /^[A-Za-z]+$/;
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue);
   const [error, setError] = useState("");
 
   function isValidName(name: string) {
@@ -40,6 +42,8 @@ export default function NameForm({
       </label>
       <input
         type="text"
+        autoCapitalize="true"
+        autoComplete="false"
         className={`form-control form-control-lg ${
           error !== "" ? "border border-danger" : ""
         }`}

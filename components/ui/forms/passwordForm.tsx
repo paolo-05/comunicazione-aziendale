@@ -22,6 +22,8 @@ export default function PasswordForm({
   checkRegex: boolean;
   onPasswordChange: Function;
 }) {
+  console.log(pswError);
+
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[-.!@#\$%\^&\*]).{8,}$/;
 
@@ -50,7 +52,7 @@ export default function PasswordForm({
   }
 
   useEffect(() => {
-    if (pswError) setError(pswError);
+    setError(pswError || "");
 
     onPasswordChange(password);
   }, [onPasswordChange, password, pswError]);
@@ -59,12 +61,20 @@ export default function PasswordForm({
     <div className="mb-3">
       <label htmlFor={`${id}-password`}>
         {" "}
-        {id === "old" ? "Vecchia" : id === "new" ? "Nuova" : ""} Password{" "}
-        {"(Richiesto)"}
+        {id === "old"
+          ? "Vecchia"
+          : id === "new"
+          ? "Nuova"
+          : id === "confirm"
+          ? "Conferma"
+          : ""}{" "}
+        Password
+        {" (Richiesto)"}
       </label>
       <div className="input-group">
         <input
           type={showPassword ? "text" : "password"}
+          autoComplete="false"
           className={`form-control form-control-lg ${
             error !== "" ? "border border-danger" : ""
           }`}

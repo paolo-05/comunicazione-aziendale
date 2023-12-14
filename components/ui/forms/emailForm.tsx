@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 
 export default function EmailForm({
   id,
+  initialValue,
   placeholder,
   emailError,
   handleValueChange,
 }: {
   id: string;
+  initialValue: string;
   placeholder: string;
   emailError: string | null;
   handleValueChange: Function;
 }) {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue);
   const [error, setError] = useState("");
 
   function isValidEmail(email: string) {
@@ -39,6 +41,7 @@ export default function EmailForm({
       </label>
       <input
         type="email"
+        autoComplete="false"
         className={`form-control form-control-lg ${
           error !== "" ? "border border-danger" : ""
         }`}
