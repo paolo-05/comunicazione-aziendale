@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import CapsLock from "../capsLock";
 
+type PasswordFormProps = {
+  id: string;
+  placeholder: string;
+  pswError: string | null;
+  checkRegex: boolean;
+  onPasswordChange: Function;
+};
+
 /**
  * A dynamic password input form
  * @param id a string that rapresents the element in the DOM
@@ -15,15 +23,7 @@ export default function PasswordForm({
   pswError,
   checkRegex,
   onPasswordChange,
-}: {
-  id: string;
-  placeholder: string;
-  pswError: string | null;
-  checkRegex: boolean;
-  onPasswordChange: Function;
-}) {
-  console.log(pswError);
-
+}: PasswordFormProps) {
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[-.!@#\$%\^&\*]).{8,}$/;
 
@@ -52,10 +52,11 @@ export default function PasswordForm({
   }
 
   useEffect(() => {
-    setError(pswError || "");
-
+    if (pswError !== null) {
+      setError(pswError);
+    }
     onPasswordChange(password);
-  }, [onPasswordChange, password, pswError]);
+  }, [error, onPasswordChange, password, pswError]);
 
   return (
     <div className="mb-3">

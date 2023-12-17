@@ -1,70 +1,89 @@
 import Navbar from "@/components/navbar";
 import BackButton from "@/components/ui/backButton";
 import PasswordForm from "@/components/ui/forms/passwordForm";
+import { UserSecure } from "@/types";
 import axios from "axios";
+import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
+const inter = Inter({ subsets: ["latin"] });
+
 export default function ChangePassword() {
   const router = useRouter();
   const id = router.query.id;
-
-  const [loading, setLoading] = useState(false);
   const [cookies] = useCookies(["token"]);
+  const [admin, setAdmin] = useState<UserSecure | null>(null);
   const [confirmPswError, setConfirmPswError] = useState("");
-  const [isConfimPswDirty, setIsConfirmPswDirty] = useState(false);
-
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
   const handleOldPasswordChange = useCallback((value: string) => {
-    setOldPassword(value);
+    setForm((prevForm) => ({ ...prevForm, oldPassword: value }));
   }, []);
   const handleNewPasswordChange = useCallback((value: string) => {
-    setNewPassword(value);
+    setForm((prevForm) => ({ ...prevForm, newPassword: value }));
   }, []);
 
   const handleConfirmPasswordChange = useCallback(
     (value: string) => {
-      setConfirmPassword(value);
-      if (value === newPassword) {
+      setForm((prevForm) => ({ ...prevForm, confirmPassword: value }));
+      if (value === form.newPassword) {
         setConfirmPswError("");
       } else {
         setConfirmPswError("Le passsword non coincidono.");
       }
     },
-    [newPassword]
+    [form.newPassword]
   );
 
   const handleSubmit = useCallback(
     (e: any) => {
-      if (oldPassword === "" && newPassword === "" && confirmPassword === "") {
+      if (
+        form.oldPassword === "" &&
+        form.newPassword === "" &&
+        form.confirmPassword === ""
+      ) {
         return;
       }
       axios
         .post("/api/user/change-password", {
           token: cookies.token,
           id: id,
-          oldPassword: oldPassword,
-          newPassword: newPassword,
-          confirmPassword: confirmPassword,
+          oldPassword: form.oldPassword,
+          newPassword: form.newPassword,
+          confirmPassword: form.confirmPassword,
         })
         .then((resp) => {})
         .catch((error) => {});
     },
-    [oldPassword, newPassword, confirmPassword, cookies.token, id]
+    [form, cookies.token, id]
   );
+
+  useEffect(() => {
+    if (!cookies.token) {
+      router.push("/user/login");
+      return;
+    }
+    axios
+      .post("/api/user/resolve", { token: cookies.token })
+      .then((response: any) => setAdmin(response.data.message))
+      .catch((error: any) => console.log(error));
+  }, [cookies.token, router]);
 
   return (
     <>
       <Head>
         <title>Cambiamento Password</title>
       </Head>
-      <main>
-        <Navbar position="sticky-top" shouldFetch={true} />
+      <main className={inter.className}>
+        <Navbar position="sticky-top" user={admin} />
         <div className="container mt-5">
           <div className="card bg-body">
             <div className="card-body">
@@ -75,14 +94,14 @@ export default function ChangePassword() {
                 <PasswordForm
                   id="old"
                   placeholder=""
-                  pswError={""}
+                  pswError={null}
                   checkRegex={false}
                   onPasswordChange={handleOldPasswordChange}
                 />
                 <PasswordForm
                   id="new"
                   placeholder=""
-                  pswError={""}
+                  pswError={null}
                   checkRegex={true}
                   onPasswordChange={handleNewPasswordChange}
                 />

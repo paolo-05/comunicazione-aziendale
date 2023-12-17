@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 
+type EmailFormProps = {
+  id: string;
+  initialValue: string;
+  placeholder: string;
+  emailError: string | null;
+  handleValueChange: Function;
+};
+
 export default function EmailForm({
   id,
   initialValue,
   placeholder,
   emailError,
   handleValueChange,
-}: {
-  id: string;
-  initialValue: string;
-  placeholder: string;
-  emailError: string | null;
-  handleValueChange: Function;
-}) {
+}: EmailFormProps) {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState("");

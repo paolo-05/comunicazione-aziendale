@@ -3,11 +3,24 @@ import { useState } from "react";
 import Modal from "@/components/ui/modal";
 import { useRouter } from "next/router";
 
-export default function Delete({ id, token }: { id: number; token: string }) {
+type DeleteUserButtonProps = {
+  id: number;
+  token: string;
+  disabled: boolean;
+};
+
+export default function DeleteUserButton({
+  id,
+  token,
+  disabled,
+}: DeleteUserButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [deletingID, setDeletingID] = useState<number | null>(null);
+
   const deleteUser = (id: number) => {
+    console.log("delete");
+
     setLoading(true);
     axios
       .post("/api/user/delete", {
@@ -41,7 +54,7 @@ export default function Delete({ id, token }: { id: number; token: string }) {
         data-bs-target="#deleteUser"
         type="button"
         className="btn btn-danger"
-        disabled={loading}
+        disabled={loading || disabled}
         onClick={(e) => setDeletingID(id)}
       >
         Elimina

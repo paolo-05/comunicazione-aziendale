@@ -37,7 +37,7 @@ export default function Home() {
             action={handleConfirm}
           />
         </div>
-        <Navbar position="fixed-bottom" shouldFetch={false} />
+        <Navbar position="fixed-bottom" user={null} />
       </main>
     </>
   );

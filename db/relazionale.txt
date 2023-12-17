@@ -1,4 +1,0 @@
-admins(id: PK, email, password, canModifyUsers, name, lastName, created_at)
-events(id: PK, title, text, authorID: FK, start, end)
-medias(id: PK, name)
-categories(id: PK, name)

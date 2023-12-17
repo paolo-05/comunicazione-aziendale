@@ -1,3 +1,12 @@
+type ModalProps = {
+  id: string;
+  title: string;
+  description: string;
+  discardText: string;
+  saveText: string;
+  action: Function;
+};
+
 /**
  * This compnent 'extends' the classic Bootstrap providing a more dynamic way to customize and handles the confirm and discard actions
  * @param id a string that is unique to the modal
@@ -14,14 +23,7 @@ export default function Modal({
   discardText,
   saveText,
   action,
-}: {
-  id: string;
-  title: string;
-  description: string;
-  discardText: string;
-  saveText: string;
-  action: Function;
-}) {
+}: ModalProps) {
   return (
     <div
       className="modal fade"

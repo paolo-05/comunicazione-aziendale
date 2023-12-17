@@ -6,7 +6,9 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import React, { useEffect, useState } from "react";
 import "@/styles/editor.module.css";
 
-function Editor({ mode }: { mode: string }) {
+type EditorProps = { mode: string };
+
+function Editor({ mode }: EditorProps) {
   let [loaded, setLoaded] = useState(false);
   const [data, setData] = useState("");
 

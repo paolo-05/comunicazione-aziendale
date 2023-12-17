@@ -1,18 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
+type LoadingProps = {
+  height: number;
+  width: number;
+};
+
 /**
  * A resizable spinning loading progress indicator
  * @param height
  * @param width
  */
-export default function Loading({
-  height,
-  width,
-}: {
-  height: number;
-  width: number;
-}) {
+export default function Loading({ height, width }: LoadingProps) {
   const [cookies, setCookie] = useCookies(["theme"]);
   const [color, setColor] = useState("#fff");
 

@@ -6,7 +6,7 @@ export default function Logout() {
   const router = useRouter();
   const [cookies, setCookie, removeCookies] = useCookies(["token"]);
   useEffect(() => {
-    if(cookies.token){
+    if (cookies.token) {
       removeCookies("token");
       router.push("/");
     }

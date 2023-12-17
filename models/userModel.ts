@@ -19,7 +19,7 @@ export const User = {
   findByEmail: async (email: string): Promise<UserType | undefined> => {
     const [rows] = await db
       .promise()
-      .query<RowDataPacket[]>("SELECT * FROM users WHERE email = ?", [email]);
+      .query<RowDataPacket[]>("SELECT * FROM admins WHERE email = ?", [email]);
     return rows[0] as UserType | undefined;
   },
   /**
@@ -31,7 +31,7 @@ export const User = {
     const [rows] = await db
       .promise()
       .query<RowDataPacket[]>(
-        "SELECT id, email, canModifyUsers, name, lastName FROM users WHERE id = ?",
+        "SELECT id, email, canModifyUsers, name, lastName FROM admins WHERE id = ?",
         [id]
       );
     return rows[0] as UserSecure | undefined;
@@ -50,7 +50,7 @@ export const User = {
     await db
       .promise()
       .query(
-        "INSERT INTO users (email, password, canModifyUsers, name, lastName) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO admins (email, password, canModifyUsers, name, lastName) VALUES (?, ?, ?, ?, ?)",
         [email, hashedPassword, canModifyUsers, name, lastName]
       );
     return true;
@@ -73,7 +73,7 @@ export const User = {
     const [rows] = await db
       .promise()
       .query<RowDataPacket[]>(
-        "SELECT id, email, canModifyUsers, name, lastName FROM users"
+        "SELECT id, email, canModifyUsers, name, lastName FROM admins"
       );
     return rows as UserSecure[];
   },
@@ -95,14 +95,14 @@ export const User = {
       await db
         .promise()
         .query(
-          "UPDATE users SET email = ?, password = ?, canModifyUsers = ?, name = ?, lastName = ? WHERE id = ?",
+          "UPDATE admins SET email = ?, password = ?, canModifyUsers = ?, name = ?, lastName = ? WHERE id = ?",
           [email, hashedPassword, canModifyUsers, name, lastName, id]
         );
     } else {
       await db
         .promise()
         .query(
-          "UPDATE users SET email = ?, canModifyUsers = ?, name = ?, lastName = ? WHERE id = ?",
+          "UPDATE admins SET email = ?, canModifyUsers = ?, name = ?, lastName = ? WHERE id = ?",
           [email, canModifyUsers, name, lastName, id]
         );
     }
@@ -110,6 +110,6 @@ export const User = {
     return true;
   },
   deleteUser: async (id: number): Promise<void> => {
-    await db.promise().query("DELETE FROM users WHERE id = ?", [id]);
+    await db.promise().query("DELETE FROM admins WHERE id = ?", [id]);
   },
 };

@@ -1,7 +1,7 @@
 import BackButton from "@/components/ui/backButton";
 import EmailForm from "@/components/ui/forms/emailForm";
 import PasswordForm from "@/components/ui/forms/passwordForm";
-import Loading from "@/components/ui/loading";
+import Loading from "@/components/ui/loadingSpinningCircle";
 import { UserErrors, UserSecure, UserType } from "@/types";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -9,7 +9,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import NameForm from "./ui/forms/nameForm";
 
-function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
+type UserFormProps = { initialUserData: UserSecure | null };
+
+function UserForm({ initialUserData }: UserFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [cookies, setCookie] = useCookies(["token"]);
@@ -26,7 +28,7 @@ function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
 
   const [errors, setErrors] = useState<UserErrors>({
     email: "",
-    password: "",
+    password: null,
     oldPassword: "",
     name: "",
     lastName: "",
@@ -70,8 +72,6 @@ function UserForm({ initialUserData }: { initialUserData: UserSecure | null }) {
 
   const handleErrors = useCallback(
     (error: string) => {
-      console.log("handle errors");
-
       if (error.includes("Email")) {
         setErrors({
           ...errors,

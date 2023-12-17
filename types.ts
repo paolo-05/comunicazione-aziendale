@@ -17,7 +17,7 @@ export type UserSecure = {
 
 export type UserErrors = {
   email: string;
-  password: string;
+  password: string | null;
   oldPassword: string;
   name: string;
   lastName: string;

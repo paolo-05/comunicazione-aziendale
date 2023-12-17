@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 
+type NameFormProps = {
+  id: string;
+  initialValue: string;
+  placeholder: string;
+  nameError: string | null;
+  handleValueChange: Function;
+};
+
 export default function NameForm({
   id,
   initialValue,
   placeholder,
   nameError,
   handleValueChange,
-}: {
-  id: string;
-  initialValue: string;
-  placeholder: string;
-  nameError: string | null;
-  handleValueChange: Function;
-}) {
+}: NameFormProps) {
   const nameRegex = /^[A-Za-z]+$/;
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState("");

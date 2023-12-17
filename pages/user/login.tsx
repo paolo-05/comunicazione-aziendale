@@ -23,9 +23,7 @@ export default function Login() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
 
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-  };
+  const handlePasswordChange = (value: string) => setPassword(value);
 
   const handleSubmit = useCallback(
     (e: any) => {
@@ -69,10 +67,9 @@ export default function Login() {
 
     document.addEventListener("keydown", handleKeyDown);
 
-    return () => {
+    return () =>
       // Cleanup the event listener when the component unmounts
       document.removeEventListener("keydown", handleKeyDown);
-    };
   }, [handleSubmit]);
 
   return (
@@ -81,7 +78,7 @@ export default function Login() {
         <title>Login</title>
       </Head>
       <main className={inter.className}>
-        <Navbar position="fixed-top" shouldFetch={false} />
+        <Navbar position="fixed-top" user={null} />
         <section className="text-center text-lg-start">
           <div className="position-absolute top-50 start-50 translate-middle">
             <div className="card">

@@ -11,81 +11,40 @@ import {
   FaUser,
 } from "react-icons/fa6";
 
+type UserProps = {
+  user: UserSecure | null;
+};
+
 /**
  * This is a dropdown menu used that contains all the links for user managment
- * @param shouldFetch
+ * @param user
  */
-export default function User({ shouldFetch }: { shouldFetch: boolean }) {
-  const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [user, setUser] = useState<UserSecure | null>(null);
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-
-  useEffect(() => {
-    if (!shouldFetch) {
-      return;
-    }
-    setLoading(true);
-    const token = cookies.token;
-    if (!token) {
-      router.push("/user/login");
-      return;
-    }
-    axios
-      .post("/api/user/resolve", {
-        token: token,
-      })
-      .then((response) => {
-        const cookie = response.data.cookies.split("=")[1];
-        setCookie("token", cookie, {
-          path: "/",
-          // secure: true,
-          // sameSite: true,
-          maxAge: 3600,
-        });
-
-        const user: UserSecure = response.data.message;
-        setUser(user);
-        setLoading(false);
-      })
-      .catch((err) => {
-        removeCookie("token");
-        router.push("/user/login");
-
-        setLoading(false);
-      });
-  }, [cookies, removeCookie, router, setCookie, shouldFetch]);
-
+export default function User({ user }: UserProps) {
   return (
     <div className="dropdown">
       <button
         className="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center show"
         type="button"
         id="themeDropdown"
-        data-bs-toggle={shouldFetch ? "dropdown" : ""}
+        data-bs-toggle={user ? "dropdown" : ""}
         aria-expanded="false"
-        disabled={loading && shouldFetch}
       >
         <div className="bi my-1 theme-icon-active">
-          {loading && shouldFetch ? (
-            ""
-          ) : (
-            <Link href="/user/login">
-              <FaUser />
-            </Link>
-          )}
+          <Link href="/user/login">
+            <FaUser />
+          </Link>
         </div>
         <span className="d-lg-none ms-2">
           {user ? (
             <div>Logato come {user.name + " " + user.lastName}</div>
-          ) : shouldFetch ? (
+          ) : user ? (
             <div>Loading... </div>
           ) : (
             <Link href="/user/login">Login</Link>
           )}
         </span>
       </button>
-      {shouldFetch ? (
+      {user ? (
         <ul
           className="dropdown-menu dropdown-menu-end"
           aria-labelledby="themeDropdown"

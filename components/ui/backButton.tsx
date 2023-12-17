@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 
-export default function BackButton({ text }: { text: string }) {
+type BackButtonProps = { text: string };
+
+export default function BackButton({ text }: BackButtonProps) {
   const router = useRouter();
   return (
     <button
