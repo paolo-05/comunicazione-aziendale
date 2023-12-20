@@ -91,7 +91,7 @@ export const User = {
     await db
       .promise()
       .query<RowDataPacket[]>(
-        "UPDATE admins SET email = ?, canModifyUser = ?, name = ?, lastName = ? WHERE id = ?",
+        "UPDATE admins SET email = ?, canModifyUsers = ?, name = ?, lastName = ? WHERE id = ?",
         [email, canModifyUsers, name, lastName, id]
       );
     return true;

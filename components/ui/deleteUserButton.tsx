@@ -1,48 +1,44 @@
 import axios from "axios";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Modal from "@/components/ui/modal";
 import { useRouter } from "next/router";
+import { UserSecure } from "@/types";
 
 type DeleteUserButtonProps = {
-  id: number;
   token: string;
-  disabled: boolean;
+  activeAdmin: UserSecure | null;
+  userToDelete: UserSecure;
 };
 
 export default function DeleteUserButton({
-  id,
   token,
-  disabled,
+  activeAdmin,
+  userToDelete,
 }: DeleteUserButtonProps) {
+  const areTheyTheSamePerson = activeAdmin?.id === userToDelete.id;
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [deletingID, setDeletingID] = useState<number | null>(null);
 
-  const deleteUser = (id: number) => {
-    console.log("delete");
-
-    setLoading(true);
+  const deleteUser = useCallback(() => {
     axios
       .post("/api/user/delete", {
         token: token,
-        id: id,
+        id: userToDelete.id,
       })
       .then(() => router.reload())
       .catch((error) => {
         console.log(error);
       });
-    setLoading(false);
-  };
+  }, [router, token, userToDelete.id]);
   const handleModal = (confirm: boolean) => {
-    if (confirm && deletingID) {
+    if (confirm) {
       // delete the user
-      deleteUser(deletingID);
+      deleteUser();
     }
   };
   return (
     <>
       <Modal
-        id="deleteUser"
+        id={`deleteUser${userToDelete.id}`}
         title="Attenzione!"
         description="L'eliminazione di un utente è un'azione irreversibile."
         discardText="Annulla"
@@ -51,11 +47,10 @@ export default function DeleteUserButton({
       />
       <button
         data-bs-toggle="modal"
-        data-bs-target="#deleteUser"
+        data-bs-target={`#deleteUser${userToDelete.id}`}
         type="button"
         className="btn btn-danger"
-        disabled={loading || disabled}
-        onClick={(e) => setDeletingID(id)}
+        disabled={areTheyTheSamePerson}
       >
         Elimina
       </button>

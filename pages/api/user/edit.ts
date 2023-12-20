@@ -24,10 +24,17 @@ export default async function handler(
       return res.status(404).json({ message: "Utente non trovato." });
     }
 
+    const userWithExisintigMail = await User.findByEmail(email);
+    if (userWithExisintigMail && user.id !== userWithExisintigMail.id) {
+      return res.status(400).json({ message: "Email non valida." });
+    }
+
     await User.editUser(id, email, canModifyUsers, name, lastName);
 
     res.status(201).json({ message: "Utente modificato con successo" });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ error });
   }
 }

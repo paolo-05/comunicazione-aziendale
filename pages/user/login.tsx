@@ -1,7 +1,7 @@
+import PasswordForm from "@/components/forms/passwordForm";
 import Navbar from "@/components/navbar/index";
-import PasswordForm from "@/components/ui/forms/passwordForm";
 import logoBig from "@/public/logo-big.png";
-import "@/styles/login.module.css";
+import "@/styles/Login.module.css";
 import axios from "axios";
 import { Inter } from "next/font/google";
 import Head from "next/head";
@@ -88,7 +88,7 @@ export default function Login() {
                     src={logoBig}
                     alt="Logo Big"
                     className="w-100 rounded-t-5 rounded-tr-lg-0 rounded-bl-lg-5"
-                    height={800}
+                    height={620}
                     placeholder="blur"
                   />
                 </div>

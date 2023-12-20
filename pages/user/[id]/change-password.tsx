@@ -1,7 +1,7 @@
 import Navbar from "@/components/navbar";
 import OffcanvasAlert from "@/components/ui/alert";
 import BackButton from "@/components/ui/backButton";
-import PasswordForm from "@/components/ui/forms/passwordForm";
+import PasswordForm from "@/components/forms/passwordForm";
 import { UserSecure } from "@/types";
 import axios from "axios";
 import { Inter } from "next/font/google";

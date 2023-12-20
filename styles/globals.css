@@ -1,9 +1,10 @@
 :root {
-  --main-color: #17a1fa;
+  --main-color: #6e9b2f;
   --background-color: #fff;
   --secondary-background-color: #c9d6ff;
   --third-level-background-color: #eee;
   --text-color: #000;
+  --background-url: url("/background-light.svg");
 }
 
 /* Dark mode styles */
@@ -25,7 +26,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: url("/background.svg") no-repeat center center fixed;
+  background: var(--background-url) no-repeat center center fixed;
   background-size: cover;
   background-color: var(--third-level-background-color);
   color: var(--text-color);

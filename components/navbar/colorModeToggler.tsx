@@ -32,6 +32,7 @@ export default function ColorModeToggler({ direction }: ColorModeTogglerProps) {
   }
   function setLightTheme() {
     document.documentElement.setAttribute("data-bs-theme", "light");
+    document.documentElement.style.setProperty("--main-color", "#6e9b2f");
     document.documentElement.style.setProperty("--background-color", "#fff");
     document.documentElement.style.setProperty(
       "--secondary-background-color",
@@ -42,9 +43,14 @@ export default function ColorModeToggler({ direction }: ColorModeTogglerProps) {
       "#eee"
     );
     document.documentElement.style.setProperty("--text-color", "#000");
+    document.documentElement.style.setProperty(
+      "--background-url",
+      "url('/background-light.svg')"
+    );
   }
   function setDarkTheme() {
     document.documentElement.setAttribute("data-bs-theme", "dark");
+    document.documentElement.style.setProperty("--main-color", "#85C334");
     document.documentElement.style.setProperty("--background-color", "#111");
     document.documentElement.style.setProperty(
       "--secondary-background-color",
@@ -55,6 +61,10 @@ export default function ColorModeToggler({ direction }: ColorModeTogglerProps) {
       "#454545"
     );
     document.documentElement.style.setProperty("--text-color", "#fff");
+    document.documentElement.style.setProperty(
+      "--background-url",
+      "url('/background-dark.svg')"
+    );
   }
 
   const getPreferredTheme = useCallback(() => {

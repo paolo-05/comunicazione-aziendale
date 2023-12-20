@@ -1,5 +1,7 @@
 import Navbar from "@/components/navbar/index";
 import DeleteUserButton from "@/components/ui/deleteUserButton";
+import ModifyUserButton from "@/components/ui/modifyUserButton";
+import Tooltip from "@/components/ui/tooltip";
 import { UserSecure } from "@/types";
 import axios from "axios";
 import { Inter } from "next/font/google";
@@ -78,27 +80,36 @@ const ListAll = () => {
                     <td>{user.name}</td>
                     <td>{user.lastName}</td>
                     <td>
-                      <Link
-                        href={
-                          user.id !== currentUser?.id
-                            ? `/user/${user.id}`
-                            : "/user/list-all"
-                        }
-                        type="button"
-                        className={`btn btn-primary ${
-                          user.id === currentUser?.id ? "disabled" : ""
-                        }`}
-                        aria-disabled={user.id === currentUser?.id}
-                      >
-                        Modifica
-                      </Link>
+                      {user.id === currentUser?.id ? (
+                        <Tooltip text="Non puoi modifcare te stesso.">
+                          <ModifyUserButton
+                            activeAdmin={currentUser}
+                            userToModify={user}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <ModifyUserButton
+                          activeAdmin={currentUser}
+                          userToModify={user}
+                        />
+                      )}
                     </td>
                     <td>
-                      <DeleteUserButton
-                        id={user.id}
-                        token={cookies.token}
-                        disabled={user.id === currentUser!.id}
-                      />
+                      {user.id === currentUser?.id ? (
+                        <Tooltip text="Non puoi eliminare te stesso.">
+                          <DeleteUserButton
+                            token={cookies.token}
+                            activeAdmin={currentUser}
+                            userToDelete={user}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <DeleteUserButton
+                          token={cookies.token}
+                          activeAdmin={currentUser}
+                          userToDelete={user}
+                        />
+                      )}
                     </td>
                   </tr>
                 ))

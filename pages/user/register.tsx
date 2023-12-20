@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar/index";
-import UserForm from "@/components/ui/forms/userForm";
+import UserForm from "@/components/forms/userForm";
 import { UserSecure } from "@/types";
 import axios from "axios";
 import { Inter } from "next/font/google";

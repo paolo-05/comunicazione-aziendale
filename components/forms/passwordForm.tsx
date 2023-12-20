@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import CapsLock from "../capsLock";
+import CapsLock from "@/components/ui/capsLock";
 
 type PasswordFormProps = {
   id: string;

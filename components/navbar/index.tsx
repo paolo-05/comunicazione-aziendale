@@ -5,6 +5,7 @@ import ColorModeToggler from "@/components/navbar/colorModeToggler";
 import NavLinks from "@/components/navbar/navLinks";
 import User from "@/components/navbar/user";
 import { UserSecure } from "@/types";
+import Image from "next/image";
 import Link from "next/link";
 
 type NavbarProps = {
@@ -26,6 +27,13 @@ export default function Navbar({ position, user }: NavbarProps) {
           href={`/${user ? "dashboard" : ""}`}
           style={{ color: "var(--main-color)" }}
         >
+          <Image
+            src="/faviconFrame.svg"
+            alt={"Brand"}
+            className="d-inline-block align-text-top"
+            width={30}
+            height={30}
+          />
           Il Tuo Software Per La Comunicazone Aziendale
         </Link>
         <button

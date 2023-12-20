@@ -1,6 +1,6 @@
 import BackButton from "@/components/ui/backButton";
-import EmailForm from "@/components/ui/forms/emailForm";
-import PasswordForm from "@/components/ui/forms/passwordForm";
+import EmailForm from "@/components/forms/emailForm";
+import PasswordForm from "@/components/forms/passwordForm";
 import Loading from "@/components/ui/loadingSpinningCircle";
 import { UserErrors, UserSecure, UserType } from "@/types";
 import axios from "axios";
@@ -113,38 +113,23 @@ function UserForm({ initialUserData }: UserFormProps) {
             name: form.name,
             lastName: form.lastName,
           })
-          .then((response: any) => {
-            console.log(response.data.message);
-            handleSuccess();
-          })
-          .catch((error: any) => {
-            handleErrors(error.response.data.message);
-          });
+          .then((response: any) => handleSuccess())
+          .catch((error: any) => handleErrors(error.response.data.message));
       } else {
         axios
           .post("/api/user/edit", {
             token: cookies.token,
+            id: initialUserData.id,
             email: form.email,
-            password: form.password,
-            oldPassword: oldPassword,
             canModifyUsers: form.canModifyUsers,
             name: form.name,
             lastName: form.lastName,
           })
-          .then((response: any) => {
-            console.log(response.data.message);
-          })
-          .catch((error: any) => {});
+          .then((response: any) => handleSuccess())
+          .catch((error: any) => handleErrors(error.response.data.message));
       }
     },
-    [
-      form,
-      initialUserData,
-      handleErrors,
-      cookies.token,
-      oldPassword,
-      handleSuccess,
-    ]
+    [form, initialUserData, handleErrors, cookies.token, handleSuccess]
   );
 
   const setData = useCallback(() => {
