@@ -1,8 +1,8 @@
-import Head from "next/head";
-import { Inter } from "next/font/google";
-import Link from "next/link";
 import Navbar from "@/components/navbar/index";
 import Modal from "@/components/ui/modal";
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 

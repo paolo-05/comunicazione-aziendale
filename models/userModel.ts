@@ -80,7 +80,6 @@ export const User = {
   editUser: async (
     id: number,
     email: string,
-    password: string,
     canModifyUsers: boolean,
     name: string,
     lastName: string
@@ -89,27 +88,24 @@ export const User = {
     if (existingUser) {
       if (existingUser.id !== id) return false;
     }
-
-    if (password !== "") {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      await db
-        .promise()
-        .query(
-          "UPDATE admins SET email = ?, password = ?, canModifyUsers = ?, name = ?, lastName = ? WHERE id = ?",
-          [email, hashedPassword, canModifyUsers, name, lastName, id]
-        );
-    } else {
-      await db
-        .promise()
-        .query(
-          "UPDATE admins SET email = ?, canModifyUsers = ?, name = ?, lastName = ? WHERE id = ?",
-          [email, canModifyUsers, name, lastName, id]
-        );
-    }
-
+    await db
+      .promise()
+      .query<RowDataPacket[]>(
+        "UPDATE admins SET email = ?, canModifyUser = ?, name = ?, lastName = ? WHERE id = ?",
+        [email, canModifyUsers, name, lastName, id]
+      );
     return true;
   },
   deleteUser: async (id: number): Promise<void> => {
     await db.promise().query("DELETE FROM admins WHERE id = ?", [id]);
+  },
+  updatePassword: async (id: number, newPassword: string) => {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await db
+      .promise()
+      .query<RowDataPacket[]>("UPDATE admins SET password = ? WHERE id = ?", [
+        hashedPassword,
+        id,
+      ]);
   },
 };

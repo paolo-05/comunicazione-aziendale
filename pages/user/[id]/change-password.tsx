@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar";
+import OffcanvasAlert from "@/components/ui/alert";
 import BackButton from "@/components/ui/backButton";
 import PasswordForm from "@/components/ui/forms/passwordForm";
 import { UserSecure } from "@/types";
@@ -15,14 +16,25 @@ export default function ChangePassword() {
   const router = useRouter();
   const id = router.query.id;
   const [cookies] = useCookies(["token"]);
+
   const [admin, setAdmin] = useState<UserSecure | null>(null);
+
+  const [oldPasswordError, setOldPasswordError] = useState("");
   const [confirmPswError, setConfirmPswError] = useState("");
-  const [loading, setLoading] = useState(false);
+
   const [form, setForm] = useState({
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const handleAlertClose = useCallback(() => {
+    setShowAlert(false);
+    router.push("/dashboard");
+  }, [router]);
 
   const handleOldPasswordChange = useCallback((value: string) => {
     setForm((prevForm) => ({ ...prevForm, oldPassword: value }));
@@ -45,11 +57,7 @@ export default function ChangePassword() {
 
   const handleSubmit = useCallback(
     (e: any) => {
-      if (
-        form.oldPassword === "" &&
-        form.newPassword === "" &&
-        form.confirmPassword === ""
-      ) {
+      if (!form.oldPassword || !form.newPassword || !form.confirmPassword) {
         return;
       }
       axios
@@ -60,8 +68,11 @@ export default function ChangePassword() {
           newPassword: form.newPassword,
           confirmPassword: form.confirmPassword,
         })
-        .then((resp) => {})
-        .catch((error) => {});
+        .then((resp) => {
+          setShowAlert(true);
+          setAlertMessage("Password changed successfully!");
+        })
+        .catch((error) => setOldPasswordError("Password errata."));
     },
     [form, cookies.token, id]
   );
@@ -82,6 +93,12 @@ export default function ChangePassword() {
       <Head>
         <title>Cambiamento Password</title>
       </Head>
+      <OffcanvasAlert
+        alertType={"success"}
+        show={showAlert}
+        message={alertMessage}
+        onClose={handleAlertClose}
+      />
       <main className={inter.className}>
         <Navbar position="sticky-top" user={admin} />
         <div className="container mt-5">
@@ -93,7 +110,7 @@ export default function ChangePassword() {
               <div>
                 <PasswordForm
                   id="old"
-                  placeholder=""
+                  placeholder={oldPasswordError}
                   pswError={null}
                   checkRegex={false}
                   onPasswordChange={handleOldPasswordChange}
@@ -120,7 +137,9 @@ export default function ChangePassword() {
                     <div className="col">
                       <button
                         type="button"
-                        disabled={confirmPswError !== "" ? true : false}
+                        disabled={
+                          confirmPswError !== "" || showAlert ? true : false
+                        }
                         className="btn btn-primary btn-lg"
                         onClick={handleSubmit}
                       >

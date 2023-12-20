@@ -1,4 +1,4 @@
-import { Html, Head, Main, NextScript } from "next/document";
+import { Head, Html, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
@@ -28,7 +28,10 @@ export default function Document() {
           content="Comunicazione Aziendale"
         />
         <meta name="application-name" content="Comunicazione Aziendale" />
-        <meta name="description" content="Software Per La Comunicazione Aziendale" />
+        <meta
+          name="description"
+          content="Software Per La Comunicazione Aziendale"
+        />
       </Head>
       <body>
         <Main />

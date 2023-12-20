@@ -1,6 +1,6 @@
 import Navbar from "@/components/navbar/index";
+import UserForm from "@/components/ui/forms/userForm";
 import Loading from "@/components/ui/loadingSpinningCircle";
-import UserForm from "@/components/userForm";
 import { UserSecure } from "@/types";
 import axios from "axios";
 import { Inter } from "next/font/google";
