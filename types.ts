@@ -22,3 +22,8 @@ export type UserErrors = {
   name: string;
   lastName: string;
 };
+
+export type MediaType = {
+  uuid: string;
+  title: string;
+};

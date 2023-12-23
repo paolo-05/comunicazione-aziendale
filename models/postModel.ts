@@ -8,13 +8,13 @@ import { db } from "./db";
  * about the Post
  */
 const Post = {
-  create: async (data, authorId) => {
+  create: async (data: string, authorId: number) => {
     //too do
   },
-  delete: async (id) => {
+  delete: async (id: number) => {
     // to  do
   },
-  edit: async (id, newData, editorId) => {
+  edit: async (id: number, newData: string, editorId: number) => {
     // to do
   },
   getAllPosts: async () => {
