@@ -29,6 +29,7 @@ export default function DeleteUserButton({
         console.log(error);
       });
   }, [router, token, userToDelete.id]);
+
   const handleModal = (confirm: boolean) => {
     if (confirm) {
       // delete the user

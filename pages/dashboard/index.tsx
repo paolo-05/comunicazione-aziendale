@@ -8,7 +8,7 @@ import { useCookies } from "react-cookie";
 
 export default function Dashboard() {
   const router = useRouter();
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies, setCookie] = useCookies(["token"]);
   const [admin, setAdmin] = useState<UserSecure | null>(null);
 
   useEffect(() => {
@@ -18,9 +18,18 @@ export default function Dashboard() {
     }
     axios
       .post("/api/user/resolve", { token: cookies.token })
-      .then((response: any) => setAdmin(response.data.message))
+      .then((response: any) => {
+        const cookie = response.data.cookies.split("=")[1];
+        setCookie("token", cookie, {
+          path: "/",
+          // secure: true,
+          // sameSite: true,
+          maxAge: 3600,
+        });
+        setAdmin(response.data.message);
+      })
       .catch((error: any) => console.log(error));
-  }, [cookies.token, router]);
+  }, [cookies.token, router, setCookie]);
 
   return (
     <>

@@ -18,7 +18,7 @@ const ListAll = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [currentUser, setCorrentUser] = useState<UserSecure | null>(null);
   const [users, setUsers] = useState<Array<UserSecure> | null>(null);
-  const [cookies] = useCookies(["token"]);
+  const [cookies, setCookie] = useCookies(["token"]);
 
   const fetchUsers = useCallback(() => {
     const token = cookies.token;
@@ -29,7 +29,17 @@ const ListAll = () => {
 
     axios
       .post("/api/user/resolve", { token: token })
-      .then((response: any) => setCorrentUser(response.data.message))
+      .then((response: any) => {
+        const cookie = response.data.cookies.split("=")[1];
+        setCookie("token", cookie, {
+          path: "/",
+          // secure: true,
+          // sameSite: true,
+          maxAge: 3600,
+        });
+
+        setCorrentUser(response.data.message);
+      })
       .catch((err: any) => console.log(err));
 
     axios
@@ -42,7 +52,7 @@ const ListAll = () => {
         setLoading(false);
       })
       .catch((err: any) => console.log(err));
-  }, [cookies.token, router, setUsers]);
+  }, [cookies.token, router, setCookie]);
 
   useEffect(() => {
     if (loading) fetchUsers();

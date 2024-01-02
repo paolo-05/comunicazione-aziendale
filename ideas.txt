@@ -1,0 +1,8 @@
+USER
+- fix the roles feature
+- in the list all page, add a shortcut for registering a new user
+- also in the list all page, make a better design, maybe put the table in a sort of a center card
+- fix the logout feature
+
+GENERAL
+- remove all the console.log calls

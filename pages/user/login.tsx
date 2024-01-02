@@ -1,7 +1,7 @@
 import PasswordForm from "@/components/forms/passwordForm";
 import Navbar from "@/components/navbar/index";
-import logoBig from "@/public/logo-big.png";
-import "@/styles/Login.module.css";
+import logo from "@/public/Logo.png";
+import styles from "@/styles/Login.module.css";
 import axios from "axios";
 import { Inter } from "next/font/google";
 import Head from "next/head";
@@ -79,68 +79,68 @@ export default function Login() {
       </Head>
       <main className={inter.className}>
         <Navbar position="fixed-top" user={null} />
-        <section className="text-center text-lg-start">
-          <div className="position-absolute top-50 start-50 translate-middle">
-            <div className="card">
-              <div className="row g-0">
-                <div className="col-lg-5 d-none d-lg-flex">
-                  <Image
-                    src={logoBig}
-                    alt="Logo Big"
-                    className="w-100 rounded-t-5 rounded-tr-lg-0 rounded-bl-lg-5"
-                    height={620}
-                    placeholder="blur"
-                  />
+        <div
+          className={`container text-center text-lg-start ${styles.centered}`}
+        >
+          <div className="card">
+            <div className="row g-0">
+              <div className="col-lg-5 d-none d-lg-flex">
+                <Image
+                  src={logo}
+                  alt="Logo Big"
+                  className="w-100 rounded-t-5 rounded-tr-lg-0 rounded-bl-lg-5"
+                  height={620}
+                  placeholder="blur"
+                />
+              </div>
+              <div
+                className="col-lg-7 col-12"
+                style={{ backgroundColor: "var(--background-color)" }}
+              >
+                <div className="card-title py-5 px-md-5">
+                  <h1 className="display-1">Login</h1>
+                  <p className="text-body-secondary">
+                    Inserisci email e password
+                  </p>
                 </div>
-                <div
-                  className="col-lg-7 col-12"
-                  style={{ backgroundColor: "var(--background-color)" }}
-                >
-                  <div className="card-title py-5 px-md-5">
-                    <h1 className="display-1">Login</h1>
-                    <p className="text-body-secondary">
-                      Inserisci email e password
-                    </p>
-                  </div>
-                  <div className="card-body py-5 px-md-5">
-                    <div className="form-outline mb-3">
-                      <label className="form-label" htmlFor="email">
-                        Indirizzo Email (Richiesto)
-                      </label>
-                      <input
-                        className="form-control form-control-lg"
-                        type="text"
-                        id="email"
-                        autoComplete="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </div>
-
-                    <PasswordForm
-                      id=""
-                      onPasswordChange={handlePasswordChange}
-                      pswError={error ? "Email o Password Errate." : null}
-                      checkRegex={false}
-                      placeholder="Password"
+                <div className="card-body py-5 px-md-5">
+                  <div className="form-outline mb-3">
+                    <label className="form-label" htmlFor="email">
+                      Indirizzo Email (Richiesto)
+                    </label>
+                    <input
+                      className="form-control form-control-lg"
+                      type="text"
+                      id="email"
+                      autoComplete="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
-                    <div className="form-outline mb-4">
-                      <button
-                        type="button"
-                        className="btn btn-primary btn-block mb-4"
-                        onClick={handleSubmit}
-                        disabled={loading}
-                      >
-                        Login
-                      </button>
-                    </div>
+                  </div>
+
+                  <PasswordForm
+                    id=""
+                    onPasswordChange={handlePasswordChange}
+                    pswError={error ? "Email o Password Errate." : null}
+                    checkRegex={false}
+                    placeholder="Password"
+                  />
+                  <div className="form-outline mb-4">
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-block mb-4"
+                      onClick={handleSubmit}
+                      disabled={loading}
+                    >
+                      Login
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </main>
     </>
   );

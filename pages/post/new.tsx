@@ -11,7 +11,7 @@ var Editor = dynamic(() => import("@/components/editor"), {
 function New() {
   return (
     <>
-      <Navbar position={""} shouldFetch={false} />
+      <Navbar position={"sticky-top"} user={null} />
       <div className="container mt-3">
         <Editor mode="new" />
       </div>

@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Logout() {
   const router = useRouter();
-  const [cookies, setCookie, removeCookies] = useCookies(["token"]);
+  const [cookies, _, removeCookie] = useCookies(["token"]);
   useEffect(() => {
     if (cookies.token) {
-      removeCookies("token");
+      removeCookie("token");
       router.push("/");
     }
   });

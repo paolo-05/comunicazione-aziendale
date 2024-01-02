@@ -1,3 +1,9 @@
-.col-lg-7 .col-12 {
-  background-color: var(--background-color);
+.container {
+  position: relative;
+}
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

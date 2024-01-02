@@ -12,7 +12,7 @@ type LoadingProps = {
  * @param width
  */
 export default function Loading({ height, width }: LoadingProps) {
-  const [cookies, setCookie] = useCookies(["theme"]);
+  const [cookies] = useCookies(["theme"]);
   const [color, setColor] = useState("#fff");
 
   const setDarkTheme = useCallback(() => {

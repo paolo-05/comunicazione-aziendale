@@ -30,7 +30,7 @@ export default function Navbar({ position, user }: NavbarProps) {
           <Image
             src="/faviconFrame.svg"
             alt={"Brand"}
-            className="d-inline-block align-text-top"
+            className="d-inline-block align-text-center"
             width={30}
             height={30}
           />

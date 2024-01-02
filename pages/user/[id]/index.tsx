@@ -18,7 +18,7 @@ export default function Page() {
   const [loading, setLoading] = useState<boolean>(true);
   const [admin, setAdmin] = useState<UserSecure | null>(null);
   const [user, setUser] = useState<UserSecure | null>(null);
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookies, setCookie] = useCookies(["token"]);
 
   useEffect(() => {
     const token = cookies.token;
@@ -30,20 +30,29 @@ export default function Page() {
       .post("/api/user/resolve", {
         token: token,
       })
-      .then((response: any) => setAdmin(response.data.message))
+      .then((response: any) => {
+        const cookie = response.data.cookies.split("=")[1];
+        setCookie("token", cookie, {
+          path: "/",
+          // secure: true,
+          // sameSite: true,
+          maxAge: 3600,
+        });
+        setAdmin(response.data.message);
+      })
       .catch((error: any) => console.log(error));
     axios
       .post("/api/user/get-by-id", {
         token: token,
         id: id,
       })
-      .then((resp) => {
-        setLoading(false);
+      .then((resp: any) => {
         const user: UserSecure = resp.data.message;
         setUser(user);
+        setLoading(false);
       })
       .catch((error: any) => console.log(error));
-  }, [cookies.token, id, router]);
+  }, [cookies.token, id, router, setCookie]);
 
   return (
     <>
