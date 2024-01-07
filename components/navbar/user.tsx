@@ -1,10 +1,6 @@
 import ReservedLinks from "@/components/navbar/reservedLinks";
 import { UserSecure } from "@/types";
-import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import {
   FaArrowRightFromBracket,
   FaPenToSquare,
@@ -30,7 +26,7 @@ export default function User({ user }: UserProps) {
         aria-expanded="false"
       >
         <div className="bi my-1 theme-icon-active">
-          <Link href="/user/login">
+          <Link href="/auth/signin">
             <FaUser />
           </Link>
         </div>
@@ -40,7 +36,7 @@ export default function User({ user }: UserProps) {
           ) : user ? (
             <div>Loading... </div>
           ) : (
-            <Link href="/user/login">Login</Link>
+            <Link href="/auth/signin">Login</Link>
           )}
         </span>
       </button>
@@ -66,7 +62,7 @@ export default function User({ user }: UserProps) {
 
           <li>
             <Link
-              href="/user/logout"
+              href="/auth/signout"
               type="button"
               className="dropdown-item d-flex align-items-center"
               aria-pressed="true"

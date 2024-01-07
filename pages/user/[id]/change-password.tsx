@@ -79,7 +79,7 @@ export default function ChangePassword() {
 
   useEffect(() => {
     if (!cookies.token) {
-      router.push("/user/login");
+      router.push("/auth/signin");
       return;
     }
     axios

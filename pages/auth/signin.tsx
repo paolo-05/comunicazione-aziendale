@@ -34,7 +34,7 @@ export default function Login() {
         return;
       }
       axios
-        .post("/api/user/login", {
+        .post("/api/auth/signin", {
           email: email,
           password: password,
         })

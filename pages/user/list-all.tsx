@@ -1,7 +1,5 @@
+import ListAllUsers from "@/components/list-all-users";
 import Navbar from "@/components/navbar/index";
-import DeleteUserButton from "@/components/ui/deleteUserButton";
-import ModifyUserButton from "@/components/ui/modifyUserButton";
-import Tooltip from "@/components/ui/tooltip";
 import { UserSecure } from "@/types";
 import axios from "axios";
 import { Inter } from "next/font/google";
@@ -13,7 +11,7 @@ import { useCookies } from "react-cookie";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const ListAll = () => {
+export default function ListAll() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [currentUser, setCorrentUser] = useState<UserSecure | null>(null);
@@ -23,7 +21,7 @@ const ListAll = () => {
   const fetchUsers = useCallback(() => {
     const token = cookies.token;
     if (!token) {
-      router.push("/user/login");
+      router.push("/auth/signin");
       return;
     }
 
@@ -68,68 +66,26 @@ const ListAll = () => {
       <main className={inter.className}>
         <Navbar position={"sticky-top"} user={currentUser} />
         <div className="container mt-3">
-          <h1>Mostrando tutti i {users ? users.length : ".."} utenti</h1>
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Last Name</th>
-                <th colSpan={2}>Azioni</th>
-              </tr>
-            </thead>
-            <tbody>
-              {!users ? (
-                <tr>
-                  <td colSpan={5}>Loading...</td>
-                </tr>
-              ) : (
-                users.map((user, index) => (
-                  <tr key={index}>
-                    <td scope="row">{user.email}</td>
-                    <td>{user.name}</td>
-                    <td>{user.lastName}</td>
-                    <td>
-                      {user.id === currentUser?.id ? (
-                        <Tooltip text="Non puoi modifcare te stesso.">
-                          <ModifyUserButton
-                            activeAdmin={currentUser}
-                            userToModify={user}
-                          />
-                        </Tooltip>
-                      ) : (
-                        <ModifyUserButton
-                          activeAdmin={currentUser}
-                          userToModify={user}
-                        />
-                      )}
-                    </td>
-                    <td>
-                      {user.id === currentUser?.id ? (
-                        <Tooltip text="Non puoi eliminare te stesso.">
-                          <DeleteUserButton
-                            token={cookies.token}
-                            activeAdmin={currentUser}
-                            userToDelete={user}
-                          />
-                        </Tooltip>
-                      ) : (
-                        <DeleteUserButton
-                          token={cookies.token}
-                          activeAdmin={currentUser}
-                          userToDelete={user}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+          <div className="card">
+            <div className="card-header text-end">
+              <Link className="btn btn-primary" href="/user/register">
+                Registra un nuovo utente
+              </Link>
+            </div>
+            <div className="card-body">
+              <div className="card-title">
+                <h1>Mostrando tutti i {users ? users.length : ".."} utenti</h1>
+              </div>
+              <ListAllUsers
+                users={users}
+                currentUser={currentUser}
+                token={cookies.token}
+              />
+            </div>
+            <div className="card-footer"></div>
+          </div>
         </div>
       </main>
     </>
   );
-};
-
-export default ListAll;
+}

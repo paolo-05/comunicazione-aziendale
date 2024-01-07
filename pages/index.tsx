@@ -19,7 +19,7 @@ export default function Home() {
       <main className={inter.className}>
         <div className="container">
           <h1 className="display-1">Homepage</h1>
-          <Link href="/user/login">Login</Link>
+          <Link href="/auth/signin">Login</Link>
           <button
             type="button"
             className="btn btn-primary"

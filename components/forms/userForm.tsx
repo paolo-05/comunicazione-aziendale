@@ -1,6 +1,6 @@
-import BackButton from "@/components/ui/backButton";
 import EmailForm from "@/components/forms/emailForm";
 import PasswordForm from "@/components/forms/passwordForm";
+import BackButton from "@/components/ui/backButton";
 import Loading from "@/components/ui/loadingSpinningCircle";
 import { UserErrors, UserSecure, UserType } from "@/types";
 import axios from "axios";

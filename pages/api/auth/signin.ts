@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "@/models/userModel";
-import jwt from "jsonwebtoken";
 import cookie from "cookie";
+import jwt from "jsonwebtoken";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,

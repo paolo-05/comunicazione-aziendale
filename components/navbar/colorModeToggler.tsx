@@ -5,10 +5,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 import {
-  FaSun as Light,
-  FaMoon as Dark,
   FaStarHalfStroke as Auto,
   FaCheck as Check,
+  FaMoon as Dark,
+  FaSun as Light,
 } from "react-icons/fa6";
 
 type ColorModeTogglerProps = {

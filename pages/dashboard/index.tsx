@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!cookies.token) {
-      router.push("/user/login");
+      router.push("/auth/signin");
       return;
     }
     axios

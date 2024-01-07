@@ -23,7 +23,7 @@ export default function Page() {
   useEffect(() => {
     const token = cookies.token;
     if (!token) {
-      router.push("/user/login");
+      router.push("/auth/signin");
       return;
     }
     axios

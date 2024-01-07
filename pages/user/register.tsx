@@ -16,7 +16,7 @@ const RegisterForm = () => {
   const [cookies, setCookie] = useCookies(["token"]);
 
   useEffect(() => {
-    if (!cookies.token) router.push("/user/login");
+    if (!cookies.token) router.push("/auth/signin");
     axios
       .post("/api/user/resolve", { token: cookies.token })
       .then((response: any) => {

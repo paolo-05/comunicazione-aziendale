@@ -1,8 +1,8 @@
-import axios from "axios";
-import { useCallback, useState } from "react";
 import Modal from "@/components/ui/modal";
-import { useRouter } from "next/router";
 import { UserSecure } from "@/types";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 type DeleteUserButtonProps = {
   token: string;
