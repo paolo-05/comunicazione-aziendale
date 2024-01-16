@@ -1,22 +1,11 @@
-interface DangerAlertProps {
-  show: boolean;
-  message: string;
-  onClose: () => void;
-}
-
-export default function DangerAlert({
-  show,
-  message,
-  onClose,
-}: DangerAlertProps) {
+export default function InfoAlert({ show, message, onClose }: AlertProps) {
   if (!show) {
     return null;
   }
-
   return (
     <div
-      id="alert-2"
-      className="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      id="alert-info"
+      className="flex items-center p-4 mb-4 text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
       role="alert"
     >
       <svg
@@ -32,7 +21,8 @@ export default function DangerAlert({
       <div className="ms-3 text-sm font-medium">{message}</div>
       <button
         type="button"
-        className="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+        className="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
+        data-dismiss-target="#alert-1"
         aria-label="Close"
         onClick={onClose}
       >
@@ -53,7 +43,6 @@ export default function DangerAlert({
           />
         </svg>
       </button>
-      {/* Alert end */}
     </div>
   );
 }

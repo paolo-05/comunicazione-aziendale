@@ -12,10 +12,6 @@ type DiscordUserProps = {
 export default function DiscordUser({ session }: DiscordUserProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    signOut({ callbackUrl: "/" });
-  };
-
   const toggleDropdown = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -70,12 +66,12 @@ export default function DiscordUser({ session }: DiscordUserProps) {
             </Link>
           </div>
           <div className="py-1">
-            <button
-              onClick={handleLogout}
+            <Link
+              href="/auth/signout"
               className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
               Logout
-            </button>
+            </Link>
           </div>
         </div>
       </div>

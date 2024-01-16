@@ -1,15 +1,16 @@
+import DangerAlert from "@/components/alerts/dangerAlert";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
 import { getServerSession } from "next-auth";
 import { getCsrfToken, signIn } from "next-auth/react";
-import Image from "next/image";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import Head from "next/head";
 import { Inter } from "next/font/google";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import DangerAlert from "@/components/ui/dangerAlert";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,9 @@ export default function Signin({}: InferGetServerSidePropsType<
 
   useEffect(() => {
     const handleKeyDown = (e: any) => {
+      if (e.keyCode === 27) {
+        setShowAlert(false);
+      }
       if (e.keyCode === 13) {
         handleSubmit(e);
       }
@@ -71,30 +75,27 @@ export default function Signin({}: InferGetServerSidePropsType<
         <title>Login</title>
       </Head>
       <main className={inter.className}>
-        <section className="bg-gray-50 dark:bg-gray-900">
-          <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <a
-              href="#"
+        <section className="min-h-screen flex items-center justify-center">
+          <div className="px-10 py-8 mx-auto bg-gray-50 dark:bg-gray-900 rounded-md shadow-md">
+            <Link
+              href="/"
               className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
             >
               <Image
                 src="/faviconFrame.svg"
                 height={512}
                 width={512}
-                className="h-10 w-10"
+                className="h-10 w-10 mr-2"
                 alt={"Logo"}
               />
               Comunicazione Aziendale
-            </a>
+            </Link>
             <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Entra con le tue Credenziali
                 </h1>
-                <form
-                  className="space-y-4 md:space-y-6"
-                  onSubmit={handleSubmit}
-                >
+                <div className="space-y-4 md:space-y-6">
                   <div>
                     <label
                       htmlFor="email"
@@ -104,9 +105,11 @@ export default function Signin({}: InferGetServerSidePropsType<
                     </label>
                     <input
                       type="email"
+                      id="email"
                       name="email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
+                      autoComplete="email"
                       required={true}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -121,6 +124,7 @@ export default function Signin({}: InferGetServerSidePropsType<
                     </label>
                     <input
                       type="password"
+                      id="password"
                       name="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -137,12 +141,13 @@ export default function Signin({}: InferGetServerSidePropsType<
                   />
 
                   <button
-                    type="submit"
-                    className="w-full text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                    type="button"
+                    onClick={handleSubmit}
+                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800"
                   >
                     Entra!
                   </button>
-                </form>
+                </div>
               </div>
             </div>
           </div>
