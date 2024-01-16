@@ -1,0 +1,36 @@
+services:
+  server:
+    build:
+      context: .
+    env_file:
+      - .env.local
+    ports:
+      - 3000:3000
+    links:
+      - database
+
+  database:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: PasswordRoot
+      MYSQL_DATABASE: comunicazione-aziendale
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - database
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
+volumes:
+  dbdata:
