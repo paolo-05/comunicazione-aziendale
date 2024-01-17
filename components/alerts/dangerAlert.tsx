@@ -1,4 +1,4 @@
-export default function DangerAlert({ show, message, onClose }: AlertProps) {
+export const DangerAlert = ({ show, message, onClose }: AlertProps) => {
   if (!show) {
     return null;
   }
@@ -45,4 +45,4 @@ export default function DangerAlert({ show, message, onClose }: AlertProps) {
       </button>
     </div>
   );
-}
+};

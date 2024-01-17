@@ -1,11 +1,12 @@
-export const InfoAlert = ({ show, message, onClose }: AlertProps) => {
+export const SuccessAlert = ({ show, message, onClose }: AlertProps) => {
   if (!show) {
     return null;
   }
+
   return (
     <div
-      id="alert-info"
-      className="flex items-center p-4 mb-4 text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+      id="alert-success"
+      className="flex items-center p-4 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
       role="alert"
     >
       <svg
@@ -21,8 +22,8 @@ export const InfoAlert = ({ show, message, onClose }: AlertProps) => {
       <div className="ms-3 text-sm font-medium">{message}</div>
       <button
         type="button"
-        className="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
-        data-dismiss-target="#alert-1"
+        className="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
+        data-dismiss-target="#alert-3"
         aria-label="Close"
         onClick={onClose}
       >

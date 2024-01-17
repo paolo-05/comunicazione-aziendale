@@ -1,5 +1,10 @@
-import DangerAlert from "@/components/alerts/dangerAlert";
-import InfoAlert from "@/components/alerts/infoAlert";
+import {
+  InfoAlert,
+  DangerAlert,
+  SuccessAlert,
+  WarningAlert,
+  GeneralAlert,
+} from "@/components/alerts/index";
 import Header from "@/components/navbar/index";
 import Container from "@/components/ui/container";
 import { useSession } from "next-auth/react";
@@ -26,6 +31,21 @@ export default function Home() {
               <DangerAlert
                 show={true}
                 message="Danger Alert"
+                onClose={() => {}}
+              />
+              <SuccessAlert
+                show={true}
+                message="Success Alert"
+                onClose={() => {}}
+              />
+              <WarningAlert
+                show={true}
+                message="Warning Alert"
+                onClose={() => {}}
+              />
+              <GeneralAlert
+                show={true}
+                message="General Alert"
                 onClose={() => {}}
               />
             </div>

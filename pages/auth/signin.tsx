@@ -1,4 +1,4 @@
-import DangerAlert from "@/components/alerts/dangerAlert";
+import { DangerAlert } from "@/components/alerts/index";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import type {
   GetServerSidePropsContext,
