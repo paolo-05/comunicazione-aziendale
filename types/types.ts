@@ -2,7 +2,7 @@ export type UserType = {
   id: number;
   email: string;
   password: string;
-  canModifyUsers: boolean;
+  role: number;
   name: string;
   lastName: string;
 };
@@ -10,7 +10,7 @@ export type UserType = {
 export type UserSecure = {
   id: number;
   email: string;
-  canModifyUsers: boolean;
+  role: number;
   name: string;
   lastName: string;
 };

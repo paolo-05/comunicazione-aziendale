@@ -1,9 +1,6 @@
 import { Session } from "next-auth";
-import { signOut } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { FaUser } from "react-icons/fa6";
 
 type DiscordUserProps = {
   session: Session | null;
@@ -33,7 +30,7 @@ export default function DiscordUser({ session }: DiscordUserProps) {
     const { user } = session;
     return (
       <div className="mt-12 lg:mt-0">
-        <div className="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
+        <div className="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary-600 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
           <button
             onClick={toggleDropdown}
             type="button"

@@ -73,7 +73,7 @@ export const User = {
     const [rows] = await db
       .promise()
       .query<RowDataPacket[]>(
-        "SELECT id, email, canModifyUsers, name, lastName FROM admins"
+        "SELECT id, email, role, name, lastName FROM admins JOIN roles on roles.adminId=admins.id"
       );
     return rows as UserSecure[];
   },

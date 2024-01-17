@@ -5,6 +5,7 @@ import {
   WarningAlert,
   GeneralAlert,
 } from "@/components/alerts/index";
+import { EmailForm } from "@/components/forms/emailForm";
 import Header from "@/components/navbar/index";
 import Container from "@/components/ui/container";
 import { useSession } from "next-auth/react";
@@ -15,6 +16,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const { data: session } = useSession();
+
+  const handleEmailChange = (value: string) => {
+    console.log(value);
+  };
 
   return (
     <>
