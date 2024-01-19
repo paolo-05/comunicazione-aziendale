@@ -2,6 +2,7 @@ import { UserSecure } from "@/types/types";
 import { Session } from "next-auth";
 import { Item } from "./item";
 import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
 
 type ListAllUsersProps = {
   users: UserSecure[] | null;
@@ -10,9 +11,9 @@ type ListAllUsersProps = {
 
 export default function ListAllUsers({ users, session }: ListAllUsersProps) {
   return (
-    <section className="min-h-screen flex items-center justify-center">
-      <div className="px-10 py-8 mx-auto">
-        <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+    <section className="p-3 sm:p-5">
+      <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
+        <div className="bg-white dark:bg-gray-800 relative shadow-md rounded-lg overflow-hidden">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             <div className="w-full md:w-1/2">
               <div className="flex items-center">
@@ -22,9 +23,10 @@ export default function ListAllUsers({ users, session }: ListAllUsersProps) {
               </div>
             </div>
             <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-              <button
+              <Link
+                href="/user/register"
                 type="button"
-                className="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                className="flex items-center justify-center w-full text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
               >
                 <svg
                   className="h-3.5 w-3.5 mr-2"
@@ -40,39 +42,43 @@ export default function ListAllUsers({ users, session }: ListAllUsersProps) {
                   />
                 </svg>
                 Registra un nuovo utente
-              </button>
+              </Link>
             </div>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-4 py-3">
-                    Email
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    First Name
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Last Name
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    ID
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Role
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    <span className="sr-only">Actions</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {users?.map((user, index) => (
-                  <Item key={index} user={user} session={session} />
-                ))}
-              </tbody>
-            </table>
+            {users ? (
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" className="px-4 py-3">
+                      Email
+                    </th>
+                    <th scope="col" className="px-4 py-3">
+                      Nome
+                    </th>
+                    <th scope="col" className="px-4 py-3">
+                      Cognome
+                    </th>
+                    <th scope="col" className="px-4 py-3">
+                      ID
+                    </th>
+                    <th scope="col" className="px-4 py-3">
+                      Ruolo
+                    </th>
+                    <th scope="col" className="px-4 py-3">
+                      <span className="sr-only">Actions</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users?.map((user, index) => (
+                    <Item key={index} user={user} session={session} />
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <Skeleton />
+            )}
           </div>
           <nav
             className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"

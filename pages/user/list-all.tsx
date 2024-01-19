@@ -1,5 +1,6 @@
 import ListAllUsers from "@/components/list-all-users";
-import Header from "@/components/navbar/index";
+import Header from "@/components/navbar/";
+import Container from "@/components/ui/container";
 import { UserSecure } from "@/types/types";
 import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
@@ -16,25 +17,17 @@ export default function ListAll() {
       signIn();
     },
   });
-  const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<Array<UserSecure> | null>(null);
 
-  const fetchUsers = useCallback(() => {
+  useEffect(() => {
     axios
       .post("/api/user/list-all", {})
       .then((response: any) => {
         const users: Array<UserSecure> = response.data.message;
         setUsers(users);
-        setLoading(false);
       })
       .catch((err: any) => console.log(err));
   }, []);
-
-  useEffect(() => {
-    if (loading) fetchUsers();
-
-    return;
-  }, [fetchUsers, loading]);
 
   return (
     <>
@@ -43,7 +36,13 @@ export default function ListAll() {
       </Head>
       <main className={inter.className}>
         <Header session={session} />
-        <ListAllUsers users={users} session={session} />
+        <div className="space-y-40 mb-40">
+          <Container>
+            <div className="relative pt-36">
+              <ListAllUsers users={users} session={session} />
+            </div>
+          </Container>
+        </div>
       </main>
     </>
   );

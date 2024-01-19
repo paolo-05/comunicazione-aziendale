@@ -1,5 +1,6 @@
 type ModalProps = {
   id: string;
+  show: boolean;
   content: string;
   discardText: string;
   confirmText: string;
@@ -9,6 +10,7 @@ type ModalProps = {
 
 export default function Modal({
   id,
+  show,
   content,
   discardText,
   confirmText,
@@ -18,6 +20,10 @@ export default function Modal({
   const handleModal = (value: boolean) => {
     action(value);
   };
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div

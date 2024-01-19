@@ -73,7 +73,7 @@ export const User = {
     const [rows] = await db
       .promise()
       .query<RowDataPacket[]>(
-        "SELECT id, email, role, name, lastName FROM admins JOIN roles on roles.adminId=admins.id"
+        "SELECT id, email, role, name, lastName FROM admins JOIN roles on roles.adminId=admins.id ORDER BY id"
       );
     return rows as UserSecure[];
   },
@@ -98,6 +98,7 @@ export const User = {
   },
   deleteUser: async (id: number): Promise<void> => {
     await db.promise().query("DELETE FROM admins WHERE id = ?", [id]);
+    await db.promise().query("DELETE FROM roles WHERE adminId = ?", [id]);
   },
   updatePassword: async (id: number, newPassword: string) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);

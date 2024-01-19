@@ -1,5 +1,5 @@
-import UserForm from "@/components/forms/userForm";
-import Navbar from "@/components/navbar/index";
+// import UserForm from "@/components/forms/userForm";
+import Navbar from "@/components/navbar/";
 import { signIn, useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import Head from "next/head";
@@ -21,7 +21,7 @@ const RegisterForm = () => {
       </Head>
       <main className={inter.className}>
         <Navbar session={session} />
-        <UserForm initialUserData={null} />
+        {/* <UserForm initialUserData={null} /> */}
       </main>
     </>
   );

@@ -1,12 +1,11 @@
 import {
-  InfoAlert,
   DangerAlert,
+  GeneralAlert,
+  InfoAlert,
   SuccessAlert,
   WarningAlert,
-  GeneralAlert,
 } from "@/components/alerts/index";
-import { EmailForm } from "@/components/forms/emailForm";
-import Header from "@/components/navbar/index";
+import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";

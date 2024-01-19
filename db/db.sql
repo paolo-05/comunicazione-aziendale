@@ -55,5 +55,17 @@ CREATE TABLE eventsCategories(
 --- demo user:
 INSERT INTO `admins` (`id`, `email`, `password`, `name`, `lastName`, `created_at`) VALUES
 (1, 'paolo@example.com', '$2b$10$.lMw1x2XJayuU.xlAhDmt.VljtKVDhR2fFs0OYPvMetjEsb1hMGPi', 'Paolo', 'Bianchessi', '2023-12-05 15:08:39');
-
 INSERT INTO `roles` (`adminId`, `role`) VALUES (1, 1);
+INSERT INTO `admins` (`id`,`email`, `password`, `name`, `lastName`) VALUES
+(2, 'edo@example.com', '$2b$10$.lMw1x2XJayuU.xlAhDmt.VljtKVDhR2fFs0OYPvMetjEsb1hMGPi', 'Edoardo', 'Barlassina');
+INSERT INTO `roles` (`adminId`, `role`) VALUES (2, 0);
+
+INSERT INTO `admins` (`id`,`email`, `password`, `name`, `lastName`) VALUES
+(3, 'alexis@example.com', '$2b$10$.lMw1x2XJayuU.xlAhDmt.VljtKVDhR2fFs0OYPvMetjEsb1hMGPi', 'Alexis', 'Rossi');
+
+INSERT INTO `roles` (`adminId`, `role`) VALUES (3, 1);
+
+INSERT INTO `admins` (`id`,`email`, `password`, `name`, `lastName`) VALUES
+(4, 'andrea@example.com', '$2b$10$.lMw1x2XJayuU.xlAhDmt.VljtKVDhR2fFs0OYPvMetjEsb1hMGPi', 'Andrea', 'Polli');
+
+INSERT INTO `roles` (`adminId`, `role`) VALUES (4, 0);

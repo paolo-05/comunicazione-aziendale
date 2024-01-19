@@ -1,25 +1,18 @@
-import { UserSecure } from "@/types";
+import { ItemProps } from "@/types/itemProps";
 import Link from "next/link";
 
-type ModifyUserButtonProps = {
-  activeAdmin: UserSecure | null;
-  userToModify: UserSecure;
-};
-export default function ModifyUserButton({
-  activeAdmin,
-  userToModify,
-}: ModifyUserButtonProps) {
-  const areTheyTheSamePerson = activeAdmin?.id === userToModify.id;
+export default function ModifyUserButton({ user, session }: ItemProps) {
+  const areTheyTheSamePerson = session?.user.id === user.id;
   return (
-    <Link
-      href={
-        !areTheyTheSamePerson ? `/user/${userToModify.id}` : "/user/list-all"
-      }
-      type="button"
-      className={`btn btn-secondary ${areTheyTheSamePerson ? "disabled" : ""}`}
-      aria-disabled={areTheyTheSamePerson}
-    >
-      Modifica
-    </Link>
+    <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
+      <li>
+        <Link
+          href={areTheyTheSamePerson ? "/user/list-all" : `/user/${user.id}`}
+          className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+        >
+          {areTheyTheSamePerson ? "Non modificabile" : "Modifica"}
+        </Link>
+      </li>
+    </ul>
   );
 }

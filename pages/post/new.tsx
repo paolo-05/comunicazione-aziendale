@@ -1,7 +1,7 @@
 // Paolo Bianchessi, 25/10/2023
 // This is the page for creating a new post
 
-import Navbar from "@/components/navbar/index";
+import Header from "@/components/navbar/";
 import { signIn, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 
@@ -18,7 +18,7 @@ function New() {
   });
   return (
     <>
-      <Navbar position={"sticky-top"} session={session} />
+      <Header session={session} />
       <div className="container mt-3">
         <Editor mode="new" />
       </div>

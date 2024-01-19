@@ -1,17 +1,30 @@
 import { Session } from "next-auth";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type DiscordUserProps = {
   session: Session | null;
 };
 
-export default function DiscordUser({ session }: DiscordUserProps) {
+export default function User({ session }: DiscordUserProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    const handleCloseDropdown = () => {
+      if (isMenuOpen) setIsMenuOpen(false);
+    };
+
+    document.addEventListener("click", handleCloseDropdown);
+
+    return () => {
+      document.removeEventListener("click", handleCloseDropdown);
+    };
+  }, [isMenuOpen]);
 
   if (!session) {
     return (
@@ -32,7 +45,7 @@ export default function DiscordUser({ session }: DiscordUserProps) {
       <div className="mt-12 lg:mt-0">
         <div className="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary-600 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
           <button
-            onClick={toggleDropdown}
+            onClick={(e) => toggleDropdown(e)}
             type="button"
             className="relative text-sm font-semibold text-white"
           >

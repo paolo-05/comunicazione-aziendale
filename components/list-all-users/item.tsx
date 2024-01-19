@@ -1,12 +1,7 @@
-import { UserSecure } from "@/types/types";
-import { Session } from "next-auth";
-import Link from "next/link";
+import { ItemProps } from "@/types/itemProps";
 import { useEffect, useState } from "react";
-
-type ItemProps = {
-  user: UserSecure;
-  session: Session | null;
-};
+import DeleteUserButton from "./deleteUserButton";
+import ModifyUserButton from "./modifyUserButton";
 
 export const Item = ({ user, session }: ItemProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,13 +29,13 @@ export const Item = ({ user, session }: ItemProps) => {
         scope="row"
         className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
       >
-        {user.email}
+        {user?.email}
       </th>
 
-      <td className="px-4 py-3">{user.name}</td>
-      <td className="px-4 py-3">{user.lastName}</td>
-      <td className="px-4 py-3">{user.id}</td>
-      <td className="px-4 py-3">{user.role === 0 ? "HR" : "Admin"}</td>
+      <td className="px-4 py-3">{user?.name}</td>
+      <td className="px-4 py-3">{user?.lastName}</td>
+      <td className="px-4 py-3">{user?.id}</td>
+      <td className="px-4 py-3">{user?.role === 0 ? "HR" : "Admin"}</td>
       <td className="px-4 py-3 flex items-center justify-end">
         <button
           id={""}
@@ -63,26 +58,8 @@ export const Item = ({ user, session }: ItemProps) => {
             isMenuOpen ? "absolute mt-24" : "hidden"
           } z-50 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600`}
         >
-          <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
-            <li>
-              <Link
-                href={
-                  session?.user.id === user.id ? "/user/list-all" : "/user/edit"
-                }
-                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                {session?.user.id === user.id ? "Non modificabile" : "Modifica"}
-              </Link>
-            </li>
-          </ul>
-          <div className="py-1">
-            <Link
-              href="#"
-              className="block py-2 px-4 text-sm text-red-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-400 dark:hover:text-white"
-            >
-              {session?.user.id === user.id ? "Non eliminabile" : "Elimina"}
-            </Link>
-          </div>
+          <ModifyUserButton user={user} session={session} />
+          <DeleteUserButton user={user} session={session} />
         </div>
       </td>
     </tr>

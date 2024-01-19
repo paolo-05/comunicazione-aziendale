@@ -1,60 +1,61 @@
 import Modal from "@/components/ui/modal";
-import { UserSecure } from "@/types";
+import { ItemProps } from "@/types/itemProps";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
-type DeleteUserButtonProps = {
-  token: string;
-  activeAdmin: UserSecure | null;
-  userToDelete: UserSecure;
-};
-
-export default function DeleteUserButton({
-  token,
-  activeAdmin,
-  userToDelete,
-}: DeleteUserButtonProps) {
-  const areTheyTheSamePerson = activeAdmin?.id === userToDelete.id;
+export default function DeleteUserButton({ user, session }: ItemProps) {
+  const areTheyTheSamePerson = user?.id === session?.user.id;
   const router = useRouter();
 
+  const [status, setStatus] = useState("idle");
+  const [showModal, setShowModal] = useState(false);
+
   const deleteUser = useCallback(() => {
+    setStatus("deleting");
     axios
       .post("/api/user/delete", {
-        token: token,
-        id: userToDelete.id,
+        deletingId: user?.id,
       })
       .then(() => router.reload())
       .catch((error) => {
         console.log(error);
-      });
-  }, [router, token, userToDelete.id]);
+      })
+      .finally(() => setStatus("idle"));
+  }, [router, user?.id]);
 
   const handleModal = (confirm: boolean) => {
     if (confirm) {
       // delete the user
       deleteUser();
     }
+    setShowModal(false);
   };
+
+  const toggleModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setShowModal(!showModal);
+  };
+
   return (
     <>
       <Modal
-        id={`deleteUser${userToDelete.id}`}
-        title="Attenzione!"
-        description="L'eliminazione di un utente è un'azione irreversibile."
+        id={`delete${user?.id}`}
+        show={showModal}
+        content="Procedere con l'eliminazione dell'utente?"
         discardText="Annulla"
-        saveText="Ho capito. Voglio proseguire"
+        confirmText="Continua"
+        confirmDisabled={status === "delete"}
         action={handleModal}
       />
-      <button
-        data-bs-toggle="modal"
-        data-bs-target={`#deleteUser${userToDelete.id}`}
-        type="button"
-        className="btn btn-danger"
-        disabled={areTheyTheSamePerson}
-      >
-        Elimina
-      </button>
+      <div className="py-1">
+        <button
+          onClick={(e) => toggleModal(e)}
+          className="block w-full text-left py-2 px-4 text-sm text-red-700 hover:bg-gray-100 dark:hover:bg-gray-600  dark:hover:text-white"
+        >
+          {areTheyTheSamePerson ? "Non eliminabile" : "Elimina"}
+        </button>
+      </div>
     </>
   );
 }
