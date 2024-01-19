@@ -31,6 +31,7 @@ export default function Home() {
         <section className="space-y-40 mb-40">
           <Container>
             <div className="relative pt-36">
+              <h1>Questa è la home page</h1>
               <InfoAlert show={true} message="Info Alert" onClose={() => {}} />
               <DangerAlert
                 show={true}
