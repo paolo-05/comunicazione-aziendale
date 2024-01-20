@@ -1,5 +1,4 @@
 import Navbar from "@/components/navbar";
-import OffcanvasAlert from "@/components/ui/alert";
 import BackButton from "@/components/ui/backButton";
 import PasswordForm from "@/components/forms/passwordForm";
 import { UserSecure } from "@/types/types";
@@ -32,11 +31,6 @@ export default function ChangePassword() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
-  const handleAlertClose = useCallback(() => {
-    setShowAlert(false);
-    router.push("/dashboard");
-  }, [router]);
-
   const handleOldPasswordChange = useCallback((value: string) => {
     setForm((prevForm) => ({ ...prevForm, oldPassword: value }));
   }, []);
@@ -63,8 +57,6 @@ export default function ChangePassword() {
       }
       axios
         .post("/api/user/change-password", {
-          token: cookies.token,
-          id: id,
           oldPassword: form.oldPassword,
           newPassword: form.newPassword,
           confirmPassword: form.confirmPassword,
@@ -75,42 +67,27 @@ export default function ChangePassword() {
         })
         .catch((error) => setOldPasswordError("Password errata."));
     },
-    [form, cookies.token, id]
+    [form]
   );
 
   useEffect(() => {
-    if (!cookies.token) {
-      router.push("/auth/signin");
-      return;
-    }
     axios
-      .post("/api/user/resolve", { token: cookies.token })
+      .post("/api/user/resolve")
       .then((response: any) => {
         const cookie = response.data.cookies.split("=")[1];
-        setCookie("token", cookie, {
-          path: "/",
-          // secure: true,
-          // sameSite: true,
-          maxAge: 3600,
-        });
+       
         setAdmin(response.data.message);
       })
       .catch((error: any) => console.log(error));
-  }, [cookies.token, removeCookie, router, setCookie]);
+  },[]);
 
   return (
     <>
       <Head>
         <title>Cambiamento Password</title>
       </Head>
-      <OffcanvasAlert
-        alertType={"success"}
-        show={showAlert}
-        message={alertMessage}
-        onClose={handleAlertClose}
-      />
       <main className={inter.className}>
-        <Navbar position="sticky-top" user={admin} />
+        <Navbar session={session} />
         <div className="container mt-5">
           <div className="card bg-body">
             <div className="card-body">

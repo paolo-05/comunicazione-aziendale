@@ -67,7 +67,13 @@ export default function User({ session }: DiscordUserProps) {
               </Link>
             </div>
           )}
-
+          <div className="py-1">
+            <Link href="/user/profile">
+              <p className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 truncate hover:bg-gray-200 dark:hover:bg-gray-700">
+               Vai al tuo profilo
+              </p>
+            </Link>
+          </div>
           <div className="py-1">
             <Link href="/user/change-password">
               <p className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 truncate hover:bg-gray-200 dark:hover:bg-gray-700">
