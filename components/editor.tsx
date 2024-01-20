@@ -1,8 +1,6 @@
 // Paolo Bianchessi, 28/10/2023
 // This component provides a rich text editor for creating and editing posts
 
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
 import React, { useEffect, useState } from "react";
 import "@/styles/editor.module.css";
 
@@ -30,7 +28,7 @@ function Editor({ mode }: EditorProps) {
   } else {
     return (
       <div className="editor-container">
-        <CKEditor
+        {/* <CKEditor
           editor={ClassicEditor}
           data={data}
           onReady={(editor) => {
@@ -48,7 +46,7 @@ function Editor({ mode }: EditorProps) {
           onFocus={(event, editor) => {
             console.log("Focus.", editor);
           }}
-        />
+        /> */}
       </div>
     );
   }
