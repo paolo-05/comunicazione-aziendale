@@ -1,29 +1,34 @@
-// Paolo Bianchessi, 25/10/2023
-// This is the page for creating a new post
-
-import Header from "@/components/navbar/";
+import Header from "@/components/navbar";
+import Container from "@/components/ui/container";
 import { signIn, useSession } from "next-auth/react";
-import dynamic from "next/dynamic";
+import { Inter } from "next/font/google";
+import Head from "next/head";
 
-var Editor = dynamic(() => import("@/components/editor"), {
-  ssr: false,
-});
+const inter = Inter({ subsets: ["latin"] });
 
-function New() {
+export default function New() {
   const { data: session } = useSession({
     required: true,
-    onUnauthenticated() {
+    onUnauthenticated: () => {
       signIn();
     },
   });
+
   return (
     <>
-      <Header session={session} />
-      <div className="container mt-3">
-        <Editor mode="new" />
-      </div>
+      <Head>
+        <title>Creazione di un nuovo annuncio</title>
+      </Head>
+      <main className={inter.className}>
+        <Header session={session} />
+        <section className="space-y-40 mb-40">
+          <Container>
+            <div className="relative pt-36">
+              <h1>Pagina per la creazione di un nuovo post</h1>
+            </div>
+          </Container>
+        </section>
+      </main>
     </>
   );
 }
-
-export default New;
