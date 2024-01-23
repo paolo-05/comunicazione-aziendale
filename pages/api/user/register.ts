@@ -13,11 +13,11 @@ export default async function handler(
 
   const session = await getServerSession(req, res, authOptions);
 
-  if (!session) {
+  if (!session || session.user.role === 0) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const { email, password, canModifyUsers, name, lastName } = req.body;
+  const { email, password, role, name, lastName } = req.body;
 
   if (email === "" || password === "" || name === "" || lastName === "") {
     return res.status(400).json({ message: "Missing arguments" });
@@ -31,18 +31,10 @@ export default async function handler(
     }
 
     // Create a new user in the database
-    await User.createUser(
-      email.toLowerCase(),
-      password,
-      canModifyUsers,
-      name,
-      lastName
-    );
+    await User.createUser(email.toLowerCase(), password, role, name, lastName);
 
     res.status(201).json({ message: "OK" });
   } catch (error) {
-    console.log(error);
-
     res.status(500).json({ message: error });
   }
 }

@@ -15,14 +15,15 @@ export default async function handler(
 
   const session = await getServerSession(req, res, authOptions);
 
-  if (!session) {
-    return res.status(401).json({ message: "Unauthorized" });
+  if (!session || session.user.role === 0) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   const { userId } = req.body;
+  console.log(userId);
 
   if (!userId) {
-    return res.status(400).json({ message: "Missing arguments" });
+    return res.status(400).json({ error: "Missing arguments" });
   }
 
   try {
@@ -30,6 +31,6 @@ export default async function handler(
 
     res.status(200).json({ message: user });
   } catch (err: any) {
-    return res.status(500).json({ message: err });
+    return res.status(500).json({ error: "Error in server" });
   }
 }

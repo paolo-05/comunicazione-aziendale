@@ -16,10 +16,6 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const { data: session } = useSession();
 
-  const handleEmailChange = (value: string) => {
-    console.log(value);
-  };
-
   return (
     <>
       <Head>

@@ -13,19 +13,19 @@ export default async function handler(
 
   const session = await getServerSession(req, res, authOptions);
 
-  if (!session) {
-    return res.status(401).json({ message: "Unauthorized" });
+  if (!session || session.user.role === 0) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   const { deletingId } = req.body;
 
   if (!deletingId) {
-    return res.status(400).json({ message: "Missing arguments" });
+    return res.status(400).json({ error: "Missing arguments" });
   }
   try {
     await User.deleteUser(deletingId);
     res.status(200).json({ message: "OK" });
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ error: "Error in server" });
   }
 }

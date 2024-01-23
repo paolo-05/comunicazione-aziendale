@@ -97,7 +97,7 @@ export default function ChangePassword() {
         setAlertMessage("La vecchia password non corrisponde.");
         break;
       case "missingArguments":
-        setAlertMessage("Completa i campi poi invia.");
+        setAlertMessage("Completa i campi, poi invia.");
         break;
       default:
         break;

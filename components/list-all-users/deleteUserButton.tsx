@@ -18,9 +18,7 @@ export default function DeleteUserButton({ user, session }: ItemProps) {
         deletingId: user?.id,
       })
       .then(() => router.reload())
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => console.log(error))
       .finally(() => setStatus("idle"));
   }, [router, user?.id]);
 

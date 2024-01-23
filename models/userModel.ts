@@ -31,7 +31,7 @@ export const User = {
     const [rows] = await db
       .promise()
       .query<RowDataPacket[]>(
-        "SELECT id, email, canModifyUsers, name, lastName FROM admins WHERE id = ?",
+        "SELECT id, email, role, name, lastName FROM admins JOIN roles on roles.adminId=admins.id WHERE id = ?",
         [id]
       );
     return rows[0] as UserSecure | undefined;
@@ -42,7 +42,7 @@ export const User = {
   createUser: async (
     email: string,
     password: string | Buffer,
-    canModifyUsers: boolean,
+    role: number,
     name: string,
     lastName: string
   ): Promise<boolean> => {
@@ -50,9 +50,19 @@ export const User = {
     await db
       .promise()
       .query(
-        "INSERT INTO admins (email, password, canModifyUsers, name, lastName) VALUES (?, ?, ?, ?, ?)",
-        [email, hashedPassword, canModifyUsers, name, lastName]
+        "INSERT INTO admins (email, password, name, lastName) VALUES (?, ?, ?, ?)",
+        [email, hashedPassword, name, lastName]
       );
+
+    const user = await User.findByEmail(email);
+
+    await db
+      .promise()
+      .query("INSERT INTO roles (adminId, role) VALUES (?, ?)", [
+        user?.id,
+        role,
+      ]);
+
     return true;
   },
   /**
@@ -80,7 +90,7 @@ export const User = {
   editUser: async (
     id: number,
     email: string,
-    canModifyUsers: boolean,
+    role: number,
     name: string,
     lastName: string
   ): Promise<boolean> => {
@@ -91,9 +101,13 @@ export const User = {
     await db
       .promise()
       .query<RowDataPacket[]>(
-        "UPDATE admins SET email = ?, canModifyUsers = ?, name = ?, lastName = ? WHERE id = ?",
-        [email, canModifyUsers, name, lastName, id]
+        "UPDATE admins SET email = ?, name = ?, lastName = ? WHERE id = ?",
+        [email, name, lastName, id]
       );
+
+    await db
+      .promise()
+      .query("UPDATE roles SET role = ? where adminId = ?", [role, id]);
     return true;
   },
   deleteUser: async (id: number): Promise<void> => {

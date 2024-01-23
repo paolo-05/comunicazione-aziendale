@@ -1,3 +1,4 @@
+import { SuccessAlert } from "@/components/alerts";
 import ListAllUsers from "@/components/list-all-users";
 import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
@@ -6,11 +7,15 @@ import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function ListAll() {
+  const router = useRouter();
+  const { success } = router.query;
+
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -18,6 +23,8 @@ export default function ListAll() {
     },
   });
   const [users, setUsers] = useState<Array<UserSecure> | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     axios
@@ -26,8 +33,32 @@ export default function ListAll() {
         const users: Array<UserSecure> = response.data.message;
         setUsers(users);
       })
-      .catch((err: any) => console.log(err));
+      .catch((err: any) => {});
   }, []);
+
+  useEffect(() => {
+    if (!success) return;
+
+    setShowAlert(true);
+
+    switch (success) {
+      case "userCreated":
+        setAlertMessage("Utente creato correttamente!");
+        break;
+      case "userUpdated":
+        setAlertMessage("Utente aggiornato correttamente!");
+        break;
+
+      default:
+        break;
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (session?.user.role === 0) {
+      router.push("/dashboard");
+    }
+  }, [router, session?.user.role]);
 
   return (
     <>
@@ -39,6 +70,11 @@ export default function ListAll() {
         <div className="space-y-40 mb-40">
           <Container>
             <div className="relative pt-36">
+              <SuccessAlert
+                show={showAlert}
+                message={alertMessage}
+                onClose={() => setShowAlert(false)}
+              />
               <ListAllUsers users={users} session={session} />
             </div>
           </Container>

@@ -1,7 +1,8 @@
-// import UserForm from "@/components/forms/userForm";
-import { Password, Text } from "@/components/forms";
+import { DangerAlert } from "@/components/alerts";
+import { UserForm } from "@/components/forms/";
 import Navbar from "@/components/navbar/";
 import Container from "@/components/ui/container";
+import { UserFormType } from "@/types/userFormType";
 import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
@@ -13,6 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Register() {
   const router = useRouter();
+  const { error } = router.query;
 
   const { data: session } = useSession({
     required: true,
@@ -20,47 +22,10 @@ export default function Register() {
       signIn();
     },
   });
-  const [showPsw, setShowPsw] = useState(0);
-  const [form, setForm] = useState({
-    id: 0,
-    email: "",
-    password: "",
-    confirmPassword: "",
-    name: "",
-    lastName: "",
-    role: -1,
-  });
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
-  const handleShowPswChange = () => {
-    setShowPsw(showPsw ^ 1);
-    console.log(showPsw);
-  };
-
-  const handleEmailChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, email: value }));
-  };
-
-  const handlePswChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, password: value }));
-  };
-
-  const handleConfirmPswChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, confirmPassword: value }));
-  };
-
-  const handleNameChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, name: value }));
-  };
-
-  const handleLastNameChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, lastName: value }));
-  };
-
-  const handleRoleChange = (value: any) => {
-    setForm((prevForm) => ({ ...prevForm, role: value }));
-  };
-
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: any, form: UserFormType) => {
     e.preventDefault();
 
     if (
@@ -71,6 +36,10 @@ export default function Register() {
       form.password === "" ||
       form.confirmPassword === ""
     ) {
+      router.push({
+        pathname: "/user/register",
+        query: { error: "missingArguments" },
+      });
       return;
     }
 
@@ -82,11 +51,52 @@ export default function Register() {
       return;
     }
 
-    axios.post("/api/user/register", {
-      email: form.email,
-      // to do
-    });
+    axios
+      .post("/api/user/register", {
+        email: form.email,
+        password: form.password,
+        role: form.role,
+        name: form.name,
+        lastName: form.lastName,
+      })
+      .then((res) =>
+        router.push({
+          pathname: "/user/list-all",
+          query: { success: "userCreated" },
+        })
+      )
+      .catch((err) =>
+        router.push({
+          pathname: "/user/register",
+          query: { error: "existingEmail" },
+        })
+      );
   };
+
+  useEffect(() => {
+    if (!error) return;
+
+    setShowAlert(true);
+
+    switch (error) {
+      case "passwordsDontMatch":
+        setAlertMessage("Le password non corrispondo.");
+        break;
+      case "missingArguments":
+        setAlertMessage("Completa i campi poi invia.");
+        break;
+      case "existingEmail":
+        setAlertMessage("Esiste già un utente registrato con questa mail.");
+      default:
+        break;
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (session?.user.role === 0) {
+      router.push("/dashboard");
+    }
+  }, [router, session?.user.role]);
 
   return (
     <>
@@ -102,125 +112,14 @@ export default function Register() {
                 <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                   Registra un nuovo utente
                 </h2>
-                <form onSubmit={handleSubmit}>
-                  <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                    <div className="sm:col-span-2">
-                      <label
-                        htmlFor="email"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="text"
-                        name="email"
-                        id="email"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="john.doe@example.com"
-                        required={true}
-                        onChange={(e) => handleEmailChange(e.target.value)}
-                      />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <Password
-                        id={"password"}
-                        label={"Password (richiesto)"}
-                        showText={showPsw}
-                        checkRegex={true}
-                        onChange={handlePswChange}
-                      />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <Password
-                        id={"confirm-password"}
-                        label={"Conferma Password (richiesto)"}
-                        showText={showPsw}
-                        checkRegex={false}
-                        onChange={handleConfirmPswChange}
-                      />
-                      <div className="flex items-start mt-2">
-                        <div className="flex items-center h-5">
-                          <input
-                            id="show-psw"
-                            aria-describedby="show-psw"
-                            type="checkbox"
-                            className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                            required={false}
-                            value={showPsw}
-                            onChange={handleShowPswChange}
-                          />
-                        </div>
-                        <div className="ml-3 text-sm">
-                          <label
-                            htmlFor="show-psw"
-                            className="font-light text-gray-500 dark:text-gray-300 underline"
-                          >
-                            Mostra password
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-full">
-                      <Text
-                        id="name"
-                        label="Nome (richiesto)"
-                        placeholder="John"
-                        initialValue={null}
-                        checkRegex={true}
-                        onChange={handleNameChange}
-                      />
-                    </div>
-                    <div className="w-full">
-                      <Text
-                        id="lastName"
-                        label="Cognome (richiesto)"
-                        placeholder="Doe"
-                        initialValue={null}
-                        checkRegex={true}
-                        onChange={handleLastNameChange}
-                      />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label
-                        htmlFor="category"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Roulo
-                      </label>
-                      <select
-                        id="category"
-                        onChange={(e) => handleRoleChange(e.target.value)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      >
-                        <option value={-1}>Seleziona il roulo</option>
-                        <option value={0}>HR</option>
-                        <option value={1}>Admin</option>
-                      </select>
-
-                      <div className="my-2 text-sm text-gray-700 dark:text-gray-300">
-                        <span className="font-medium">Spiegazione: </span>
-                        <ul>
-                          <li>
-                            <span className="text-bold">HR</span>: può
-                            insirire/modificare/eliminare eventi
-                          </li>
-                          <li>
-                            <span className="text-bold">Admin</span>: può
-                            insirire/modificare/eliminare utenti e può fare ciò
-                            che fa un utente HR
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  >
-                    Registra
-                  </button>
-                </form>
+                <DangerAlert
+                  show={showAlert}
+                  message={alertMessage}
+                  onClose={() => {
+                    setShowAlert(false);
+                  }}
+                />
+                <UserForm initialUserData={null} handleSubmit={handleSubmit} />
               </div>
             </section>
           </Container>
