@@ -1,85 +1,108 @@
+import { DangerAlert } from "@/components/alerts";
+import { Password } from "@/components/forms";
 import Navbar from "@/components/navbar";
-import BackButton from "@/components/ui/backButton";
-import PasswordForm from "@/components/forms/passwordForm";
-import { UserSecure } from "@/types/types";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function ChangePassword() {
+  const router = useRouter();
+  const { error } = router.query;
+
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => signIn(),
   });
 
-  const [admin, setAdmin] = useState<UserSecure | null>(null);
-
-  const [oldPasswordError, setOldPasswordError] = useState("");
-  const [confirmPswError, setConfirmPswError] = useState("");
-
   const [form, setForm] = useState({
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+    oldPsw: "",
+    newPsw: "",
+    confirmPsw: "",
   });
-
+  const [showPsw, setShowPsw] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
-  const handleOldPasswordChange = useCallback((value: string) => {
-    setForm((prevForm) => ({ ...prevForm, oldPassword: value }));
-  }, []);
-  const handleNewPasswordChange = useCallback((value: string) => {
-    setForm((prevForm) => ({ ...prevForm, newPassword: value }));
-  }, []);
+  const handleShowPswChange = () => {
+    setShowPsw(showPsw ^ 1);
+    console.log(showPsw);
+  };
 
-  const handleConfirmPasswordChange = useCallback(
-    (value: string) => {
-      setForm((prevForm) => ({ ...prevForm, confirmPassword: value }));
-      if (value === form.newPassword) {
-        setConfirmPswError("");
-      } else {
-        setConfirmPswError("Le passsword non coincidono.");
-      }
-    },
-    [form.newPassword]
-  );
+  const handleOldPswChange = (value: string) => {
+    setForm((prevForm) => ({ ...prevForm, oldPsw: value }));
+  };
 
-  const handleSubmit = useCallback(
-    (e: any) => {
-      if (!form.oldPassword || !form.newPassword || !form.confirmPassword) {
-        return;
-      }
-      axios
-        .post("/api/user/change-password", {
-          oldPassword: form.oldPassword,
-          newPassword: form.newPassword,
-          confirmPassword: form.confirmPassword,
+  const handleNewPswChange = (value: string) => {
+    setForm((prevForm) => ({ ...prevForm, newPsw: value }));
+  };
+
+  const handleConfirmPswChange = (value: string) => {
+    setForm((prevForm) => ({ ...prevForm, confirmPsw: value }));
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    if (form.oldPsw === "" || form.newPsw === "" || form.confirmPsw === "") {
+      router.push({
+        pathname: "/auth/change-password",
+        query: { error: "missingArguments" },
+      });
+      return;
+    }
+
+    if (form.confirmPsw != form.newPsw) {
+      router.push({
+        pathname: "/auth/change-password",
+        query: { error: "passwordsDontMatch" },
+      });
+      return;
+    }
+
+    axios
+      .post("/api/user/change-password", {
+        oldPassword: form.oldPsw,
+        newPassword: form.newPsw,
+        confirmPassword: form.confirmPsw,
+      })
+      .then((resp) =>
+        router.push({
+          pathname: "/user/profile",
+          query: { success: "passwordChangedSuccess" },
         })
-        .then((resp) => {
-          setShowAlert(true);
-          setAlertMessage("Password changed successfully!");
+      )
+      .catch((err) =>
+        router.push({
+          pathname: "/auth/change-password",
+          query: { error: "oldPasswordDontMatch" },
         })
-        .catch((error) => setOldPasswordError("Password errata."));
-    },
-    [form]
-  );
+      );
+  };
 
   useEffect(() => {
-    axios
-      .post("/api/user/resolve")
-      .then((response: any) => {
-        const cookie = response.data.cookies.split("=")[1];
-       
-        setAdmin(response.data.message);
-      })
-      .catch((error: any) => console.log(error));
-  },[]);
+    if (!error) return;
+
+    setShowAlert(true);
+
+    switch (error) {
+      case "passwordsDontMatch":
+        setAlertMessage("Le nuove password non corrispondo.");
+        break;
+      case "oldPasswordDontMatch":
+        setAlertMessage("La vecchia password non corrisponde.");
+        break;
+      case "missingArguments":
+        setAlertMessage("Completa i campi poi invia.");
+        break;
+      default:
+        break;
+    }
+  }, [error]);
 
   return (
     <>
@@ -88,56 +111,90 @@ export default function ChangePassword() {
       </Head>
       <main className={inter.className}>
         <Navbar session={session} />
-        <div className="container mt-5">
-          <div className="card bg-body">
-            <div className="card-body">
-              <div className="card-title">
-                <h1 className="display-1">Cambiamento Password</h1>
-              </div>
-              <div>
-                <PasswordForm
-                  id="old"
-                  placeholder={oldPasswordError}
-                  pswError={null}
-                  checkRegex={false}
-                  onPasswordChange={handleOldPasswordChange}
-                />
-                <PasswordForm
-                  id="new"
-                  placeholder=""
-                  pswError={null}
-                  checkRegex={true}
-                  onPasswordChange={handleNewPasswordChange}
-                />
-                <PasswordForm
-                  id="confirm"
-                  placeholder=""
-                  pswError={confirmPswError}
-                  checkRegex={false}
-                  onPasswordChange={handleConfirmPasswordChange}
-                />
-                <div className="mb-3 container px-4 text-center">
-                  <div className="row gx-5">
-                    <div className="col">
-                      <BackButton text="Annulla" />
+        <div className="min-h-screen flex items-center justify-center">
+          <section className="mt-36">
+            <div className="flex flex-col items-center justify-center px-6 py-8">
+              <div className="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
+                <h2 className="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                  Cambia Password
+                </h2>
+                <form
+                  className="mt-4 space-y-4 lg:mt-5 md:space-y-5 md:w-96 xs:w-52"
+                  onSubmit={handleSubmit}
+                >
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      La tua Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      value={session?.user.email}
+                      disabled
+                    />
+                  </div>
+                  <Password
+                    id="old-password"
+                    label="Vecchia Password (richiesto)"
+                    showText={showPsw}
+                    checkRegex={false}
+                    onChange={handleOldPswChange}
+                  />
+                  <Password
+                    id="new-password"
+                    label="Nuova Password  (richiesto)"
+                    showText={showPsw}
+                    checkRegex={true}
+                    onChange={handleNewPswChange}
+                  />
+                  <Password
+                    id="confirm-password"
+                    label="Conferma Password  (richiesto)"
+                    showText={showPsw}
+                    checkRegex={false}
+                    onChange={handleConfirmPswChange}
+                  />
+                  <div className="flex items-start">
+                    <div className="flex items-center h-5">
+                      <input
+                        id="show-psw"
+                        aria-describedby="show-psw"
+                        type="checkbox"
+                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                        required={false}
+                        value={showPsw}
+                        onChange={handleShowPswChange}
+                      />
                     </div>
-                    <div className="col">
-                      <button
-                        type="button"
-                        disabled={
-                          confirmPswError !== "" || showAlert ? true : false
-                        }
-                        className="btn btn-primary btn-lg"
-                        onClick={handleSubmit}
+                    <div className="ml-3 text-sm">
+                      <label
+                        htmlFor="show-psw"
+                        className="font-light text-gray-500 dark:text-gray-300 underline"
                       >
-                        Salva
-                      </button>
+                        Mostra password
+                      </label>
                     </div>
                   </div>
-                </div>
+                  <DangerAlert
+                    show={showAlert}
+                    message={alertMessage}
+                    onClose={() => setShowAlert(false)}
+                  />
+                  <button
+                    type="submit"
+                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  >
+                    Cambia Password!
+                  </button>
+                </form>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       </main>
     </>

@@ -1,4 +1,5 @@
 import { Session } from "next-auth";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -29,14 +30,15 @@ export default function User({ session }: DiscordUserProps) {
   if (!session) {
     return (
       <div className="mt-12 lg:mt-0">
-        <Link
-          href="/dashboard"
-          className="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max"
-        >
-          <span className="relative text-sm font-semibold text-white">
-            Login
-          </span>
-        </Link>
+        <div className="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary-600 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
+          <button
+            onClick={() => signIn()}
+            type="button"
+            className="relative text-sm font-semibold text-white"
+          >
+            <span className="ml-2">Vai alla Dashboard</span>
+          </button>
+        </div>
       </div>
     );
   } else {
@@ -45,7 +47,7 @@ export default function User({ session }: DiscordUserProps) {
       <div className="mt-12 lg:mt-0">
         <div className="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary-600 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
           <button
-            onClick={(e) => toggleDropdown(e)}
+            onClick={toggleDropdown}
             type="button"
             className="relative text-sm font-semibold text-white"
           >
@@ -58,6 +60,13 @@ export default function User({ session }: DiscordUserProps) {
             !isMenuOpen && "hidden"
           } absolute z-50 mt-4 w-56 rounded-md shadow-lg bg-gray-100 ring-1 ring-black ring-opacity-5 dark:bg-gray-800 `}
         >
+          <div className="py-1">
+            <Link href="/user/profile">
+              <p className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 truncate hover:bg-gray-200 dark:hover:bg-gray-700">
+                Vai al tuo profilo
+              </p>
+            </Link>
+          </div>
           {session.user.role === 1 && (
             <div className="py-1">
               <Link href="/user/list-all">
@@ -67,20 +76,7 @@ export default function User({ session }: DiscordUserProps) {
               </Link>
             </div>
           )}
-          <div className="py-1">
-            <Link href="/user/profile">
-              <p className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 truncate hover:bg-gray-200 dark:hover:bg-gray-700">
-               Vai al tuo profilo
-              </p>
-            </Link>
-          </div>
-          <div className="py-1">
-            <Link href="/user/change-password">
-              <p className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 truncate hover:bg-gray-200 dark:hover:bg-gray-700">
-                Cambia Password
-              </p>
-            </Link>
-          </div>
+
           <div className="py-1">
             <Link
               href="/auth/signout"

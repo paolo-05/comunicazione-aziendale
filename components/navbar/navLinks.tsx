@@ -4,16 +4,19 @@ export default function NavLinks() {
   return (
     <>
       <li>
-        <Link href="/" className="block md:px-4 transition hover:text-primary">
-          <span>Home</span>
+        <Link
+          href="/post/new"
+          className="block md:px-4 transition hover:text-primary-700"
+        >
+          <span>Nuovo Annuncio</span>
         </Link>
       </li>
       <li>
         <Link
-          href="/post/new"
-          className="block md:px-4 transition hover:text-primary"
+          href="/dashboard"
+          className="block md:px-4 transition hover:text-primary-700"
         >
-          <span>Nuovo Annuncio</span>
+          <span>Vai alla Dashboard</span>
         </Link>
       </li>
     </>

@@ -6,7 +6,7 @@ import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 

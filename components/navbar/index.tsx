@@ -70,15 +70,15 @@ export default function Header({ session }: HeaderProps) {
             <div className="flex-col z-20 flex-wrap gap-6 p-8 rounded-3xl border  shadow-2xl shadow-gray-600/10 justify-end w-full invisible opacity-0 translate-y-1 absolute top-full left-0 transition-all duration-300 scale-95 origin-top lg:relative lg:scale-100 lg:peer-checked:translate-y-0 lg:translate-y-0 lg:flex lg:flex-row lg:items-center lg:gap-0 lg:p-0 lg:bg-transparent lg:w-7/12 lg:visible lg:opacity-100 lg:border-none peer-checked:scale-100 peer-checked:opacity-100 peer-checked:visible lg:shadow-none dark:shadow-non">
               <div className="text-gray-600 dark:text-gray-300 lg:pr-4 lg:w-auto w-full lg:pt-0">
                 <ul className="tracking-wide font-medium lg:text-sm flex-col flex lg:flex-row gap-6 lg:gap-0">
-                  {session?.user && <NavLinks />}
                   <li>
                     <Link
                       href="/post/all"
-                      className="block md:px-4 transition hover:text-primary"
+                      className="block md:px-4 transition hover:text-primary-700"
                     >
                       <span>Prossimi Eventi</span>
                     </Link>
                   </li>
+                  {session?.user && <NavLinks />}
                 </ul>
               </div>
               <User session={session} />

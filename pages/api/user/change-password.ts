@@ -20,15 +20,13 @@ export default async function handler(
   const { oldPassword, newPassword, confirmPassword } = req.body;
 
   if (!oldPassword || !newPassword || !confirmPassword) {
-    return res
-      .status(400)
-      .json({ message: "I campi non possono essere vuoti." });
+    return res.status(400).json({ error: "Missing Arguments" });
   }
   try {
     const user = await User.findByEmail(session.user.email);
 
     if (!user) {
-      return res.status(404).json({ message: "Utente non trovato." });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const passwordsMatch = await User.comparePassword(
@@ -36,9 +34,7 @@ export default async function handler(
       user.password
     );
     if (!passwordsMatch) {
-      return res
-        .status(400)
-        .json({ message: "La vecchia password non coirrisponde." });
+      return res.status(400).json({ errro: "Error with old password" });
     }
 
     await User.updatePassword(user.id, newPassword);
