@@ -1,7 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Session } from "next-auth";
 
-export const UserManager = () => {
+type UserManagerProps = {
+  session: Session | null;
+};
+
+export const UserManager = ({ session }: UserManagerProps) => {
   return (
     <>
       <article className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
@@ -37,19 +42,44 @@ export const UserManager = () => {
           href="/user/list-all"
           className="flex items-center justify-between group-hover:text-secondary"
         >
-          <span className="text-sm">Vai!</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-5 h-5 -translate-x-4 text-2xl opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l6.22-6.22H3a.75.75 0 010-1.5h16.19l-6.22-6.22a.75.75 0 010-1.06z"
-              clipRule="evenodd"
-            />
-          </svg>
+          {session?.user.role === 1 ? (
+            <>
+              <span className="text-sm">Vai!</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-5 h-5 -translate-x-4 text-2xl opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l6.22-6.22H3a.75.75 0 010-1.5h16.19l-6.22-6.22a.75.75 0 010-1.06z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </>
+          ) : (
+            <>
+              <span className="text-sm">
+                Non hai l&apos;autorizzazione necessaria
+              </span>
+              <svg
+                className="w-5 h-5 -translate-x-4 text-2xl opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18 18 6m0 12L6 6"
+                />
+              </svg>
+            </>
+          )}
         </Link>
       </article>
     </>
