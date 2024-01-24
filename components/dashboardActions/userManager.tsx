@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Session } from "next-auth";
 
 type UserManagerProps = {
@@ -72,9 +71,9 @@ export const UserManager = ({ session }: UserManagerProps) => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M6 18 18 6m0 12L6 6"
                 />
               </svg>

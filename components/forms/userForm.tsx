@@ -1,70 +1,106 @@
 import { UserSecure } from "@/types/types";
-import { DangerAlert } from "@/components/alerts/";
-import { useEffect, useState } from "react";
-import { Password } from ".";
-import { Text } from ".";
-import { UserFormType } from "@/types/userFormType";
+import { UserFormFieds, userFormSchema } from "@/types/userFormTypes";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { Session } from "next-auth";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 
 type UserFormProps = {
   initialUserData?: UserSecure | null;
-  handleSubmit: (e: any, form: UserFormType) => void;
 };
 
-export const UserForm = ({ initialUserData, handleSubmit }: UserFormProps) => {
+export const UserForm = ({ initialUserData }: UserFormProps) => {
+  const router = useRouter();
   const [showPsw, setShowPsw] = useState(0);
-  const [form, setForm] = useState({
-    id: -1,
-    email: "",
-    password: "",
-    confirmPassword: "",
-    name: "",
-    lastName: "",
-    role: -1,
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<UserFormFieds>({
+    defaultValues: {
+      id: initialUserData?.id || -1,
+      email: initialUserData?.email || "",
+      password: initialUserData ? "a1b2c3d4" : "",
+      confirmPassword: initialUserData ? "a1b2c3d4" : "",
+      name: initialUserData?.name || "",
+      lastName: initialUserData?.lastName || "",
+      role: initialUserData?.role.toString(),
+    },
+    resolver: zodResolver(userFormSchema),
   });
 
   const handleShowPswChange = () => {
     setShowPsw(showPsw ^ 1);
   };
 
-  const handleEmailChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, email: value }));
+  const onSubmit: SubmitHandler<UserFormFieds> = async (data) => {
+    console.log("submit");
+
+    if (data.password !== data.confirmPassword) {
+      setError("confirmPassword", {
+        message: "Le nuove password non corrispondono.",
+      });
+      return;
+    }
+
+    if (data.role.endsWith("-1")) {
+      setError("role", { message: "Seleziona un valore." });
+      return;
+    }
+    if (!initialUserData) {
+      await axios
+        .post("/api/user/register", {
+          email: data.email,
+          password: data.password,
+          role: data.role,
+          name: data.name,
+          lastName: data.lastName,
+        })
+        .then((res) =>
+          router.push({
+            pathname: "/user/list-all",
+            query: { success: "userCreated" },
+          })
+        )
+        .catch((err) =>
+          setError("email", {
+            message: "Esiste già un utente con questa email.",
+          })
+        );
+    } else {
+      await axios
+        .post("/api/user/edit", {
+          id: data.id,
+          email: data.email,
+          password: data.password,
+          role: data.role,
+          name: data.name,
+          lastName: data.lastName,
+        })
+        .then((res) =>
+          router.push({
+            pathname: "/user/list-all",
+            query: { success: "userUpdated" },
+          })
+        )
+        .catch((err) =>
+          setError("email", {
+            message: "Esiste già un utente con questa email.",
+          })
+        );
+    }
   };
-
-  const handlePswChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, password: value }));
-  };
-
-  const handleConfirmPswChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, confirmPassword: value }));
-  };
-
-  const handleNameChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, name: value }));
-  };
-
-  const handleLastNameChange = (value: string) => {
-    setForm((prevForm) => ({ ...prevForm, lastName: value }));
-  };
-
-  const handleRoleChange = (value: any) => {
-    setForm((prevForm) => ({ ...prevForm, role: value }));
-  };
-
-  useEffect(() => {
-    if (!initialUserData) return;
-
-    setForm((prevForm) => ({ ...prevForm, id: initialUserData.id }));
-
-    handleEmailChange(initialUserData.email);
-    handleNameChange(initialUserData.name);
-    handleLastNameChange(initialUserData.lastName);
-    handleRoleChange(initialUserData.role);
-  }, [initialUserData]);
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, form)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
         <div className="sm:col-span-2">
+          <input type="hidden" id="id" {...register("id")} />
           <label
             htmlFor="email"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -72,36 +108,64 @@ export const UserForm = ({ initialUserData, handleSubmit }: UserFormProps) => {
             Email (richiesto)
           </label>
           <input
-            type="text"
-            name="email"
             id="email"
+            {...register("email")}
+            type="text"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             placeholder="john.doe@example.com"
-            required={true}
-            onChange={(e) => handleEmailChange(e.target.value)}
-            value={form.email}
           />
+          {errors.email && (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
         {!initialUserData && (
           <>
             <div className="sm:col-span-2">
-              <Password
-                id={"password"}
-                label={"Password (richiesto)"}
-                showText={showPsw}
-                checkRegex={true}
-                onChange={handlePswChange}
-              />
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Password (richiesto)
+                </label>
+                <input
+                  id="password"
+                  {...register("password")}
+                  type={showPsw === 1 ? "text" : "password"}
+                  placeholder={showPsw ? "SuperSegretaPassword123" : "••••••••"}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+                {errors.password && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
             </div>
             <div className="sm:col-span-2">
-              <Password
-                id={"confirm-password"}
-                label={"Conferma Password (richiesto)"}
-                showText={showPsw}
-                checkRegex={false}
-                onChange={handleConfirmPswChange}
-              />
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Conferma Password (richiesto)
+                </label>
+                <input
+                  id="confirmPassword"
+                  {...register("confirmPassword")}
+                  type={showPsw === 1 ? "text" : "password"}
+                  placeholder={showPsw ? "SuperSegretaPassword123" : "••••••••"}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+                {errors.confirmPassword && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
               <div className="flex items-start my-2">
                 <div className="flex items-center h-5">
                   <input
@@ -127,24 +191,48 @@ export const UserForm = ({ initialUserData, handleSubmit }: UserFormProps) => {
           </>
         )}
         <div className="w-full">
-          <Text
-            id="name"
-            label="Nome (richiesto)"
-            placeholder="John"
-            initialValue={form.name}
-            checkRegex={true}
-            onChange={handleNameChange}
-          />
+          <div>
+            <label
+              htmlFor="name"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Nome (richiesto)
+            </label>
+            <input
+              id="name"
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="John"
+              {...register("name")}
+            />
+            {errors.name && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
         </div>
         <div className="w-full">
-          <Text
-            id="lastName"
-            label="Cognome (richiesto)"
-            placeholder="Doe"
-            initialValue={form.lastName}
-            checkRegex={true}
-            onChange={handleLastNameChange}
-          />
+          <div>
+            <label
+              htmlFor="lastName"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Cognome (richiesto)
+            </label>
+            <input
+              id="lastName"
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Doe"
+              {...register("lastName")}
+            />
+            {errors.lastName && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
         </div>
         <div className="sm:col-span-2">
           <label
@@ -155,10 +243,8 @@ export const UserForm = ({ initialUserData, handleSubmit }: UserFormProps) => {
           </label>
           <select
             id="category"
-            onChange={(e) => handleRoleChange(e.target.value)}
-            value={form.role}
+            {...register("role")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            required
           >
             <option value={-1}>Seleziona il ruolo</option>
             <option value={0}>HR</option>
@@ -166,18 +252,24 @@ export const UserForm = ({ initialUserData, handleSubmit }: UserFormProps) => {
           </select>
 
           <div className="my-2 text-sm text-gray-700 dark:text-gray-300">
-            <span className="font-medium">Spiegazione: </span>
-            <ul>
-              <li>
-                <span className="text-bold">HR</span>: può
-                insirire/modificare/eliminare eventi
-              </li>
-              <li>
-                <span className="text-bold">Admin</span>: può
-                insirire/modificare/eliminare utenti e può fare ciò che fa un
-                utente HR
-              </li>
-            </ul>
+            {errors.role ? (
+              <span>{errors.role.message}</span>
+            ) : (
+              <>
+                <span className="font-medium">Spiegazione: </span>
+                <ul>
+                  <li>
+                    <span className="text-bold">HR</span>: può
+                    insirire/modificare/eliminare eventi
+                  </li>
+                  <li>
+                    <span className="text-bold">Admin</span>: può
+                    insirire/modificare/eliminare utenti e può fare ciò che fa
+                    un utente HR
+                  </li>
+                </ul>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -186,7 +278,11 @@ export const UserForm = ({ initialUserData, handleSubmit }: UserFormProps) => {
         type="submit"
         className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
       >
-        {initialUserData ? "Aggiorna" : "Registra"}
+        {isSubmitting
+          ? "Caricamento..."
+          : initialUserData
+          ? "Aggiorna"
+          : "Registra"}
       </button>
     </form>
   );

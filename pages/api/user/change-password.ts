@@ -1,5 +1,6 @@
 import { User } from "@/models/userModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { ChangePasswordFormFields } from "@/types/changePasswordTypes";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 
@@ -17,9 +18,10 @@ export default async function handler(
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const { oldPassword, newPassword, confirmPassword } = req.body;
+  const { email, data }: { email: string; data: ChangePasswordFormFields } =
+    req.body;
 
-  if (!oldPassword || !newPassword || !confirmPassword) {
+  if (!email || !data.oldPsw || !data.newPsw || !data.confirmPsw) {
     return res.status(400).json({ error: "Missing Arguments" });
   }
   try {
@@ -30,14 +32,14 @@ export default async function handler(
     }
 
     const passwordsMatch = await User.comparePassword(
-      oldPassword,
+      data.oldPsw,
       user.password
     );
     if (!passwordsMatch) {
-      return res.status(400).json({ errro: "Error with old password" });
+      return res.status(400).json({ error: "Error with old password" });
     }
 
-    await User.updatePassword(user.id, newPassword);
+    await User.updatePassword(user.id, data.newPsw);
 
     return res
       .status(201)

@@ -1,5 +1,7 @@
 import { DangerAlert } from "@/components/alerts/index";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { SignInFormFields, signInSchema } from "@/types/signInTypes";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
@@ -10,64 +12,47 @@ import { Inter } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Signin({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
-  const [status, setStatus] = useState<string>("input");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const router = useRouter();
+  const { error } = router.query;
+
   const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState<string>(
-    "Email o password errate"
-  );
+  const [alertMessage, setAlertMessage] = useState("");
 
-  const handleSubmit = useCallback(
-    (e: any) => {
-      setStatus("loading");
-      if (email === "" || password === "") {
-        setStatus("input");
-        // just don't make a empty request so return
-        return;
-      }
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<SignInFormFields>({
+    resolver: zodResolver(signInSchema),
+  });
+
+  const onSubmit: SubmitHandler<SignInFormFields> = async (data) => {
+    try {
       signIn("credentials", {
-        email: email,
-        password: password,
-      }).then(() => setStatus("input"));
-    },
-
-    [email, password]
-  );
-
-  useEffect(() => {
-    const handleKeyDown = (e: any) => {
-      if (e.keyCode === 27) {
-        setShowAlert(false);
-      }
-      if (e.keyCode === 13) {
-        handleSubmit(e);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () =>
-      // Cleanup the event listener when the component unmounts
-      document.removeEventListener("keydown", handleKeyDown);
-  }, [handleSubmit]);
+        email: data.email,
+        password: data.password,
+      });
+    } catch (e) {
+      setError("root", { message: "Email o password errate." });
+    }
+  };
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const error = queryParams.get("error");
-
     if (error === "CredentialsSignin") {
       setShowAlert(true);
       setAlertMessage("Email o password errate.");
     }
-  }, []);
+  }, [error]);
 
   return (
     <>
@@ -95,7 +80,10 @@ export default function Signin({}: InferGetServerSidePropsType<
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Entra con le tue Credenziali
                 </h1>
-                <div className="space-y-4 md:space-y-6">
+                <form
+                  className="space-y-4 md:space-y-6"
+                  onSubmit={handleSubmit(onSubmit)}
+                >
                   <div>
                     <label
                       htmlFor="email"
@@ -104,16 +92,19 @@ export default function Signin({}: InferGetServerSidePropsType<
                       La tua Email
                     </label>
                     <input
-                      type="email"
+                      type="text"
                       id="email"
-                      name="email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
                       autoComplete="email"
-                      required={true}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      {...register("email")}
                     />
+                    {errors.email && (
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                        <span className="font-medium">Attento! </span>{" "}
+                        {errors.email.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -125,13 +116,15 @@ export default function Signin({}: InferGetServerSidePropsType<
                     <input
                       type="password"
                       id="password"
-                      name="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required={true}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      {...register("password")}
                     />
+                    {errors.password && (
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                        {errors.password.message}
+                      </p>
+                    )}
                   </div>
 
                   <DangerAlert
@@ -141,13 +134,13 @@ export default function Signin({}: InferGetServerSidePropsType<
                   />
 
                   <button
-                    type="button"
-                    onClick={handleSubmit}
+                    type="submit"
+                    disabled={isSubmitting}
                     className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800"
                   >
-                    Entra!
+                    {isSubmitting ? "Caricamento..." : "Entra!"}
                   </button>
-                </div>
+                </form>
               </div>
             </div>
           </div>

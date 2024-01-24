@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
     "mysql2": "^3.7.0",
@@ -16,7 +17,9 @@
     "next-auth": "^4.24.5",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^5.0.1"
+    "react-hook-form": "^7.49.3",
+    "react-icons": "^5.0.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

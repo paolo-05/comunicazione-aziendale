@@ -20,7 +20,6 @@ export default async function handler(
   }
 
   const { userId } = req.body;
-  console.log(userId);
 
   if (!userId) {
     return res.status(400).json({ error: "Missing arguments" });

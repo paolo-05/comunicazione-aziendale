@@ -1,9 +1,8 @@
-import { DangerAlert } from "@/components/alerts";
 import { UserForm } from "@/components/forms/";
 import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
+import { Skeleton } from "@/components/ui/skeleton";
 import { UserSecure } from "@/types/types";
-import { UserFormType } from "@/types/userFormType";
 import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
@@ -23,55 +22,6 @@ export default function Page() {
   });
 
   const [user, setUser] = useState<UserSecure | null>(null);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-
-  const handleSubmit = (e: any, form: UserFormType) => {
-    e.preventDefault();
-
-    if (
-      form.email === "" ||
-      form.name === "" ||
-      form.lastName === "" ||
-      form.role === -1
-    ) {
-      router.push({
-        pathname: "/user/edit",
-        query: { id, error: "missingArguments" },
-      });
-      return;
-    }
-
-    // if (form.password !== form.confirmPassword) {
-    //   router.push({
-    //     pathname: "/user/register",
-    //     query: { id, error: "passwordsDontMatch" },
-    //   });
-    //   return;
-    // }
-
-    axios
-      .post("/api/user/edit", {
-        id: form.id,
-        email: form.email,
-        role: form.role,
-        name: form.name,
-        lastName: form.lastName,
-      })
-      .then((res) =>
-        router.push({
-          pathname: "/user/list-all",
-          query: { success: "userUpdated" },
-        })
-      )
-      .catch((err) =>
-        // router.push({
-        //   pathname: "/user/edit",
-        //   query: { id, error: "existingEmail" },
-        // })
-        console.log(err)
-      );
-  };
 
   useEffect(() => {
     if (id === undefined) return;
@@ -106,14 +56,8 @@ export default function Page() {
                 <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                   Aggiorna un utente
                 </h2>
-                <DangerAlert
-                  show={showAlert}
-                  message={alertMessage}
-                  onClose={() => {
-                    setShowAlert(false);
-                  }}
-                />
-                <UserForm initialUserData={user} handleSubmit={handleSubmit} />
+
+                {user ? <UserForm initialUserData={user} /> : <Skeleton />}
               </div>
             </section>
           </Container>
