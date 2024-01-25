@@ -67,18 +67,16 @@ export default function ListAll() {
       </Head>
       <main className={inter.className}>
         <Header session={session} />
-        <div className="space-y-40 mb-40">
-          <Container>
-            <div className="relative pt-36">
-              <SuccessAlert
-                show={showAlert}
-                message={alertMessage}
-                onClose={() => setShowAlert(false)}
-              />
-              <ListAllUsers users={users} session={session} />
-            </div>
-          </Container>
-        </div>
+        <Container>
+          <div className="relative pt-36">
+            <SuccessAlert
+              show={showAlert}
+              message={alertMessage}
+              onClose={() => setShowAlert(false)}
+            />
+            <ListAllUsers users={users} session={session} />
+          </div>
+        </Container>
       </main>
     </>
   );
