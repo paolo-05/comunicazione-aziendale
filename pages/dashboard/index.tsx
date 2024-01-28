@@ -6,6 +6,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/Logo.png";
+import { CategoryManager } from "@/components/dashboardActions/categoryManager";
 
 export default function Dashboard() {
   const { data: session } = useSession({
@@ -34,7 +35,7 @@ export default function Dashboard() {
                 placeholder="blur"
               />
               <UserManager session={session} />
-              <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
+              <CategoryManager session={session} />
               <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64">
                 Calendario
               </div>

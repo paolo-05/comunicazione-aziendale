@@ -41,7 +41,8 @@ CREATE TABLE includes(
 CREATE TABLE categories(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255),
-    description TEXT
+    description TEXT,
+    colour VARCHAR(255)
 );
 
 CREATE TABLE eventsCategories(

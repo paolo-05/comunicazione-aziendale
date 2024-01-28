@@ -17,7 +17,7 @@ export default function DeleteUserButton({ user, session }: ItemProps) {
       .post("/api/user/delete", {
         deletingId: user?.id,
       })
-      .then(() => router.push("/user/list-all"))
+      .then(() => router.reload())
       .catch((error) => console.log(error))
       .finally(() => setStatus("idle"));
   }, [router, user?.id]);

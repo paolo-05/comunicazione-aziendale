@@ -21,7 +21,7 @@ const config: Config = {
       transparent: colors.transparent,
       primary: colors.green,
       secondary: "#ff7e33",
-      info: "#0C63E7",
+      info: colors.blue,
       black: colors.black,
       white: colors.white,
       slate: colors.slate,
