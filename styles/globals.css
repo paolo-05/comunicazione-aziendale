@@ -47,14 +47,6 @@ body {
   background: var(--gradient) no-repeat center center fixed;
   color: var(--text-color);
 }
-a {
-  text-decoration: none;
-  color: var(--text-color);
-}
-
-.table {
-  background-color: var(--third-level-background-color);
-}
 
 #toggle_nav:checked ~ div #hamburger #line {
   @apply rotate-45 translate-y-1.5;
