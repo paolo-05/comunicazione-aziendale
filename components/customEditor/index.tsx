@@ -7,15 +7,17 @@ type MyCKEditorProps = {
 
 export default function MyCKEditor(props: MyCKEditorProps) {
   return (
-    <div className="text-black">
-      <CKEditor
-        editor={Editor}
-        data={props.initialData}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          console.log({ event, editor, data });
-        }}
-      />
+    <div className="block p-2.5 w-full">
+      <div className="prose">
+        <CKEditor
+          editor={Editor}
+          data={props.initialData}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            console.log({ event, editor, data });
+          }}
+        />
+      </div>
     </div>
   );
 }

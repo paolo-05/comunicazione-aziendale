@@ -1,4 +1,5 @@
 import Header from "@/components/navbar";
+import { PostForm } from "@/components/postComponents";
 import Container from "@/components/ui/container";
 import { signIn, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
@@ -29,14 +30,20 @@ export default function New() {
       </Head>
       <main className={inter.className}>
         <Header session={session} />
-        <section className="space-y-40 mb-40">
+        <Container>
+          <div className="relative pt-36">
+            <PostForm />
+          </div>
+        </Container>
+
+        {/* <section className="space-y-40 mb-40">
           <Container>
             <div className="relative pt-36">
               <h1>Pagina per la creazione di un nuovo post</h1>
               <CustomEditor initialData="<h1>Hello from CKEditor in Next.js!</h1>" />
             </div>
           </Container>
-        </section>
+        </section> */}
       </main>
     </>
   );
