@@ -31,7 +31,7 @@ export default function Page() {
     }
 
     axios
-      .post("/api/user/get-by-id", { userId: id })
+      .get(`/api/user/${id}`)
       .then((res) => setUser(res.data.message))
       .catch((err) => console.log(err));
   }, [id, router, session?.user.id]);

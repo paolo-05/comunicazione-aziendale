@@ -7,7 +7,7 @@ type MyCKEditorProps = {
 
 export default function MyCKEditor(props: MyCKEditorProps) {
   return (
-    <div className="block p-2.5 w-full">
+    <div className="">
       <div className="prose">
         <CKEditor
           editor={Editor}

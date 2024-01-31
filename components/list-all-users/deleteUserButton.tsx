@@ -14,9 +14,7 @@ export default function DeleteUserButton({ user, session }: ItemProps) {
   const deleteUser = useCallback(() => {
     setStatus("deleting");
     axios
-      .post("/api/user/delete", {
-        deletingId: user?.id,
-      })
+      .delete(`/api/user/delete/${user?.id}`)
       .then(() => router.reload())
       .catch((error) => console.log(error))
       .finally(() => setStatus("idle"));

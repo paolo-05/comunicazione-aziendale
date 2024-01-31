@@ -1,3 +1,5 @@
+// Paolo Bianchessi, 8/11/2023
+// Here we send back the user object by given ID in the request.
 import { User } from "@/models/userModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -7,9 +9,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "DELETE") {
+  if (req.method !== "GET") {
     return res.status(405).end();
   }
+
+  const { id } = req.query;
 
   const session = await getServerSession(req, res, authOptions);
 
@@ -17,15 +21,15 @@ export default async function handler(
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { deletingId } = req.body;
-
-  if (!deletingId) {
+  if (!id) {
     return res.status(400).json({ error: "Missing arguments" });
   }
+
   try {
-    await User.deleteUser(deletingId);
-    res.status(200).json({ message: "OK" });
-  } catch (error) {
-    res.status(500).json({ error: "Error in server" });
+    const user = await User.findById(parseInt(id.toString()));
+
+    res.status(200).json({ message: user });
+  } catch (err: any) {
+    return res.status(500).json({ error: "Error in server" });
   }
 }

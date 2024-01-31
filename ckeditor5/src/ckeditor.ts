@@ -42,7 +42,6 @@ import {
 } from "@ckeditor/ckeditor5-special-characters";
 import { Table, TableCaption, TableToolbar } from "@ckeditor/ckeditor5-table";
 import { Undo } from "@ckeditor/ckeditor5-undo";
-import { SimpleUploadAdapter } from "@ckeditor/ckeditor5-upload";
 
 // You can read more about extending the build with additional plugins in the "Installing plugins" guide.
 // See https://ckeditor.com/docs/ckeditor5/latest/installation/plugins/installing-plugins.html for details.
@@ -88,7 +87,6 @@ class Editor extends ClassicEditor {
     TableToolbar,
     TodoList,
     Undo,
-    SimpleUploadAdapter,
   ];
 
   public static override defaultConfig: EditorConfig = {
@@ -113,7 +111,6 @@ class Editor extends ClassicEditor {
         "indent",
         "alignment",
         "|",
-        "imageUpload",
         "imageInsert",
         "insertTable",
         "mediaEmbed",
@@ -124,13 +121,6 @@ class Editor extends ClassicEditor {
         "redo",
       ],
       shouldNotGroupWhenFull: true,
-    },
-    simpleUpload: {
-      uploadUrl: "",
-      withCredentials: true,
-      headers: {
-        Authorization: "",
-      },
     },
     language: "it",
     image: {

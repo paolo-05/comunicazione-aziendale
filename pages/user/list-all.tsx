@@ -28,7 +28,7 @@ export default function ListAll() {
 
   useEffect(() => {
     axios
-      .post("/api/user/list-all", {})
+      .get("/api/user/list-all")
       .then((response: any) => {
         const users: Array<UserSecure> = response.data.message;
         setUsers(users);

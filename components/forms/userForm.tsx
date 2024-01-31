@@ -39,8 +39,6 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
   };
 
   const onSubmit: SubmitHandler<UserFormFieds> = async (data) => {
-    console.log("submit");
-
     if (data.password !== data.confirmPassword) {
       setError("confirmPassword", {
         message: "Le nuove password non corrispondono.",
@@ -74,7 +72,7 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
         );
     } else {
       await axios
-        .post("/api/user/edit", {
+        .put("/api/user/edit", {
           id: data.id,
           email: data.email,
           password: data.password,

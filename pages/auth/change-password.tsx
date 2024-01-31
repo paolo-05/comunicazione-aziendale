@@ -46,7 +46,7 @@ export default function ChangePassword() {
     }
 
     await axios
-      .post("/api/user/change-password", {
+      .put("/api/user/change-password", {
         email: session?.user.email,
         data,
       })
