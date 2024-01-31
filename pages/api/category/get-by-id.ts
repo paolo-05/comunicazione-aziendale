@@ -1,4 +1,5 @@
 // Alexis Rossi
+// Here we send back the user object by given ID in the request.
 import { Category } from "@/models/categoryModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -18,10 +19,16 @@ export default async function handler(
     return res.status(401).json({ error: "Unauthorized" });
   }
 */
-  try {
-    const categories = await Category.listAll();
+  const { categoryId } = req.body;
 
-    return res.status(200).json({ message: categories });
+  if (!categoryId) {
+    return res.status(400).json({ error: "Missing arguments" });
+  }
+
+  try {
+    const user = await Category.findById(categoryId);
+
+    res.status(200).json({ message: user });
   } catch (err: any) {
     return res.status(500).json({ error: "Error in server" });
   }

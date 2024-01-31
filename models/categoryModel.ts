@@ -23,6 +23,17 @@ export const Category = {
     return rows[0] as CategoryType | undefined;
   },
   /**
+   *Searching for a category by name
+   */
+  findByName: async (name: string): Promise<CategoryType | undefined> => {
+    const [rows] = await db
+      .promise()
+      .query<RowDataPacket[]>("SELECT * FROM categories WHERE name = ?", [
+        name,
+      ]);
+    return rows[0] as CategoryType | undefined;
+  },
+  /**
    * Creating a category defining all its values
    */
   createCategory: async (
