@@ -1,3 +1,4 @@
+// Alexis Rossi
 import { Category } from "@/models/categoryModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";

@@ -17,12 +17,17 @@ export default async function handler(
   if (!session || session.user.role === 0) {
     return res.status(401).json({ error: "Unauthorized" });
   }
-*/
-  try {
-    const categories = await Category.listAll();
+ */
+  const { deletingId } = req.body;
 
-    return res.status(200).json({ message: categories });
-  } catch (err: any) {
-    return res.status(500).json({ error: "Error in server" });
+  if (!deletingId) {
+    return res.status(400).json({ error: "Missing arguments" });
+  }
+
+  try {
+    await Category.deleteCategory(deletingId);
+    res.status(200).json({ message: "OK" });
+  } catch (error) {
+    res.status(500).json({ error: "Error in server" });
   }
 }
