@@ -2,46 +2,20 @@ import { UserForm } from "@/components/forms/";
 import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
 import { Skeleton } from "@/components/ui/skeleton";
-import { UserSecure } from "@/types/types";
-import axios from "axios";
-import { signIn, useSession } from "next-auth/react";
+import { useRestrictedSession } from "@/hooks/session/useRestrictedSession";
+import { useUser } from "@/hooks/user-hooks/useUser";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Page() {
+export default function Edit() {
   const router = useRouter();
   const { id } = router.query;
+  const session = useRestrictedSession();
 
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated: () => signIn(),
-  });
-
-  const [user, setUser] = useState<UserSecure | null>(null);
-
-  useEffect(() => {
-    if (id === undefined) return;
-
-    if (id === session?.user.id) {
-      router.push("/dashboard");
-    }
-
-    axios
-      .get(`/api/user/${id}`)
-      .then((res) => setUser(res.data.message))
-      .catch((err) => console.log(err));
-  }, [id, router, session?.user.id]);
-
-  useEffect(() => {
-    if (session?.user.role === 0) {
-      router.push("/dashboard");
-    }
-  }, [router, session?.user.role]);
-
+  const { user } = useUser(id, session);
   return (
     <>
       <Head>

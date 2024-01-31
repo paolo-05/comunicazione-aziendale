@@ -11,13 +11,13 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const { id } = req.query;
-
   const session = await getServerSession(req, res, authOptions);
 
   if (!session || session.user.role === 0) {
     return res.status(401).json({ error: "Unauthorized" });
   }
+
+  const { id } = req.query;
 
   if (!id) {
     return res.status(400).json({ error: "Missing arguments" });

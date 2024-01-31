@@ -1,8 +1,8 @@
-// Alexis Rossi
+// Alexis Rossi, Edoardo Barlassina 27-31/1/2024
 import { Category } from "@/models/categoryModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";
-//import { getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,13 +11,13 @@ export default async function handler(
   if (req.method !== "POST") {
     return res.status(405).end();
   }
-  /*
+
   const session = await getServerSession(req, res, authOptions);
 
   if (!session || session.user.role === 0) {
     return res.status(401).json({ message: "Unauthorized" });
   }
-*/
+
   const { name, description, colour } = req.body;
 
   if (!name || !description || !colour) {
@@ -25,12 +25,11 @@ export default async function handler(
   }
 
   try {
-    /*Check if the email is already registered DA FARE PER CONTROLLARE CATEGORIE ESISTENTI
-    const existingUser = await User.findByEmail(email);
-    if (existingUser) {
-      return res.status(400).json({ message: "Invalid email" });
+    // Check if the name is already registered
+    const existingCategory = await Category.findByName(name);
+    if (existingCategory) {
+      return res.status(400).json({ message: "Invalid name" });
     }
-    */
 
     // Create a new Category in the database
     await Category.createCategory(name, description, colour);

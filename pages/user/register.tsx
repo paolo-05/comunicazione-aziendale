@@ -1,30 +1,14 @@
 import { UserForm } from "@/components/forms/";
 import Navbar from "@/components/navbar/";
 import Container from "@/components/ui/container";
-import { signIn, useSession } from "next-auth/react";
+import { useRestrictedSession } from "@/hooks/session/useRestrictedSession";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Register() {
-  const router = useRouter();
-  const { error } = router.query;
-
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      signIn();
-    },
-  });
-
-  useEffect(() => {
-    if (session?.user.role === 0) {
-      router.push("/dashboard");
-    }
-  }, [router, session?.user.role]);
+  const session = useRestrictedSession();
 
   return (
     <>

@@ -1,26 +1,26 @@
-// Alexis Rossi
+// Alexis Rossi, Edoardo Barlassina 31/1/2024
 import { Category } from "@/models/categoryModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";
-//import { getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") {
+  if (req.method !== "PUT") {
     return res.status(405).end();
   }
-  /*
+
   const session = await getServerSession(req, res, authOptions);
 
   if (!session || session.user.role === 0) {
     return res.status(401).json({ error: "Unauthorized" });
   }
-*/
+
   const { id, name, description, colour } = req.body;
 
-  if (id <= 0 || !name || !description || !colour) {
+  if (!id || !name || !description || !colour) {
     return res.status(400).json({ error: "Missing Arguments" });
   }
   try {

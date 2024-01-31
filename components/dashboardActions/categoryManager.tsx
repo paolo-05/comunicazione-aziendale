@@ -1,11 +1,6 @@
 import Link from "next/link";
-import { Session } from "next-auth";
 
-type UserManagerProps = {
-  session: Session | null;
-};
-
-export const CategoryManager = ({ session }: UserManagerProps) => {
+export const CategoryManager = () => {
   return (
     <>
       <article className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
@@ -28,7 +23,7 @@ export const CategoryManager = ({ session }: UserManagerProps) => {
           </span>
         </div>
         <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white transition group-hover:text-secondary">
-          <Link href="/user/list-all" className="group-hover:text-secondary">
+          <Link href="/category" className="group-hover:text-secondary">
             Gestione Categorie
           </Link>
         </h2>
@@ -37,7 +32,7 @@ export const CategoryManager = ({ session }: UserManagerProps) => {
           uttili per annunci personalizzati e per la mailing list.
         </p>
         <Link
-          href="/user/list-all"
+          href="/category"
           className="flex items-center justify-between group-hover:text-secondary"
         >
           <span className="text-sm">Vai!</span>

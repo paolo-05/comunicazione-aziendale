@@ -1,45 +1,19 @@
 import { SuccessAlert } from "@/components/alerts";
 import Header from "@/components/navbar";
 import Container from "@/components/ui/container";
-import { signIn, useSession } from "next-auth/react";
+import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
+import { useProfile } from "@/hooks/user-hooks/useProfile";
+import Avatar from "@/public/default-avatar.jpg";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Avatar from "@/public/default-avatar.jpg";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Profile() {
-  const router = useRouter();
-  const { success } = router.query;
-
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated: () => {
-      signIn();
-    },
-  });
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-
-  useEffect(() => {
-    if (!success) return;
-
-    setShowAlert(true);
-
-    switch (success) {
-      case "passwordChangedSuccess":
-        setAlertMessage("Password cambiata correttamente!");
-        break;
-
-      default:
-        break;
-    }
-  }, [success]);
+  const session = useUnrestrictedSession();
+  const { showAlert, alertMessage, closeAlert } = useProfile();
 
   return (
     <>
@@ -91,9 +65,7 @@ export default function Profile() {
                         <SuccessAlert
                           show={showAlert}
                           message={alertMessage}
-                          onClose={() => {
-                            setShowAlert(false);
-                          }}
+                          onClose={closeAlert}
                         />
                       </div>
                     )}

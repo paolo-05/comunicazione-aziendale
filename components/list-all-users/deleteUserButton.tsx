@@ -1,37 +1,10 @@
 import Modal from "@/components/ui/modal";
+import { useDeleteUser } from "@/hooks/user-hooks/useDeleteUser";
 import { ItemProps } from "@/types/itemProps";
-import axios from "axios";
-import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
 
 export default function DeleteUserButton({ user, session }: ItemProps) {
-  const areTheyTheSamePerson = user?.id === session?.user.id;
-  const router = useRouter();
-
-  const [status, setStatus] = useState("idle");
-  const [showModal, setShowModal] = useState(false);
-
-  const deleteUser = useCallback(() => {
-    setStatus("deleting");
-    axios
-      .delete(`/api/user/delete/${user?.id}`)
-      .then(() => router.reload())
-      .catch((error) => console.log(error))
-      .finally(() => setStatus("idle"));
-  }, [router, user?.id]);
-
-  const handleModal = (confirm: boolean) => {
-    if (confirm) {
-      // delete the user
-      deleteUser();
-    }
-    setShowModal(false);
-  };
-
-  const toggleModal = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setShowModal(!showModal);
-  };
+  const { showModal, handleModal, toggleModal, status, areTheyTheSamePerson } =
+    useDeleteUser(session, user);
 
   return (
     <>

@@ -67,16 +67,7 @@ export default function User({ session }: DiscordUserProps) {
               </p>
             </Link>
           </div>
-          {session.user.role === 1 && (
-            <div className="py-1">
-              <Link href="/user/list-all">
-                <p className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 truncate hover:bg-gray-200 dark:hover:bg-gray-700">
-                  Gestisci Utenti
-                </p>
-              </Link>
-            </div>
-          )}
-
+          <hr className="border border-solid border-gray-200 dark:border-gray-700" />
           <div className="py-1">
             <Link
               href="/auth/signout"

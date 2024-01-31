@@ -1,58 +1,32 @@
 import { DangerAlert } from "@/components/alerts/index";
+import { useSignin } from "@/hooks/session/useSignin";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { SignInFormFields, signInSchema } from "@/types/signInTypes";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
 import { getServerSession } from "next-auth";
-import { getCsrfToken, signIn } from "next-auth/react";
+import { getCsrfToken } from "next-auth/react";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Signin({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
-  const router = useRouter();
-  const { error } = router.query;
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-
   const {
-    register,
     handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<SignInFormFields>({
-    resolver: zodResolver(signInSchema),
-  });
-
-  const onSubmit: SubmitHandler<SignInFormFields> = async (data) => {
-    try {
-      signIn("credentials", {
-        email: data.email,
-        password: data.password,
-      });
-    } catch (e) {
-      setError("root", { message: "Email o password errate." });
-    }
-  };
-
-  useEffect(() => {
-    if (error === "CredentialsSignin") {
-      setShowAlert(true);
-      setAlertMessage("Email o password errate.");
-    }
-  }, [error]);
+    onSubmit,
+    register,
+    errors,
+    isSubmitting,
+    showAlert,
+    alertMessage,
+    closeAlert,
+  } = useSignin();
 
   return (
     <>
@@ -130,7 +104,7 @@ export default function Signin({}: InferGetServerSidePropsType<
                   <DangerAlert
                     show={showAlert}
                     message={alertMessage}
-                    onClose={() => setShowAlert(false)}
+                    onClose={closeAlert}
                   />
 
                   <button

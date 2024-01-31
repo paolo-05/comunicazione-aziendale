@@ -35,7 +35,7 @@ export default function Dashboard() {
                 placeholder="blur"
               />
               <UserManager session={session} />
-              <CategoryManager session={session} />
+              <CategoryManager />
               <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64">
                 Calendario
               </div>

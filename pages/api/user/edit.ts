@@ -19,7 +19,7 @@ export default async function handler(
 
   const { id, email, role, name, lastName } = req.body;
 
-  if (id <= 0 || !email || role === -1 || !name || !lastName) {
+  if (!id || !email || role === -1 || !name || !lastName) {
     return res.status(400).json({ error: "Missing Arguments" });
   }
   try {

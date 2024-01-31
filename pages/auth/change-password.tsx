@@ -1,65 +1,23 @@
 import Navbar from "@/components/navbar";
-import {
-  ChangePasswordFormFields,
-  changePasswordSchema,
-} from "@/types/changePasswordTypes";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { signIn, useSession } from "next-auth/react";
+import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
+import useChangePassword from "@/hooks/user-hooks/useChangePassword";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function ChangePassword() {
-  const router = useRouter();
-
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated: () => signIn(),
-  });
+  const session = useUnrestrictedSession();
 
   const {
     register,
     handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<ChangePasswordFormFields>({
-    resolver: zodResolver(changePasswordSchema),
-  });
-
-  const [showPsw, setShowPsw] = useState(0);
-
-  const handleShowPswChange = () => {
-    setShowPsw(showPsw ^ 1);
-  };
-
-  const onSubmit: SubmitHandler<ChangePasswordFormFields> = async (data) => {
-    if (data.newPsw !== data.confirmPsw) {
-      setError("confirmPsw", {
-        message: "Le nuove password non corrispondono.",
-      });
-      return;
-    }
-
-    await axios
-      .put("/api/user/change-password", {
-        email: session?.user.email,
-        data,
-      })
-      .then((resp) =>
-        router.push({
-          pathname: "/user/profile",
-          query: { success: "passwordChangedSuccess" },
-        })
-      )
-      .catch((err) =>
-        setError("oldPsw", { message: "La vecchia password non corrisponde." })
-      );
-  };
+    errors,
+    isSubmitting,
+    showPsw,
+    handleShowPswChange,
+    onSubmit,
+  } = useChangePassword(session);
 
   return (
     <>

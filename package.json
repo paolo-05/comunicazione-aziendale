@@ -12,7 +12,6 @@
     "@ckeditor/ckeditor5-react": "^6.2.0",
     "@ckeditor/ckeditor5-upload": "^41.0.0",
     "@hookform/resolvers": "^3.3.4",
-    "@types/ckeditor__ckeditor5-upload": "^37.0.0",
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
     "ckeditor5-custom-build": "file:ckeditor5",

@@ -22,6 +22,7 @@ export const Category = {
       .query<RowDataPacket[]>("SELECT * FROM categories WHERE id = ?", [id]);
     return rows[0] as CategoryType | undefined;
   },
+
   /**
    *Searching for a category by name
    */
@@ -33,6 +34,7 @@ export const Category = {
       ]);
     return rows[0] as CategoryType | undefined;
   },
+
   /**
    * Creating a category defining all its values
    */
@@ -49,6 +51,7 @@ export const Category = {
       );
     return true;
   },
+
   /**
    *
    * @returns All the categories saved
@@ -59,6 +62,10 @@ export const Category = {
       .query<RowDataPacket[]>("SELECT * FROM categories");
     return rows as CategoryType[];
   },
+
+  /**
+   * Edits a category.
+   */
   editCategory: async (
     id: number,
     name: string,
@@ -73,6 +80,11 @@ export const Category = {
       );
     return true;
   },
+
+  /**
+   * Deletes a category by a given id.
+   * @param id
+   */
   deleteCategory: async (id: number): Promise<void> => {
     await db.promise().query("DELETE FROM categories WHERE id = ?", [id]);
   },
