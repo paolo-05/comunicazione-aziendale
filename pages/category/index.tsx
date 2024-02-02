@@ -1,148 +1,100 @@
-import { Item } from "@/components/categoryComponents";
-import Header from "@/components/navbar/";
+import { CategoryFormModal } from "@/components/categoryComponents/categoryFormModal";
+import { ColorPicker } from "@/components/forms";
+import Header from "@/components/navbar";
 import Container from "@/components/ui/container";
-import { UserSecure } from "@/types/types";
-import axios from "axios";
-import { signIn, useSession } from "next-auth/react";
+import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function ListAll() {
-  const router = useRouter();
-  const { success } = router.query;
+  const session = useUnrestrictedSession();
 
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      signIn();
-    },
-  });
-  const [users, setUsers] = useState<Array<UserSecure> | null>(null);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [categories, setCategories] = useState([
+    { id: 1, name: "Marketing" },
+    { id: 2, name: "IT" },
+    { id: 3, name: "Administration" },
+    // Add more initial categories as needed
+  ]);
 
-  useEffect(() => {
-    axios
-      .post("/api/category/get-all", {})
-      .then((response: any) => {
-        const users: Array<UserSecure> = response.data.message;
-        setUsers(users);
-      })
-      .catch((err: any) => {});
-  }, []);
+  const handleDelete = (id: any) => {
+    setCategories(categories.filter((category) => category.id !== id));
+  };
 
-  useEffect(() => {
-    if (!success) return;
+  const handleCreate = (name: any) => {
+    setCategories([...categories, { id: Date.now(), name }]);
+  };
 
-    setShowAlert(true);
+  const handleColorChange = (value: string) => {
+    console.log(value);
+  };
 
-    switch (success) {
-      case "userCreated":
-        setAlertMessage("Utente creato correttamente!");
-        break;
-      case "userUpdated":
-        setAlertMessage("Utente aggiornato correttamente!");
-        break;
-
-      default:
-        break;
-    }
-  }, [success]);
-
-  useEffect(() => {
-    if (session?.user.role === 0) {
-      router.push("/dashboard");
-    }
-  }, [router, session?.user.role]);
+  // Add update and view functionalities as needed
 
   return (
     <>
       <Head>
-        <title>Categorie Utenti</title>
+        <title>Gestione Categorie</title>
       </Head>
       <main className={inter.className}>
         <Header session={session} />
-        <Container>
-          <div className="relative pt-36">
-            <section className="bg-white dark:bg-gray-900 rounded-lg">
-              <div className="py-8 px-4 mx-auto  lg:py-16 lg:px-6 ">
-                <div className="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-                  <ul>
-                    <li className="pb-3 sm:pb-4">
-                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                        <div className="flex-shrink-0"></div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            Marketing
-                          </p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                            descrizione marketing
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="py-3 sm:py-4">
-                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                        <div className="flex-shrink-0"></div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            IT
-                          </p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                            descrizione IT
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="py-3 sm:py-4">
-                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                        <div className="flex-shrink-0"></div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            Amministratore
-                          </p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                            descrizione amministratore
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="py-3 sm:py-4">
-                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                        <div className="flex-shrink-0"></div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            Thomas Lean
-                          </p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                            ""
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="pt-3 pb-0 sm:pt-4">
-                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                        <div className="flex-shrink-0"></div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            Lana Byrd
-                          </p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                            ""
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </section>
-          </div>
-        </Container>
+        <div className="relative pt-36">
+          <Container>
+            <h1 className="text-3xl font-semibold mb-4">Categorie di utenti</h1>
+
+            {/* Category List */}
+            <ul>
+              {categories.map((category) => (
+                <li
+                  key={category.id}
+                  className="flex items-center justify-between border-b py-2"
+                >
+                  <span>{category.name}</span>
+                  <button
+                    onClick={() => handleDelete(category.id)}
+                    className="text-red-500"
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="m-4">
+              <ColorPicker change={handleColorChange} />
+            </div>
+
+            <button
+              onClick={() => setShowModal(true)}
+              className="max-w-screen text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800"
+            >
+              Crea una nuova categoria
+            </button>
+
+            {/* Category Creation */}
+            <div className="mt-4">
+              <h2 className="text-xl font-semibold mb-2">Create Category</h2>
+              <input
+                type="text"
+                placeholder="Category Name"
+                className="border p-2"
+              />
+
+              <button
+                // onClick={() => handleCreate(/* pass the category name from input */)}
+                className="bg-blue-500 text-white p-2 mt-2"
+              >
+                Create
+              </button>
+            </div>
+          </Container>
+          <CategoryFormModal
+            show={showModal}
+            onClose={() => setShowModal(false)}
+          />
+        </div>
       </main>
     </>
   );
