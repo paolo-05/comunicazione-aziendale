@@ -1,6 +1,4 @@
-import { SuccessAlert } from "@/components/alerts";
 import { Item } from "@/components/categoryComponents";
-import ListAllUsers from "@/components/list-all-users";
 import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
 import { UserSecure } from "@/types/types";

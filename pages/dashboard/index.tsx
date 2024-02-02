@@ -1,20 +1,14 @@
 import { UserManager } from "@/components/dashboardActions";
+import { CategoryManager } from "@/components/dashboardActions/categoryManager";
 import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
-import { signIn, useSession } from "next-auth/react";
-import Head from "next/head";
-import Link from "next/link";
-import Image from "next/image";
+import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
 import Logo from "@/public/Logo.png";
-import { CategoryManager } from "@/components/dashboardActions/categoryManager";
+import Head from "next/head";
+import Image from "next/image";
 
 export default function Dashboard() {
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      signIn();
-    },
-  });
+  const session = useUnrestrictedSession();
 
   return (
     <>
