@@ -71,21 +71,75 @@ export default function ListAll() {
         <Container>
           <div className="relative pt-36">
             <section className="bg-white dark:bg-gray-900 rounded-lg">
-              <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+              <div className="py-8 px-4 mx-auto  lg:py-16 lg:px-6 ">
                 <div className="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-                  <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-                    Our Team
-                  </h2>
-                  <p className="font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
-                    Explore the whole collection of open-source web components
-                    and elements built with the utility classes from Tailwind
-                  </p>
-                </div>
-                <div className="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
-                  <Item id={0} title={""} description={""} colour={""} />
-                  <Item id={0} title={""} description={""} colour={""} />
-                  <Item id={0} title={""} description={""} colour={""} />
-                  <Item id={0} title={""} description={""} colour={""} />
+                  <ul>
+                    <li className="pb-3 sm:pb-4">
+                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0"></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            Marketing
+                          </p>
+                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                            descrizione marketing
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="py-3 sm:py-4">
+                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0"></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            IT
+                          </p>
+                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                            descrizione IT
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="py-3 sm:py-4">
+                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0"></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            Amministratore
+                          </p>
+                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                            descrizione amministratore
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="py-3 sm:py-4">
+                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0"></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            Thomas Lean
+                          </p>
+                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                            ""
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="pt-3 pb-0 sm:pt-4">
+                      <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0"></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            Lana Byrd
+                          </p>
+                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                            ""
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </section>
