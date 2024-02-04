@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-const useChangePassword = (session: Session | null) => {
+export const useChangePassword = (session: Session | null) => {
   const router = useRouter();
 
   const {
@@ -60,5 +60,3 @@ const useChangePassword = (session: Session | null) => {
     onSubmit,
   };
 };
-
-export default useChangePassword;

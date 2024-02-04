@@ -4,8 +4,11 @@ import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
 import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
 import Logo from "@/public/Logo.png";
+import { Inter } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Dashboard() {
   const session = useUnrestrictedSession();
@@ -15,7 +18,7 @@ export default function Dashboard() {
       <Head>
         <title>Dashboard</title>
       </Head>
-      <main>
+      <main className={inter.className}>
         <Header session={session} />
         <section className="p-4 h-auto pt-20">
           <Container>

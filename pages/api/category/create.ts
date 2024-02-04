@@ -1,4 +1,5 @@
 // Alexis Rossi, Edoardo Barlassina 27-31/1/2024
+import { CategoryAPIProps, CategoryType } from "@/types/categoryTypes";
 import { Category } from "@/models/categoryModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -18,21 +19,21 @@ export default async function handler(
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const { name, description, colour } = req.body;
+  const { data, selectedColor }: CategoryAPIProps = req.body;
 
-  if (!name || !description || !colour) {
+  if (!data.name || !data.description || !selectedColor) {
     return res.status(400).json({ message: "Missing arguments" });
   }
 
   try {
     // Check if the name is already registered
-    const existingCategory = await Category.findByName(name);
+    const existingCategory = await Category.findByName(data.name);
     if (existingCategory) {
       return res.status(400).json({ message: "Invalid name" });
     }
 
     // Create a new Category in the database
-    await Category.createCategory(name, description, colour);
+    await Category.createCategory(data.name, data.description, selectedColor);
 
     res.status(201).json({ message: "OK" });
   } catch (error) {
