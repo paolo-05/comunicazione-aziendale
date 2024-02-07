@@ -12,105 +12,72 @@ export const PostForm = () => {
     <section className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700">
       <div className="py-8 px-10 mx-auto">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-          Add a new product
+          Aggiunta nuovo annuncio
         </h2>
         <form action="#">
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
             <div className="sm:col-span-2">
               <label
-                htmlFor="name"
+                htmlFor="titoloA"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Product Name
+                Titolo
               </label>
               <input
                 type="text"
-                name="name"
-                id="name"
+                name="titoloA"
+                id="titolo"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type product name"
+                placeholder="Titolo Annuncio"
                 required
               />
             </div>
             <div className="w-full">
               <label
-                htmlFor="brand"
+                htmlFor="dataStart"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Brand
+                Aggiungi Data Inizio Annuncio
               </label>
               <input
-                type="text"
-                name="brand"
-                id="brand"
+                type="date"
+                name="data"
+                id="data"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product brand"
-                required
-              />
-            </div>
-            <div className="w-full">
-              <label
-                htmlFor="price"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Price
-              </label>
-              <input
-                type="number"
-                name="price"
-                id="price"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="$2999"
+                placeholder="startDate"
                 required
               />
             </div>
             <div>
               <label
-                htmlFor="category"
+                htmlFor="dataFine"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Category
-              </label>
-              <select
-                id="category"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              >
-                <option selected>Select category</option>
-                <option value="TV">TV/Monitors</option>
-                <option value="PC">PC</option>
-                <option value="GA">Gaming/Console</option>
-                <option value="PH">Phones</option>
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="item-weight"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Item Weight (kg)
+                Aggiungi Data Fine Annuncio
               </label>
               <input
-                type="number"
-                name="item-weight"
-                id="item-weight"
+                type="date"
+                name="data"
+                id="data"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="12"
+                placeholder="startDate"
                 required
               />
             </div>
-            <div className="sm:col-span-2">
+
+            <div className="sm:col-span-1">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Descrizione
               </label>
               <div className=""></div>
-              <CustomEditor initialData="<h1>Comincia a scrivere!</h1>" />
+              <CustomEditor initialData="<h1></h1>" />
             </div>
           </div>
           <button
             type="submit"
             className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
           >
-            Add product
+            Aggiungi annuncio
           </button>
         </form>
       </div>
