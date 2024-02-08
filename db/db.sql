@@ -18,7 +18,7 @@ CREATE TABLE medias(
     name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE events(
+CREATE TABLE posts(
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
