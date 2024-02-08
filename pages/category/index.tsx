@@ -1,4 +1,4 @@
-import { CategoryFormModal, Item } from "@/components/categoryComponents";
+import { CategoryFormModal, ListAll } from "@/components/categoryComponents";
 import Header from "@/components/navbar";
 import Container from "@/components/ui/container";
 import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
@@ -15,15 +15,21 @@ export default function Category() {
 
   const [categories, setCategories] = useState<CategoryType[] | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState<CategoryType | null>(
+    null
+  );
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      await axios.get("/api/category/list-all").then((res) => {
-        setCategories(res.data.message);
-      });
-    };
-    fetchCategories();
+    axios.get("/api/category/list-all").then((res) => {
+      setCategories(res.data.message);
+    });
   }, []);
+
+  const handleEditCategoryTabOpened = (category: CategoryType) => {
+    setShowModal(true);
+
+    setCategoryToEdit(category);
+  };
 
   return (
     <>
@@ -32,6 +38,7 @@ export default function Category() {
       </Head>
       <main className={inter.className}>
         <CategoryFormModal
+          initialFormData={categoryToEdit}
           show={showModal}
           onClose={() => setShowModal(false)}
         />
@@ -58,11 +65,11 @@ export default function Category() {
                   di età. Permette una mirata comunicazione e una migliore
                   gestione degli utenti.
                 </p>
-                <div className="grid gap-4">
-                  {categories?.map((category, index) => (
-                    <Item key={index} category={category} />
-                  ))}
-                </div>
+                <ListAll
+                  session={session}
+                  categories={categories}
+                  setEditCategory={handleEditCategoryTabOpened}
+                />
               </section>
             </div>
           </Container>
