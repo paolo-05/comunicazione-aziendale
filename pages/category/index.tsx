@@ -31,17 +31,25 @@ export default function Category() {
     setCategoryToEdit(category);
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setCategoryToEdit(null);
+  };
+
   return (
     <>
       <Head>
         <title>Categorie di utenti</title>
       </Head>
       <main className={inter.className}>
-        <CategoryFormModal
-          initialFormData={categoryToEdit}
-          show={showModal}
-          onClose={() => setShowModal(false)}
-        />
+        {showModal && (
+          <CategoryFormModal
+            initialFormData={categoryToEdit}
+            show={showModal}
+            onClose={handleCloseModal}
+          />
+        )}
+
         <Header session={session} />
         <section className="relative pt-36">
           <Container>

@@ -1,7 +1,13 @@
 import { useState } from "react";
 
 type ColorPickerProps = {
+  initialColor: string;
   change: (value: string) => void;
+};
+
+type colorOption = {
+  name: string;
+  value: string;
 };
 
 const colorOptions = [
@@ -14,14 +20,15 @@ const colorOptions = [
   { name: "purple", value: "bg-purple-500 dark:bg-purple-400 text-white" },
   { name: "pink", value: "bg-pink-500 dark:bg-pink-400 text-white" },
 ];
-type colorOption = {
-  name: string;
-  value: string;
+
+const setInitialColor = (color: string) => {
+  const initialOption = colorOptions.find((option) => option.name === color);
+  return initialOption ? initialOption.value : "";
 };
 
-export const ColorPicker = ({ change }: ColorPickerProps) => {
+export const ColorPicker = ({ change, initialColor }: ColorPickerProps) => {
   const [selectedColor, setSelectedColor] = useState<string>(
-    colorOptions[0].value
+    setInitialColor(initialColor)
   );
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
