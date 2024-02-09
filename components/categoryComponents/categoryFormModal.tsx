@@ -16,6 +16,8 @@ export const CategoryFormModal = ({
     onSubmit,
   } = useCategoryForm({ initialFormData, show, onClose });
 
+  if (!show) return <>Loading...</>;
+
   return (
     <div
       tabIndex={-1}
@@ -80,6 +82,7 @@ export const CategoryFormModal = ({
               <div className="col-span-2 sm:col-span-1">
                 <ColorPicker
                   change={(value: string) => setSelectedColor(value)}
+                  initialColor={initialFormData?.colour || "red"}
                 />
               </div>
               <div className="col-span-2">
