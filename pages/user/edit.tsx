@@ -3,7 +3,7 @@ import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRestrictedSession } from "@/hooks/session/useRestrictedSession";
-import { useUser } from "@/hooks/user-hooks/useUser";
+import { useUser } from "@/hooks/user/useUser";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useRouter } from "next/router";

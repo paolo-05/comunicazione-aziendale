@@ -1,3 +1,4 @@
+import { Session } from "next-auth";
 import { z } from "zod";
 
 export type CategoryType = {
@@ -5,6 +6,12 @@ export type CategoryType = {
   name: string;
   description: string;
   colour: string;
+};
+
+export type CategoryItemProps = {
+  session: Session | null;
+  category: CategoryType;
+  setEditCategory?: (category: CategoryType) => void;
 };
 
 export type CategoryFormModalProps = {

@@ -1,10 +1,9 @@
 // Alexis Rossi, 27/01/2024
 // The following code provides the methods about the category
 
-import bcrypt from "bcrypt";
-import { db } from "./db";
-import { RowDataPacket } from "mysql2";
 import { CategoryType } from "@/types/categoryTypes";
+import { RowDataPacket } from "mysql2";
+import { db } from "./db";
 
 /**
  * This object is responsible for all the db interaction methods

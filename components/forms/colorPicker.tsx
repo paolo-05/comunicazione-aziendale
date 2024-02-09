@@ -1,40 +1,30 @@
 import { useState } from "react";
 
 type ColorPickerProps = {
-  initialColor: string;
+  initialColor?: string | null;
   change: (value: string) => void;
 };
 
-type colorOption = {
-  name: string;
-  value: string;
-};
-
-const colorOptions = [
-  { name: "red", value: "bg-red-500 dark:bg-red-400 text-white" },
-  { name: "orange", value: "bg-orange-500 dark:bg-orange-400 text-white" },
-  { name: "yellow", value: "bg-yellow-500 dark:bg-yellow-400 text-white" },
-  { name: "green", value: "bg-green-500 dark:bg-green-400 text-white" },
-  { name: "cyan", value: "bg-cyan-500 dark:bg-cyan-400 text-white" },
-  { name: "blue", value: "bg-blue-500 dark:bg-blue-400 text-white" },
-  { name: "purple", value: "bg-purple-500 dark:bg-purple-400 text-white" },
-  { name: "pink", value: "bg-pink-500 dark:bg-pink-400 text-white" },
+const colorClasses = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "cyan",
+  "blue",
+  "purple",
+  "pink",
 ];
-
-const setInitialColor = (color: string) => {
-  const initialOption = colorOptions.find((option) => option.name === color);
-  return initialOption ? initialOption.value : "";
-};
 
 export const ColorPicker = ({ change, initialColor }: ColorPickerProps) => {
   const [selectedColor, setSelectedColor] = useState<string>(
-    setInitialColor(initialColor)
+    initialColor || "red"
   );
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
-  const selectColor = (color: colorOption) => {
-    setSelectedColor(color.value);
-    change(color.name);
+  const selectColor = (color: string) => {
+    setSelectedColor(color);
+    change(color);
     setDropdownOpen(false);
   };
 
@@ -46,21 +36,21 @@ export const ColorPicker = ({ change, initialColor }: ColorPickerProps) => {
       <div className="bg-white dark:bg-gray-900 w-10 h-10 rounded-md flex flex-col items-center justify-center">
         <div
           id="selectedColor"
-          className={`w-8 h-8 rounded-sm shadow ${selectedColor}`}
+          className={`w-8 h-8 rounded-sm shadow bg-${selectedColor}-500 dark:bg-${selectedColor}-400 text-white`}
           onClick={() => setDropdownOpen(!isDropdownOpen)}
         ></div>
       </div>
       {isDropdownOpen && (
         <div className="absolute left-0 mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden">
           <div className="p-2">
-            {colorOptions.map((option) => (
+            {colorClasses.map((option) => (
               <div
-                key={option.value}
+                key={option}
                 className="color-option cursor-pointer"
                 onClick={() => selectColor(option)}
               >
                 <div
-                  className={`w-6 h-6 rounded-sm shadow ${option.value} m-2 border hover:border-black`}
+                  className={`w-6 h-6 rounded-sm shadow bg-${option}-500 dark:bg-${option}-400 text-white m-2 border hover:border-black`}
                 ></div>
               </div>
             ))}
@@ -70,5 +60,3 @@ export const ColorPicker = ({ change, initialColor }: ColorPickerProps) => {
     </div>
   );
 };
-
-export default ColorPicker;

@@ -1,8 +1,8 @@
-import { UserSecure } from "@/types/types";
 import { Session } from "next-auth";
 import { Item } from "./item";
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
+import { UserSecure } from "@/types/userTypes";
 
 type ListAllUsersProps = {
   users: UserSecure[] | null;

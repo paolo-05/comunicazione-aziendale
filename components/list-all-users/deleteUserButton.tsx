@@ -1,8 +1,8 @@
 import Modal from "@/components/ui/modal";
-import { useDeleteUser } from "@/hooks/user-hooks/useDeleteUser";
-import { ItemProps } from "@/types/itemProps";
+import { useDeleteUser } from "@/hooks/user/useDeleteUser";
+import { UserItemProps } from "@/types/userTypes";
 
-export default function DeleteUserButton({ user, session }: ItemProps) {
+export default function DeleteUserButton({ user, session }: UserItemProps) {
   const { showModal, handleModal, toggleModal, status, areTheyTheSamePerson } =
     useDeleteUser(session, user);
 
@@ -11,7 +11,7 @@ export default function DeleteUserButton({ user, session }: ItemProps) {
       <Modal
         id={`delete${user?.id}`}
         show={showModal}
-        content="Procedere con l'eliminazione dell'utente?"
+        content={`Procedere con l'eliminazione dell'utente ${user?.name} ${user?.lastName}?`}
         discardText="Annulla"
         confirmText="Continua"
         confirmDisabled={status === "delete"}

@@ -1,6 +1,6 @@
 import { User } from "@/models/userModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { ChangePasswordFormFields } from "@/types/changePasswordTypes";
+import { ChangePasswordFormFields } from "@/types/userTypes";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 

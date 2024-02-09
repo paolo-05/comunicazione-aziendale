@@ -1,5 +1,5 @@
-import { useUSerForm } from "@/hooks/user-hooks/useUserForm";
-import { UserSecure } from "@/types/types";
+import { useUSerForm } from "@/hooks/user/useUserForm";
+import { UserSecure } from "@/types/userTypes";
 
 type UserFormProps = {
   initialUserData?: UserSecure | null;

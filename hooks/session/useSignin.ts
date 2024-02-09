@@ -1,4 +1,4 @@
-import { SignInFormFields, signInSchema } from "@/types/signInTypes";
+import { SignInFormFields, signInSchema } from "@/types/userTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
