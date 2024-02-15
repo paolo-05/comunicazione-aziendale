@@ -1,38 +1,27 @@
-import { UserSecure } from "@/types/types";
+import { CategoryType } from "@/types/categoryTypes";
 import axios from "axios";
-import { Session } from "next-auth";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 
-/**
- * This hook handles the process of a user deletion
- * @param session the current admin session
- * @param user the user to delete
- * @returns utlities for showing modals
- */
-export const useDeleteUser = (
-  session: Session | null,
-  user: UserSecure | null
-) => {
-  const areTheyTheSamePerson = user?.id === session?.user.id;
+export const useDeleteCategory = (category: CategoryType) => {
   const router = useRouter();
 
   const [status, setStatus] = useState("idle");
   const [showModal, setShowModal] = useState(false);
 
-  const deleteUser = useCallback(() => {
+  const deleteCategory = useCallback(() => {
     setStatus("deleting");
     axios
-      .delete(`/api/user/delete/${user?.id}`)
+      .delete(`/api/category/delete/${category?.id}`)
       .then(() => router.reload())
       .catch((error) => console.log(error))
       .finally(() => setStatus("idle"));
-  }, [router, user?.id]);
+  }, [category?.id, router]);
 
   const handleModal = (confirm: boolean) => {
-    if (confirm) {
+    if (confirm && status !== "deleting") {
       // delete the user
-      deleteUser();
+      deleteCategory();
     }
     setShowModal(false);
   };
@@ -42,5 +31,10 @@ export const useDeleteUser = (
     setShowModal(!showModal);
   };
 
-  return { showModal, handleModal, toggleModal, status, areTheyTheSamePerson };
+  return {
+    showModal,
+    status,
+    handleModal,
+    toggleModal,
+  };
 };

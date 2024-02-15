@@ -1,10 +1,31 @@
 import type { Config } from "tailwindcss";
 
+const colorClasses = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "cyan",
+  "blue",
+  "purple",
+  "pink",
+];
+
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  safelist: [
+    ...colorClasses.map(
+      (colour: string) =>
+        `bg-${colour}-300 dark:bg-${colour}-800 p-4 rounded-md shadow-sm`
+    ),
+    ...colorClasses.map(
+      (colour: string) =>
+        `w-6 h-6 rounded-sm shadow bg-${colour}-500 dark:bg-${colour}-400 text-white m-2 border hover:border-black`
+    ),
   ],
   plugins: [require("@tailwindcss/typography")],
   darkMode: "media",

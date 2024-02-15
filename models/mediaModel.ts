@@ -1,6 +1,6 @@
-import { db } from "./db";
-import { RowDataPacket } from "mysql2";
 import { MediaType } from "@/types/types";
+import { RowDataPacket } from "mysql2";
+import { db } from "./db";
 
 export const Media = {
   save: async (uuid: string, title: string): Promise<boolean> => {

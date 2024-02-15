@@ -1,6 +1,7 @@
 import { UserManager } from "@/components/dashboardActions";
 import { CategoryManager } from "@/components/dashboardActions/categoryManager";
 import Header from "@/components/navbar/";
+import Calendar from "@/components/ui/calendar";
 import Container from "@/components/ui/container";
 import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
 import Logo from "@/public/Logo.png";
@@ -24,7 +25,7 @@ export default function Dashboard() {
           <Container>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
               <Image
-                className=" max-h-64 max-w-fit rounded-lg h-32 md:h-64"
+                className="xs:mt-3 max-h-64 max-w-fit rounded-lg h-32 md:h-64"
                 alt="logo"
                 src={Logo}
                 width={512}
@@ -33,9 +34,8 @@ export default function Dashboard() {
               />
               <UserManager session={session} />
               <CategoryManager />
-              <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64">
-                Calendario
-              </div>
+
+              <Calendar />
             </div>
             <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
             <div className="grid grid-cols-2 gap-4 mb-4">

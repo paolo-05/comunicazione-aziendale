@@ -1,6 +1,6 @@
 import Navbar from "@/components/navbar";
 import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
-import { useChangePassword } from "@/hooks/user-hooks/useChangePassword";
+import { useChangePassword } from "@/hooks/user/useChangePassword";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 

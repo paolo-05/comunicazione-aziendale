@@ -1,5 +1,6 @@
 // Paolo Bianchessi, 8/11/2023
 // Here we send back the user object by given ID in the request.
+
 import { User } from "@/models/userModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";

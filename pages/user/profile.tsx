@@ -2,7 +2,7 @@ import { SuccessAlert } from "@/components/alerts";
 import Header from "@/components/navbar";
 import Container from "@/components/ui/container";
 import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
-import { useProfile } from "@/hooks/user-hooks/useProfile";
+import { useProfile } from "@/hooks/user/useProfile";
 import Avatar from "@/public/default-avatar.jpg";
 import { Inter } from "next/font/google";
 import Head from "next/head";

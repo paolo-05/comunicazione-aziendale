@@ -1,4 +1,4 @@
-import { UserSecure } from "@/types/types";
+import { UserSecure } from "@/types/userTypes";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
