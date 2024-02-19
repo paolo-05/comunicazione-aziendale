@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { DeadlineNearPosts } from "../postComppnents";
 
-export const CategoryManager = () => {
+export const PostManager = () => {
   return (
     <>
-      <div className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
+      <article className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10 mb-4">
         <div className="flex justify-between items-center mb-5 text-gray-500">
           <span className="bg-info-100 text-info-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-info-200 dark:text-info-800">
             <svg
@@ -21,21 +22,26 @@ export const CategoryManager = () => {
             </svg>
             HR
           </span>
+          <Link
+            href="/post/new"
+            className="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          >
+            Nuovo Annuncio
+          </Link>
         </div>
         <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white transition group-hover:text-secondary">
           <Link href="/category" className="group-hover:text-secondary">
-            Gestione Categorie
+            Eventi in scadenza
           </Link>
         </h2>
-        <p className="mb-5 font-light text-gray-500 dark:text-gray-400">
-          In questa sezione potrai creare, modificare, eliminare categorie,
-          uttili per annunci personalizzati e per la mailing list.
-        </p>
+
+        <DeadlineNearPosts />
+
         <Link
-          href="/category"
+          href="/post/all"
           className="flex items-center justify-between group-hover:text-secondary"
         >
-          <span className="text-sm">Vai!</span>
+          <span className="text-sm">Vedi tutti</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -49,7 +55,7 @@ export const CategoryManager = () => {
             />
           </svg>
         </Link>
-      </div>
+      </article>
     </>
   );
 };
