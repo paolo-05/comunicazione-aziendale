@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DeadlineNearPosts } from "../postComppnents";
+import { DeadlineNearPosts } from "../postComponents";
 
 export const PostManager = () => {
   return (

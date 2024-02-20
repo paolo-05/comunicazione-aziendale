@@ -9,7 +9,7 @@ import { RowDataPacket } from "mysql2";
  * This object is responsible for all the db interaction methods
  * about the Post
  */
-const Post = {
+export const Post = {
   /**
    * Creating a post defining all its values.
    */
@@ -17,7 +17,7 @@ const Post = {
     await db
       .promise()
       .query(
-        "INSERT INTO admins (title, description, actualDate, startDate, endDate, creatorId, lastModificatorId) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO posts (title, description, actualDate, startDate, endDate, creatorId, lastModificatorId) VALUES (?, ?, ?, ?, ?, ?, ?)",
         [
           post.title,
           post.description,
@@ -62,12 +62,18 @@ const Post = {
   getNextFiveShort: async (): Promise<Array<PostType> | null> => {
     const [rows] = await db
       .promise()
-      .query(
+      .query<RowDataPacket[]>(
         "SELECT title, actualDate, startDate, endDate FROM posts WHERE actualDate >= CURDATE() ORDER BY actualDate LIMIT 5"
       );
     return rows as PostType[] | null;
   },
+  getById: async (id: number): Promise<PostType | undefined> => {
+    const [rows] = await db
+      .promise()
+      .query<RowDataPacket[]>("SELECT * FROM posts WHERE id = ?", [id]);
 
+    return rows[0] as PostType | undefined;
+  },
   listAll: async (): Promise<PostType[]> => {
     const [rows] = await db
       .promise()

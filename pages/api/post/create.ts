@@ -1,6 +1,7 @@
 // Alexis Rossi
 import { Post } from "@/models/postModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { PostType } from "@/types/postType";
 import { NextApiRequest, NextApiResponse } from "next";
 //import { getServerSession } from "next-auth/next";
 
@@ -18,15 +19,27 @@ export default async function handler(
     return res.status(401).json({ message: "Unauthorized" });
   }
 */
-  const { title, description, startDate, endDate } = req.body;
+  const { title, description, actualDate, startDate, endDate, creatorId } =
+    req.body;
 
   if (!title || !description || !startDate || !endDate) {
     return res.status(400).json({ message: "Missing arguments" });
   }
 
+  const post: PostType = {
+    id: 0,
+    title,
+    description,
+    actualDate,
+    startDate,
+    endDate,
+    creatorId,
+    lastModificatorId: 0,
+  };
+
   try {
     // Create a new Category in the database
-    await Post.createPost(title, description, startDate, endDate);
+    await Post.createPost(post);
 
     res.status(201).json({ message: "OK" });
   } catch (error) {
