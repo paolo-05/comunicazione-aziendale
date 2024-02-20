@@ -1,5 +1,8 @@
-import { UserManager } from "@/components/dashboardActions";
-import { CategoryManager } from "@/components/dashboardActions/categoryManager";
+import {
+  CategoryManager,
+  PostManager,
+  UserManager,
+} from "@/components/dashboardActions";
 import Header from "@/components/navbar/";
 import Calendar from "@/components/ui/calendar";
 import Container from "@/components/ui/container";
@@ -37,7 +40,7 @@ export default function Dashboard() {
 
               <Calendar />
             </div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
+            <PostManager />
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
               <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
@@ -53,16 +56,6 @@ export default function Dashboard() {
             </div>
           </Container>
         </section>
-        <div className="">
-          <h1>Dashboard</h1>
-          Id: {session?.user.id}
-          <br />
-          Name: {session?.user.name}
-          <br />
-          User role level: {session?.user.role}
-          <br />
-          Email: {session?.user.email}
-        </div>
       </main>
     </>
   );

@@ -8,7 +8,7 @@ type UserManagerProps = {
 export const UserManager = ({ session }: UserManagerProps) => {
   return (
     <>
-      <article className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
+      <div className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
         <div className="flex justify-between items-center mb-5 text-gray-500">
           <span className="bg-primary-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
             <svg
@@ -80,7 +80,7 @@ export const UserManager = ({ session }: UserManagerProps) => {
             </>
           )}
         </Link>
-      </article>
+      </div>
     </>
   );
 };

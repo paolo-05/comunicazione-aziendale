@@ -6,10 +6,12 @@ interface Event {
 }
 
 const Calendar: React.FC = () => {
-  const [year, setYear] = useState<number>(2024);
-  const [month, setMonth] = useState<number>(1); // January is 0, February is 1, ..., December is 11
-  const [events, setEvents] = useState<Event[]>([]);
+  const currentDate = new Date();
+  const [year, setYear] = useState(currentDate.getFullYear());
+  const [month, setMonth] = useState(currentDate.getMonth());
+  const [currentDay] = useState(currentDate.getDate());
   const [hoveredDay, setHoveredDay] = useState<number | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     // Simulated fetch of events data
@@ -77,7 +79,7 @@ const Calendar: React.FC = () => {
   return (
     <div className="w-full bg-white dark:bg-gray-800 rounded-lg">
       <div className="bg-primary-200 dark:bg-primary-700 p-4 rounded-t-lg">
-        {new Date(year, month).toLocaleString("default", {
+        {new Date(year, month).toLocaleString("it-IT", {
           month: "long",
           year: "numeric",
         })}
@@ -120,7 +122,14 @@ const Calendar: React.FC = () => {
               onMouseEnter={() => handleDayHover(day + 1)}
               onMouseLeave={handleDayLeave}
             >
-              <span className={`${event && "underline"} hover:text-secondary`}>
+              <span
+                className={`${event && "underline"} ${
+                  day + 1 === currentDay &&
+                  "bg-primary-700 text-white font-bold"
+                } ${
+                  day + 1 === currentDay ? "font-bold" : ""
+                } hover:text-secondary`}
+              >
                 {day + 1}
               </span>
               {hoveredDay === day + 1 && (

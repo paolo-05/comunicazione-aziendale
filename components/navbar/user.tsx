@@ -51,7 +51,7 @@ export default function User({ session }: DiscordUserProps) {
             type="button"
             className="relative text-sm font-semibold text-white"
           >
-            <span className="ml-2">Loggato come {user?.name}</span>
+            <span className="ml-2">{user?.name}</span>
           </button>
         </div>
 
