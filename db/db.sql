@@ -22,10 +22,11 @@ CREATE TABLE posts(
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
+    actualDate DATE NOT NULL,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
-    creatorID INT,
-    lastModificatorID INT,
+    creatorId INT,
+    lastModificatorId INT,
     FOREIGN KEY (creatorID) REFERENCES admins(id),
     FOREIGN KEY (lastModificatorID) REFERENCES admins(id)
 );
