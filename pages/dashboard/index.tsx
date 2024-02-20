@@ -8,14 +8,26 @@ import Calendar from "@/components/ui/calendar";
 import Container from "@/components/ui/container";
 import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
 import Logo from "@/public/Logo.png";
+import { PostType } from "@/types/postType";
+import axios from "axios";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Dashboard() {
   const session = useUnrestrictedSession();
+
+  const [posts, setPosts] = useState<Array<PostType>>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/post/get-next-five-sum")
+      .then((res) => setPosts(res.data.message))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
@@ -40,7 +52,7 @@ export default function Dashboard() {
 
               <Calendar />
             </div>
-            <PostManager />
+            <PostManager posts={posts} />
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
               <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>

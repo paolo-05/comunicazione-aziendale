@@ -8,3 +8,7 @@ export type PostType = {
   creatorId: number;
   lastModificatorId: number;
 };
+
+export type PostSummaryProps = {
+  posts: Array<PostType>;
+};

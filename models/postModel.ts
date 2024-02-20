@@ -2,8 +2,8 @@
 // The following code provides the methods about the posts
 
 import { PostType } from "@/types/postType";
-import { db } from "./db";
 import { RowDataPacket } from "mysql2";
+import { db } from "./db";
 
 /**
  * This object is responsible for all the db interaction methods
@@ -63,7 +63,7 @@ export const Post = {
     const [rows] = await db
       .promise()
       .query<RowDataPacket[]>(
-        "SELECT title, actualDate, startDate, endDate FROM posts WHERE actualDate >= CURDATE() ORDER BY actualDate LIMIT 5"
+        "SELECT id, title, actualDate, startDate, endDate FROM posts WHERE actualDate >= CURDATE() ORDER BY actualDate LIMIT 5"
       );
     return rows as PostType[] | null;
   },

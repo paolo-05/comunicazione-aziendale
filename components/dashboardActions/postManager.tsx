@@ -1,7 +1,8 @@
+import { PostSummaryProps } from "@/types/postType";
 import Link from "next/link";
 import { DeadlineNearPosts } from "../postComponents";
 
-export const PostManager = () => {
+export const PostManager = ({ posts }: PostSummaryProps) => {
   return (
     <>
       <article className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10 mb-4">
@@ -35,7 +36,7 @@ export const PostManager = () => {
           </Link>
         </h2>
 
-        <DeadlineNearPosts />
+        <DeadlineNearPosts posts={posts} />
 
         <Link
           href="/post/all"
