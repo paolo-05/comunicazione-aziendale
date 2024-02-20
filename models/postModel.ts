@@ -67,7 +67,7 @@ export const Post = {
       );
     return rows as PostType[] | null;
   },
-  getById: async (id: number): Promise<PostType | undefined> => {
+  findById: async (id: number): Promise<PostType | undefined> => {
     const [rows] = await db
       .promise()
       .query<RowDataPacket[]>("SELECT * FROM posts WHERE id = ?", [id]);
