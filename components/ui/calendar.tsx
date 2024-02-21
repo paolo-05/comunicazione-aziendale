@@ -115,7 +115,7 @@ const Calendar: React.FC = () => {
               <span
                 className={`${event && "underline"} ${
                   day + 1 === currentDay &&
-                  "bg-primary-700 text-white font-bold"
+                  "bg-primary-700 text-white font-bold rounded-lg p-1"
                 } ${
                   day + 1 === currentDay ? "font-bold" : ""
                 } hover:text-secondary`}
