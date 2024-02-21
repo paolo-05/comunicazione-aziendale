@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 interface Event {
-  date: string;
-  summary: string;
+  id: number;
+  title: string;
+  actualDate: string;
 }
 
 const Calendar: React.FC = () => {
@@ -14,22 +16,10 @@ const Calendar: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    // Simulated fetch of events data
-    // Replace this with your actual data fetching logic
-    const fetchEventsData = async () => {
-      // Simulating API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // Example events data for demonstration
-      const eventData: Event[] = [
-        { date: "2024-02-03", summary: "Meeting with clients" },
-        { date: "2024-02-10", summary: "Birthday party" },
-        { date: "2024-02-15", summary: "Project deadline" },
-      ];
-      setEvents(eventData);
-    };
-
-    fetchEventsData();
-  }, [year, month]);
+    axios
+      .get("/api/post/get-calendarized-events")
+      .then((res) => setEvents(res.data.message));
+  }, []);
 
   const goToPreviousMonth = () => {
     if (month === 0) {
@@ -112,7 +102,7 @@ const Calendar: React.FC = () => {
           const currentDate: Date = new Date(year, month, day + 1);
           const formattedDate: string = currentDate.toISOString().split("T")[0];
           const event: Event | undefined = events.find(
-            (event) => event.date === formattedDate
+            (event) => event.actualDate.split("T")[0] === formattedDate
           );
 
           return (
@@ -134,7 +124,7 @@ const Calendar: React.FC = () => {
               </span>
               {hoveredDay === day + 1 && (
                 <div className="z-50 absolute top-full left-0 bg-white dark:bg-gray-900 shadow-md p-2 rounded-md text-sm">
-                  {event ? event.summary : "No events"}
+                  {event ? event.title : "No events"}
                 </div>
               )}
             </div>

@@ -28,7 +28,9 @@ export const Item = ({ category, session, setEditCategory }: ItemProps) => {
           <DeleteCategoryButton session={session} category={category} />
         </div>
       </div>
-      <p className="mt-2 text-gray-800 dark:text-gray-100">{category.colour}</p>
+      <p className="mt-2 text-gray-800 dark:text-gray-100">
+        {category.description}
+      </p>
     </div>
   );
 };

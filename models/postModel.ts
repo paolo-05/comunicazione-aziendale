@@ -67,6 +67,13 @@ export const Post = {
       );
     return rows as PostType[] | null;
   },
+  getCalendarizedEvents: async (): Promise<Array<PostType> | null> => {
+    const [rows] = await db
+      .promise()
+      .query("SELECT id, title, actualDate FROM posts");
+
+    return rows as Array<PostType>;
+  },
   findById: async (id: number): Promise<PostType | undefined> => {
     const [rows] = await db
       .promise()

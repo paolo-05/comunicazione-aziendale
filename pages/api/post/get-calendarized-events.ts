@@ -1,8 +1,10 @@
-// Alexis Rossi 31/1/2024
-import { Post } from "@/models/postModel";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+// Paolo Bianchessi 21/2/2024
+// this endpoint returns events to put in the calendar
+
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
+import { Post } from "@/models/postModel";
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,12 +16,12 @@ export default async function handler(
 
   const session = await getServerSession(req, res, authOptions);
 
-  if (!session || session.user.role === 0) {
+  if (!session) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
   try {
-    const posts = await Post.listAll();
+    const posts = await Post.getCalendarizedEvents();
 
     return res.status(200).json({ message: posts });
   } catch (err: any) {
