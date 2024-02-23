@@ -1,5 +1,5 @@
 import Modal from "@/components/ui/modal";
-import { useDeleteCategory } from "@/hooks/category/useEditCategory";
+import { useDeleteCategory } from "@/hooks/category/useDeleteCategory";
 import { CategoryItemProps } from "@/types/categoryTypes";
 
 export default function DeleteCategoryButton({ category }: CategoryItemProps) {

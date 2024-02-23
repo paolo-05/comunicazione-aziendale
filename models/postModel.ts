@@ -39,14 +39,14 @@ export const Post = {
     title: string,
     description: string,
     actualDate: Date,
-    startDate: string,
-    endDate: string,
+    startDate: Date,
+    endDate: Date,
     lastModificatorId: number
   ): Promise<boolean> => {
     await db
       .promise()
       .query<RowDataPacket[]>(
-        "UPDATE categories SET title = ?, description = ?, actualDate = ?, startDate = ?, endDate = ?, lastModificatorId = ? WHERE id = ?",
+        "UPDATE posts SET title = ?, description = ?, actualDate = ?, startDate = ?, endDate = ?, lastModificatorId = ? WHERE id = ?",
         [
           title,
           description,

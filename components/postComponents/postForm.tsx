@@ -1,5 +1,6 @@
+import { usePostForm } from "@/hooks/post/usePostForm";
+import { PostFormProps } from "@/types/postType";
 import dynamic from "next/dynamic";
-import { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 
 const CustomEditor = dynamic(
@@ -9,16 +10,23 @@ const CustomEditor = dynamic(
   { ssr: false }
 );
 
-export const PostForm = () => {
-  const [value, setValue] = useState<any>({
-    startDate: new Date(),
-    endDate: new Date().setMonth(11),
-  });
-
-  const handleValueChange = (newValue: any) => {
-    console.log("newValue:", newValue);
-    setValue(newValue);
-  };
+export const PostForm = ({ initialData }: PostFormProps) => {
+  const {
+    handleSubmit,
+    onSubmit,
+    register,
+    errors,
+    range,
+    handleRangeChange,
+    rangeError,
+    value,
+    handleValueChange,
+    valueError,
+    editorData,
+    handleEditorDataChange,
+    editorError,
+    isSubmitting,
+  } = usePostForm({ initialData });
 
   return (
     <section className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700">
@@ -26,23 +34,28 @@ export const PostForm = () => {
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           Creazione nuovo annuncio
         </h2>
-        <form action="#">
-          <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 mb-4">
             <div className="sm:col-span-2">
+              <input type="hidden" id="id" {...register("id")} />
               <label
                 htmlFor="titoloA"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Titolo
+                Titolo (richiesto)
               </label>
               <input
-                type="text"
-                name="titoloA"
                 id="titoloA"
+                {...register("title")}
+                type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Titolo Annuncio"
-                required
+                placeholder="Gita Aziendale"
               />
+              {errors.title && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                  {errors.title.message}
+                </p>
+              )}
             </div>
             <div className="sm:col-span-2">
               <label
@@ -54,66 +67,132 @@ export const PostForm = () => {
               <Datepicker
                 i18n="it"
                 startFrom={new Date()}
-                separator="-->"
-                placeholder="Inserisci il range di visibilità"
+                separator="~"
+                placeholder="25/01/2023 ~ 26/02/2023"
+                primaryColor="green"
+                value={range}
+                onChange={handleRangeChange}
+                displayFormat="DD/MM/YYYY"
+                startWeekOn="mon"
+                inputId="dataRange"
+                inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              />
+              {rangeError && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                  {rangeError}
+                </p>
+              )}
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="dataStart"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Data effettiva evento
+              </label>
+              <Datepicker
+                i18n="it"
+                placeholder="25/12/2024"
                 primaryColor="green"
                 value={value}
                 onChange={handleValueChange}
                 displayFormat="DD/MM/YYYY"
                 startWeekOn="mon"
-                inputId="dataRange"
+                inputId="dataStart"
+                useRange={false}
+                asSingle={true}
+                inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               />
+              {valueError && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                  {valueError}
+                </p>
+              )}
             </div>
-            <div className="w-full">
+            {/* <div className="w-full">
               <label
-                htmlFor="dataStart"
+                htmlFor="catDrp"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Data effettiva evento
+                Categorie Target
               </label>
-              <input
-                type="date"
-                name="data"
-                id="data"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="startDate"
-                required
-              />
-            </div>
-            <div className="w-full">
-              <label
-                htmlFor="dataStart"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Data effettiva evento
-              </label>
-              <input
-                type="date"
-                name="data"
-                id="data"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="startDate"
-                required
-              />
-            </div>
+            </div> */}
 
-            <div className="sm:col-span-1">
-              <label
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                htmlFor="descrizione"
-              >
+            <div className="w-full">
+              <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Descrizione
-              </label>
+              </span>
               <div className=" max-w-full" id="descrizione">
-                <CustomEditor initialData="<h1>Scrivi qua</h1>" />
+                <CustomEditor
+                  initialData={editorData}
+                  setData={handleEditorDataChange}
+                />
               </div>
+              {editorError && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                  {editorError}
+                </p>
+              )}
             </div>
           </div>
           <button
             type="submit"
-            className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+            className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >
-            Aggiungi annuncio
+            {isSubmitting ? (
+              <>
+                <svg
+                  className="me-1 -ms-1 w-5 h-5"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                Caricamento
+              </>
+            ) : initialData ? (
+              <>
+                <svg
+                  className="me-1 -ms-1 w-5 h-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m10.8 17.8-6.4 2.1 2.1-6.4m4.3 4.3L19 9a3 3 0 0 0-4-4l-8.4 8.6m4.3 4.3-4.3-4.3m2.1 2.1L15 9.1m-2.1-2 4.2 4.2"
+                  />
+                </svg>
+                Modifica
+              </>
+            ) : (
+              <>
+                <svg
+                  className="me-1 -ms-1 w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                Crea un nuovo annuncio
+              </>
+            )}
           </button>
         </form>
       </div>

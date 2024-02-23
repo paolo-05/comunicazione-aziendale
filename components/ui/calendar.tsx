@@ -1,52 +1,22 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-
-interface Event {
-  id: number;
-  title: string;
-  actualDate: string;
-}
+import { useCalendar } from "@/hooks/post/useCalendar";
+import { PostSummary } from "@/types/postType";
+import React from "react";
 
 const Calendar: React.FC = () => {
-  const currentDate = new Date();
-  const [year, setYear] = useState(currentDate.getFullYear());
-  const [month, setMonth] = useState(currentDate.getMonth());
-  const [currentDay] = useState(currentDate.getDate());
-  const [hoveredDay, setHoveredDay] = useState<number | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
-
-  useEffect(() => {
-    axios
-      .get("/api/post/get-calendarized-events")
-      .then((res) => setEvents(res.data.message));
-  }, []);
-
-  const goToPreviousMonth = () => {
-    if (month === 0) {
-      setYear((prevYear) => prevYear - 1);
-      setMonth(11);
-    } else {
-      setMonth((prevMonth) => prevMonth - 1);
-    }
-  };
-
-  const goToNextMonth = () => {
-    if (month === 11) {
-      setYear((prevYear) => prevYear + 1);
-      setMonth(0);
-    } else {
-      setMonth((prevMonth) => prevMonth + 1);
-    }
-  };
-
-  const goToCurrentMonth = () => {
-    const currentDate = new Date();
-    setYear(currentDate.getFullYear());
-    setMonth(currentDate.getMonth());
-  };
-
-  const daysInMonth: number = new Date(year, month + 1, 0).getDate(); // Get total number of days in the month
-  const firstDayOfWeek: number = new Date(year, month, 1).getDay(); // Get day of the week for the first day of the month (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
+  const {
+    firstDayOfWeek,
+    year,
+    month,
+    daysInMonth,
+    events,
+    hoveredDay,
+    handleDayHover,
+    handleDayLeave,
+    currentDay,
+    goToCurrentMonth,
+    goToNextMonth,
+    goToPreviousMonth,
+  } = useCalendar();
 
   const renderEmptyCells = (): JSX.Element[] => {
     const emptyCellsCount: number =
@@ -56,14 +26,6 @@ const Calendar: React.FC = () => {
         {" "}
       </div>
     ));
-  };
-
-  const handleDayHover = (day: number) => {
-    setHoveredDay(day);
-  };
-
-  const handleDayLeave = () => {
-    setHoveredDay(null);
   };
 
   return (
@@ -101,7 +63,7 @@ const Calendar: React.FC = () => {
         {[...Array(daysInMonth).keys()].map((day: number) => {
           const currentDate: Date = new Date(year, month, day + 1);
           const formattedDate: string = currentDate.toISOString().split("T")[0];
-          const event: Event | undefined = events.find(
+          const dayEvents: PostSummary[] = events.filter(
             (event) => event.actualDate.split("T")[0] === formattedDate
           );
 
@@ -113,18 +75,22 @@ const Calendar: React.FC = () => {
               onMouseLeave={handleDayLeave}
             >
               <span
-                className={`${event && "underline"} ${
+                className={`${dayEvents.length > 0 && "underline"} ${
                   day + 1 === currentDay &&
                   "bg-primary-700 text-white font-bold rounded-lg p-1"
                 } ${
-                  day + 1 === currentDay ? "font-bold" : ""
+                  day + 1 === currentDate.getDay() ? "font-bold" : ""
                 } hover:text-secondary`}
               >
                 {day + 1}
               </span>
-              {hoveredDay === day + 1 && (
+              {hoveredDay === day + 1 && dayEvents.length > 0 && (
                 <div className="z-50 absolute top-full left-0 bg-white dark:bg-gray-900 shadow-md p-2 rounded-md text-sm">
-                  {event ? event.title : "No events"}
+                  <ul className="list-disc pl-5">
+                    {dayEvents.map((event) => (
+                      <li key={event.id}>{event.title}</li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>

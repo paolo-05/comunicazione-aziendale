@@ -29,7 +29,7 @@ export const DeadlineNearPosts = ({ posts }: PostSummaryProps) => {
               <tr
                 key={post.id}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                onClick={() => router.push(`/posts/${post.id}`)}
+                onClick={() => router.push(`/post/${post.id}`)}
               >
                 <th
                   scope="row"

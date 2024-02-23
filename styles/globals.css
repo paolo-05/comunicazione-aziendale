@@ -80,3 +80,15 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--main-color);
 }
+
+.data-from-editor {
+  @apply text-black bg-gray-100 rounded-lg p-3;
+}
+
+.data-from-editor h1 h2 h3 {
+  @apply text-black font-bold dark:text-white;
+}
+
+.data-from-editor p ul ol li {
+  @apply text-black font-light dark:text-white;
+}

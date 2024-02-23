@@ -61,7 +61,6 @@ export default function Profile() {
                     </div>
                     {showAlert && (
                       <div className="flex mt-4 md:mt-6">
-                        {" "}
                         <SuccessAlert
                           show={showAlert}
                           message={alertMessage}

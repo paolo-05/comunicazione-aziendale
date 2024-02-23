@@ -23,23 +23,25 @@ export default async function handler(
     return res.status(400).json({ error: "Missing Arguments" });
   }
   try {
-    const post = await Post.findById(id);
+    const post = await Post.findById(parseInt(id.toString()));
     if (!post) {
       return res.status(404).json({ error: "Not found" });
     }
 
     await Post.edit(
-      id,
+      parseInt(id.toString()),
       title,
       description,
-      actualDate,
-      startDate,
-      endDate,
+      new Date(actualDate),
+      new Date(startDate),
+      new Date(endDate),
       session.user.id
     );
 
     res.status(201).json({ message: "OK" });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ error: "Error in server" });
   }
 }

@@ -2,8 +2,6 @@
 // this endpoint returns events to put in the calendar
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { getServerSession } from "next-auth";
 import { Post } from "@/models/postModel";
 
 export default async function handler(
@@ -14,11 +12,8 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const session = await getServerSession(req, res, authOptions);
-
-  if (!session) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
+  // no session check here
+  // the posts should be accessible to everyone.
 
   try {
     const posts = await Post.getCalendarizedEvents();

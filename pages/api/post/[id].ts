@@ -1,7 +1,5 @@
 import { Post } from "@/models/postModel";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,11 +9,8 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const session = await getServerSession(req, res, authOptions);
-
-  if (!session || session.user.role === 0) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
+  // no session check here
+  // the posts should be accessible to everyone.
 
   const { id } = req.query;
 
@@ -28,6 +23,8 @@ export default async function handler(
 
     res.status(200).json({ message: user });
   } catch (err: any) {
+    console.log(err);
+
     return res.status(500).json({ error: "Error in server" });
   }
 }
