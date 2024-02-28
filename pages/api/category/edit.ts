@@ -1,7 +1,7 @@
 // Alexis Rossi, Edoardo Barlassina 31/1/2024
 import { Category } from "@/models/categoryModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { CategoryAPIProps } from "@/types/categoryTypes";
+import { CategoryAPIProps } from "@/types/category";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 

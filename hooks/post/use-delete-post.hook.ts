@@ -1,27 +1,26 @@
-import { CategoryType } from "@/types/categoryTypes";
+import { PostType } from "@/types/post";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 
-export const useDeleteCategory = (category: CategoryType) => {
+export const useDeletePost = (post: PostType) => {
   const router = useRouter();
 
   const [status, setStatus] = useState("idle");
   const [showModal, setShowModal] = useState(false);
 
-  const deleteCategory = useCallback(() => {
+  const deletePost = useCallback(() => {
     setStatus("deleting");
     axios
-      .delete(`/api/category/delete/${category?.id}`)
-      .then(() => router.reload())
-      .catch((error) => console.log(error))
+      .delete(`/api/post/delete/${post?.id}`)
+      .then(() => router.push("/dashboard"))
       .finally(() => setStatus("idle"));
-  }, [category?.id, router]);
+  }, [post?.id, router]);
 
   const handleModal = (confirm: boolean) => {
     if (confirm && status !== "deleting") {
       // delete the user
-      deleteCategory();
+      deletePost();
     }
     setShowModal(false);
   };

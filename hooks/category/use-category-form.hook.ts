@@ -2,7 +2,7 @@ import {
   CategoryFormFields,
   CategoryFormModalProps,
   categoryFormSchema,
-} from "@/types/categoryTypes";
+} from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/router";

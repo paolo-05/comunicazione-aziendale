@@ -1,4 +1,4 @@
-import { UserSecure } from "@/types/userTypes";
+import { UserSecure } from "@/types/user";
 import axios from "axios";
 import { Session } from "next-auth";
 import { useRouter } from "next/router";

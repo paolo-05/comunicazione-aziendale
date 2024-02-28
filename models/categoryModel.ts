@@ -1,9 +1,9 @@
 // Alexis Rossi, 27/01/2024
 // The following code provides the methods about the category
 
-import { CategoryType } from "@/types/categoryTypes";
 import { RowDataPacket } from "mysql2";
 import { db } from "./db";
+import { CategoryType } from "@/types/category";
 
 /**
  * This object is responsible for all the db interaction methods

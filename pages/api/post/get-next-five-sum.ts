@@ -9,12 +9,8 @@ export default async function handler(
   if (req.method !== "GET") {
     return res.status(405).end();
   }
-  // again, here no check if user is authenticated
-  // const session = await getServerSession(req, res, authOptions);
 
-  // if (!session) {
-  //   return res.status(401).json({ error: "Unauthorized" });
-  // }
+  // again, here no check if user is authenticated
 
   try {
     const posts = await Post.getNextFiveShort();

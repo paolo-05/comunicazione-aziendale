@@ -2,8 +2,8 @@ import { SuccessAlert } from "@/components/alerts";
 import ListAllUsers from "@/components/list-all-users";
 import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
-import { useRestrictedSession } from "@/hooks/session/useRestrictedSession";
-import { useUserList } from "@/hooks/user/useUserList";
+import { useRestrictedSession } from "@/hooks/session";
+import { useUserList } from "@/hooks/user";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 

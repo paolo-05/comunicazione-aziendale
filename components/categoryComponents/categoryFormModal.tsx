@@ -1,6 +1,6 @@
-import { CategoryFormModalProps } from "@/types/categoryTypes";
+import { useCategoryForm } from "@/hooks/category";
+import { CategoryFormModalProps } from "@/types/category";
 import { ColorPicker } from "../forms";
-import { useCategoryForm } from "@/hooks/category/useCategoryForm";
 
 export const CategoryFormModal = ({
   initialFormData,

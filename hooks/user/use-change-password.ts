@@ -1,7 +1,4 @@
-import {
-  ChangePasswordFormFields,
-  changePasswordSchema,
-} from "@/types/userTypes";
+import { ChangePasswordFormFields, changePasswordSchema } from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Session } from "next-auth";

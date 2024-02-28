@@ -1,7 +1,7 @@
 import Header from "@/components/navbar";
 import { PostForm } from "@/components/postComponents";
 import Container from "@/components/ui/container";
-import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
+import { useUnrestrictedSession } from "@/hooks/session";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 

@@ -1,3 +1,5 @@
+import { AlertProps } from "alert";
+
 export const WarningAlert = ({ show, message, onClose }: AlertProps) => {
   if (!show) {
     return null;

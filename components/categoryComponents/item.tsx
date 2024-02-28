@@ -1,6 +1,6 @@
-import { CategoryType } from "@/types/categoryTypes";
+import { CategoryType } from "@/types/category";
 import { Session } from "next-auth";
-import DeleteCategoryButton from "./deleteCategoryButton";
+import { DeleteCategoryButton } from ".";
 
 type ItemProps = {
   session: Session | null;

@@ -3,7 +3,7 @@
 
 import { Post } from "@/models/postModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { PostType } from "@/types/postType";
+import { PostType } from "@/types/post";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 

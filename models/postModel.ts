@@ -1,9 +1,9 @@
 // Andrea Polli, 15/02/2024
 // The following code provides the methods about the posts
 
-import { PostType } from "@/types/postType";
 import { RowDataPacket } from "mysql2";
 import { db } from "./db";
+import { PostType } from "@/types/post";
 
 /**
  * This object is responsible for all the db interaction methods

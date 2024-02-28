@@ -1,4 +1,4 @@
-import { PostSummaryProps } from "@/types/postType";
+import { PostSummaryProps } from "@/types/post";
 import { useRouter } from "next/router";
 
 export const DeadlineNearPosts = ({ posts }: PostSummaryProps) => {

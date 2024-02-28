@@ -1,4 +1,4 @@
-import { CategoryType } from "@/types/categoryTypes";
+import { CategoryType } from "@/types/category";
 import { Session } from "next-auth";
 import { Skeleton } from "../ui/skeleton";
 import { Item } from "./item";

@@ -1,5 +1,5 @@
 // Alexis Rossi, Edoardo Barlassina 27-31/1/2024
-import { CategoryAPIProps, CategoryType } from "@/types/categoryTypes";
+import { CategoryAPIProps } from "@/types/category";
 import { Category } from "@/models/categoryModel";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";

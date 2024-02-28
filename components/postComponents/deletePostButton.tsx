@@ -1,6 +1,6 @@
 import Modal from "@/components/ui/modal";
-import { useDeletePost } from "@/hooks/post/useDeletePost";
-import { PostItemProps } from "@/types/postType";
+import { useDeletePost } from "@/hooks/post";
+import { PostItemProps } from "@/types/post";
 
 export default function DeletePostButton({ post }: PostItemProps) {
   const { showModal, status, handleModal, toggleModal } = useDeletePost(post);

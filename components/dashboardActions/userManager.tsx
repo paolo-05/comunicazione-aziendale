@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Session } from "next-auth";
+import Link from "next/link";
 
 type UserManagerProps = {
   session: Session | null;

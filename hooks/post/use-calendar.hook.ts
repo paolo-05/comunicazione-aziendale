@@ -1,4 +1,4 @@
-import { PostSummary } from "@/types/postType";
+import { PostSummary } from "@/types/post";
 import axios from "axios";
 import { useEffect, useState } from "react";
 

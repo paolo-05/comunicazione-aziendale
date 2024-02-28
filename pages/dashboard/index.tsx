@@ -6,9 +6,9 @@ import {
 import Header from "@/components/navbar/";
 import Calendar from "@/components/ui/calendar";
 import Container from "@/components/ui/container";
-import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
+import { useUnrestrictedSession } from "@/hooks/session";
 import Logo from "@/public/Logo.png";
-import { PostType } from "@/types/postType";
+import { PostType } from "@/types/post";
 import axios from "axios";
 import { Inter } from "next/font/google";
 import Head from "next/head";

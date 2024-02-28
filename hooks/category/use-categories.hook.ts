@@ -1,4 +1,4 @@
-import { CategoryType } from "@/types/categoryTypes";
+import { CategoryType } from "@/types/category";
 import axios from "axios";
 import { useEffect, useState } from "react";
 

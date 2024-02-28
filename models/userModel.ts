@@ -1,7 +1,7 @@
 // Paolo Bianchessi, 29/10/2023
 // The following code provides the methods about the user
 
-import { UserSecure, UserType } from "@/types/userTypes";
+import { UserSecure, UserType } from "@/types/user";
 import bcrypt from "bcrypt";
 import { RowDataPacket } from "mysql2";
 import { db } from "./db";

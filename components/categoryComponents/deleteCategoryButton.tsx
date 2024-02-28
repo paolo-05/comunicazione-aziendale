@@ -1,8 +1,8 @@
 import Modal from "@/components/ui/modal";
-import { useDeleteCategory } from "@/hooks/category/useDeleteCategory";
-import { CategoryItemProps } from "@/types/categoryTypes";
+import { useDeleteCategory } from "@/hooks/category";
+import { CategoryItemProps } from "@/types/category";
 
-export default function DeleteCategoryButton({ category }: CategoryItemProps) {
+export const DeleteCategoryButton = ({ category }: CategoryItemProps) => {
   const { showModal, status, handleModal, toggleModal } =
     useDeleteCategory(category);
 
@@ -26,4 +26,4 @@ export default function DeleteCategoryButton({ category }: CategoryItemProps) {
       </button>
     </>
   );
-}
+};

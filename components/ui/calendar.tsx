@@ -1,5 +1,5 @@
-import { useCalendar } from "@/hooks/post/useCalendar";
-import { PostSummary } from "@/types/postType";
+import { useCalendar } from "@/hooks/post";
+import { PostSummary } from "@/types/post";
 import React from "react";
 
 const Calendar: React.FC = () => {

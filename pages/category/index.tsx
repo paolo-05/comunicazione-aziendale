@@ -1,8 +1,8 @@
 import { CategoryFormModal, ListAll } from "@/components/categoryComponents";
 import Header from "@/components/navbar";
 import Container from "@/components/ui/container";
-import { useCategories } from "@/hooks/category/useCategories";
-import { useUnrestrictedSession } from "@/hooks/session/useUnrestrictedSession";
+import { useCategories } from "@/hooks/category";
+import { useUnrestrictedSession } from "@/hooks/session";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 

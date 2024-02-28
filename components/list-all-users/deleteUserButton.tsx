@@ -1,6 +1,6 @@
 import Modal from "@/components/ui/modal";
-import { useDeleteUser } from "@/hooks/user/useDeleteUser";
-import { UserItemProps } from "@/types/userTypes";
+import { useDeleteUser } from "@/hooks/user";
+import { UserItemProps } from "@/types/user";
 
 export default function DeleteUserButton({ user, session }: UserItemProps) {
   const { showModal, handleModal, toggleModal, status, areTheyTheSamePerson } =

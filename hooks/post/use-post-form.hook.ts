@@ -1,4 +1,4 @@
-import { PostFormField, PostFormProps, postSchema } from "@/types/postType";
+import { PostFormField, PostFormProps, postSchema } from "@/types/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/router";

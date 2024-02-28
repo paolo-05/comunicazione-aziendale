@@ -1,4 +1,4 @@
-import { UserFormFieds, UserSecure, userFormSchema } from "@/types/userTypes";
+import { UserFormFieds, UserSecure, userFormSchema } from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/router";

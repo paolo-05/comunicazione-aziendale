@@ -1,5 +1,7 @@
-type AlertProps = {
-  show: boolean;
-  message: string;
-  onClose: () => void;
-};
+declare module "alert" {
+  interface AlertProps {
+    show: boolean;
+    message: string;
+    onClose: () => void;
+  }
+}

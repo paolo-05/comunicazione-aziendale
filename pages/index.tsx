@@ -1,7 +1,7 @@
 import { PostManager } from "@/components/dashboardActions";
 import Header from "@/components/navbar/";
 import Container from "@/components/ui/container";
-import { PostType } from "@/types/postType";
+import { PostType } from "@/types/post";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";

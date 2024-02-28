@@ -1,5 +1,5 @@
 import { DangerAlert } from "@/components/alerts/index";
-import { useSignin } from "@/hooks/session/useSignin";
+import { useSignin } from "@/hooks/session";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import type {
   GetServerSidePropsContext,

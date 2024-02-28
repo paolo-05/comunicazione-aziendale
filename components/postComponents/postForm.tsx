@@ -1,5 +1,5 @@
-import { usePostForm } from "@/hooks/post/usePostForm";
-import { PostFormProps } from "@/types/postType";
+import { usePostForm } from "@/hooks/post";
+import { PostFormProps } from "@/types/post";
 import dynamic from "next/dynamic";
 import Datepicker from "react-tailwindcss-datepicker";
 

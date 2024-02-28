@@ -1,7 +1,7 @@
+import { UserItemProps } from "@/types/user";
 import { useEffect, useState } from "react";
 import DeleteUserButton from "./deleteUserButton";
 import ModifyUserButton from "./modifyUserButton";
-import { UserItemProps } from "@/types/userTypes";
 
 export const Item = ({ user, session }: UserItemProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

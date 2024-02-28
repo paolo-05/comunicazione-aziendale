@@ -1,4 +1,4 @@
-import { UserItemProps } from "@/types/userTypes";
+import { UserItemProps } from "@/types/user";
 import Link from "next/link";
 
 export default function ModifyUserButton({ user, session }: UserItemProps) {

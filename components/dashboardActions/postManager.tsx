@@ -1,4 +1,4 @@
-import { PostSummaryProps } from "@/types/postType";
+import { PostSummaryProps } from "@/types/post";
 import Link from "next/link";
 import { DeadlineNearPosts } from "../postComponents";
 
