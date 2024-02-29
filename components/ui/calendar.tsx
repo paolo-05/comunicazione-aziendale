@@ -78,8 +78,6 @@ const Calendar: React.FC = () => {
                 className={`${dayEvents.length > 0 && "underline"} ${
                   day + 1 === currentDay &&
                   "bg-primary-700 text-white font-bold rounded-lg p-1"
-                } ${
-                  day + 1 === currentDate.getDay() ? "font-bold" : ""
                 } hover:text-secondary`}
               >
                 {day + 1}

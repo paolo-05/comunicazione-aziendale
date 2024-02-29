@@ -17,8 +17,9 @@ export const Post = {
     await db
       .promise()
       .query(
-        "INSERT INTO posts (title, description, actualDate, startDate, endDate, creatorId, lastModificatorId) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO posts (imageURL, title, description, actualDate, startDate, endDate, creatorId, lastModificatorId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         [
+          post.imageURL,
           post.title,
           post.description,
           post.actualDate,
@@ -36,6 +37,7 @@ export const Post = {
   },
   edit: async (
     id: number,
+    imageURL: string,
     title: string,
     description: string,
     actualDate: Date,
@@ -46,8 +48,9 @@ export const Post = {
     await db
       .promise()
       .query<RowDataPacket[]>(
-        "UPDATE posts SET title = ?, description = ?, actualDate = ?, startDate = ?, endDate = ?, lastModificatorId = ? WHERE id = ?",
+        "UPDATE posts SET imageURL = ?, title = ?,  description = ?, actualDate = ?, startDate = ?, endDate = ?, lastModificatorId = ? WHERE id = ?",
         [
+          imageURL,
           title,
           description,
           actualDate,

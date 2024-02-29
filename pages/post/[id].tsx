@@ -6,6 +6,7 @@ import { usePost } from "@/hooks/post";
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -67,6 +68,16 @@ export default function Post() {
                   <Skeleton />
                 ) : (
                   <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+                    <Image
+                      className="mx-auto my-3 xs:mt-3 max-h-64 max-w-fit rounded-lg h-32 md:h-64"
+                      alt="logo"
+                      src={post.imageURL}
+                      width={512}
+                      height={512}
+                      loading="lazy"
+                      priority={false}
+                      placeholder="data:image/svg;base64,L3BsYWNlaG9sZGVyLnN2Zw=="
+                    />
                     <h2 className="mb-2 text-xl font-semibold leading-none text-gray-900 md:text-2xl dark:text-white">
                       {post?.title || "Titolo post"}
                     </h2>

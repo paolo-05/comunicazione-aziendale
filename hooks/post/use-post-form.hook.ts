@@ -37,6 +37,12 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
   });
   const [valueError, setValueError] = useState<string>("");
 
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [imageURL, setImageURL] = useState<string | null>(
+    initialData?.imageURL || null
+  );
+  const [imageURLError, setImageURLError] = useState("");
+
   const handleRangeChange = (newValue: any) => {
     setRange(newValue);
     setRangeError("");
@@ -50,6 +56,15 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
   const handleEditorDataChange = (value: string) => {
     setEditorData(value);
     setEditorError("");
+  };
+
+  const handleImageUrlChange = (value: string) => {
+    setImageURL(value);
+    setImageURLError("");
+  };
+
+  const handleModalChange = () => {
+    setShowImageModal(!showImageModal);
   };
 
   const onSubmit: SubmitHandler<PostFormField> = async (data) => {
@@ -72,7 +87,14 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
       setValueError(
         "La data effettiva di un evento deve essere dopo il suo range di visualizzazione"
       );
+      errs = true;
     }
+
+    if (imageURL === null) {
+      setImageURLError("L'immagine di copertina è un campo richiesto.");
+      errs = true;
+    }
+
     if (errs) {
       return;
     }
@@ -86,6 +108,7 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
           actualDate: value.startDate,
           startDate: range.startDate,
           endDate: range.endDate,
+          imageURL: imageURL,
         })
         .finally(() => router.push("/dashboard"));
     } else {
@@ -98,6 +121,7 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
           actualDate: value.startDate,
           startDate: range.startDate,
           endDate: range.endDate,
+          imageURL: imageURL,
         })
         .finally(() => router.push("/dashboard"));
     }
@@ -113,6 +137,11 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
     rangeError,
     value,
     handleValueChange,
+    showImageModal,
+    handleModalChange,
+    imageURL,
+    handleImageUrlChange,
+    imageURLError,
     valueError,
     editorData,
     handleEditorDataChange,
