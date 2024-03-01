@@ -1,13 +1,12 @@
 import { usePostForm } from "@/hooks/post";
 import { PostFormProps } from "@/types/post";
 import dynamic from "next/dynamic";
-import { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import { UploadCoverImageModal } from ".";
 
 const CustomEditor = dynamic(
   () => {
-    return import("@/components/customEditor");
+    return import("@/components/customEditor/index");
   },
   { ssr: false }
 );
