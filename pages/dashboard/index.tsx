@@ -6,28 +6,18 @@ import {
 import Header from "@/components/navbar/";
 import Calendar from "@/components/ui/calendar";
 import Container from "@/components/ui/container";
+import { useNextFivePots } from "@/hooks/post";
 import { useUnrestrictedSession } from "@/hooks/session";
-import Logo from "@/public/Logo.png";
-import { PostType } from "@/types/post";
-import axios from "axios";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Dashboard() {
   const session = useUnrestrictedSession();
 
-  const [posts, setPosts] = useState<Array<PostType>>([]);
-
-  useEffect(() => {
-    axios
-      .get("/api/post/get-next-five-sum")
-      .then((res) => setPosts(res.data.message))
-      .catch((err) => console.log(err));
-  }, []);
+  const posts = useNextFivePots();
 
   return (
     <>
@@ -42,10 +32,12 @@ export default function Dashboard() {
               <Image
                 className="xs:mt-3 max-h-64 max-w-fit rounded-lg h-32 md:h-64"
                 alt="logo"
-                src={Logo}
+                src="https://res.cloudinary.com/ddygcbsoz/image/upload/f_auto,q_auto/logo"
                 width={512}
                 height={512}
-                placeholder="blur"
+                loading="lazy"
+                priority={false}
+                placeholder="data:image/svg;base64,L3BsYWNlaG9sZGVyLnN2Zw=="
               />
               <UserManager session={session} />
               <CategoryManager />

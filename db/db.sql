@@ -20,6 +20,7 @@ CREATE TABLE medias(
 
 CREATE TABLE posts(
     id INT PRIMARY KEY AUTO_INCREMENT,
+    imageURL VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     actualDate DATE NOT NULL,

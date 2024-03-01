@@ -1,16 +1,8 @@
 import { usePostForm } from "@/hooks/post";
 import { PostFormProps } from "@/types/post";
-import dynamic from "next/dynamic";
-import { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import { UploadCoverImageModal } from ".";
-
-const CustomEditor = dynamic(
-  () => {
-    return import("@/components/customEditor");
-  },
-  { ssr: false }
-);
+import { CustomEditor } from "./postForm";
 
 export const PostForm = ({ initialData }: PostFormProps) => {
   const {
@@ -41,7 +33,6 @@ export const PostForm = ({ initialData }: PostFormProps) => {
         show={showImageModal}
         onClose={handleModalChange}
         setImageURL={handleImageUrlChange}
-        imageURL={initialData?.imageURL || null}
       />
 
       <div className="py-8 px-10 mx-auto">

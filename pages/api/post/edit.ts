@@ -17,7 +17,8 @@ export default async function handler(
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { id, title, description, actualDate, startDate, endDate } = req.body;
+  const { id, title, description, actualDate, startDate, endDate, imageURL } =
+    req.body;
 
   if (!id || !title || !description || !startDate || !endDate) {
     return res.status(400).json({ error: "Missing Arguments" });
@@ -30,6 +31,7 @@ export default async function handler(
 
     await Post.edit(
       parseInt(id.toString()),
+      imageURL,
       title,
       description,
       new Date(actualDate),

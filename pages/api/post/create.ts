@@ -21,7 +21,8 @@ export default async function handler(
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const { title, description, actualDate, startDate, endDate } = req.body;
+  const { title, description, actualDate, startDate, endDate, imageURL } =
+    req.body;
 
   if (!title || !description || !actualDate || !startDate || !endDate) {
     return res.status(400).json({ message: "Missing arguments" });
@@ -29,6 +30,7 @@ export default async function handler(
 
   const post: PostType = {
     id: 0,
+    imageURL,
     title,
     description,
     actualDate,
@@ -44,6 +46,6 @@ export default async function handler(
 
     res.status(201).json({ message: "OK" });
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: "Error in server" });
   }
 }

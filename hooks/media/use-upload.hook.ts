@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 import { DROPZONE_OPTIONS, uploadFile } from "@/lib";
+import { UploadCoverImageModalProps } from "@/types/post";
 
 type ImageRes = {
   public_id: string;
@@ -18,12 +19,13 @@ type ImageRes = {
 
 const imageTypeRegex = /image\/(png|gif|jpg|jpeg)/gm;
 
-export const useUpload = () => {
+export const useUpload = ({ setImageURL }: UploadCoverImageModalProps) => {
   const [formatImage, setFormatImage] = useState<FormData | null>(null);
   const [image, setImage] = useState<ImageRes | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [progressStatus, setProgressStatus] = useState(0);
+  const [wantsToChange, setWantsToChange] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -67,13 +69,13 @@ export const useUpload = () => {
         .map((err) => {
           err.map((el) => {
             if (el.code.includes("file-invalid-type")) {
-              toast.error("File type must be .png,.jpg,.jpeg,.gif", {
-                theme: "light",
+              toast.error("Il tipo di file dev'essere .png,.jpg,.jpeg,.gif", {
+                theme: "colored",
               });
               return;
             }
             if (el.code.includes("file-too-large")) {
-              toast.error("File is larger than 10MB", { theme: "light" });
+              toast.error("File più grande di 10MB", { theme: "colored" });
               return;
             }
           });
@@ -99,7 +101,8 @@ export const useUpload = () => {
           setImage(data);
           setIsFetching(false);
           setIsSuccess(true);
-          toast.success("Successfully uploaded!");
+          toast.success("Caricato con successo!");
+          setImageURL(data.secure_url);
         }
       } catch (err) {
         if (axios.isAxiosError<{ message: string }>(err)) {
@@ -113,8 +116,9 @@ export const useUpload = () => {
         setIsFetching(false);
         setIsSuccess(false);
       }
+      setWantsToChange(false);
     })();
-  }, [formatImage]);
+  }, [formatImage, setImageURL]);
 
   return {
     isFetching,
@@ -126,5 +130,7 @@ export const useUpload = () => {
     onChangeFile,
     getRootProps,
     getInputProps,
+    wantsToChange,
+    setWantsToChange,
   };
 };

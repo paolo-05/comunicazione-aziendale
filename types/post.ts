@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export type PostType = {
   id: number;
+  imageURL: string;
   title: string;
   description: string;
   actualDate: Date;
@@ -36,3 +37,10 @@ export const postSchema = z.object({
 export type PostFormField = z.infer<typeof postSchema>;
 
 export type PostFormProps = { initialData?: PostType | null };
+
+export type UploadCoverImageModalProps = {
+  imageURL: string | null;
+  show: boolean;
+  onClose: () => void;
+  setImageURL: (url: string) => void;
+};
