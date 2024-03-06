@@ -3,6 +3,9 @@ import { PostFormProps } from "@/types/post";
 import dynamic from "next/dynamic";
 import Datepicker from "react-tailwindcss-datepicker";
 import { UploadCoverImageModal } from ".";
+import { useEffect, useState } from "react";
+import { CategoryType } from "@/types/category";
+import axios from "axios";
 
 const CustomEditor = dynamic(
   () => {
@@ -33,6 +36,14 @@ export const PostForm = ({ initialData }: PostFormProps) => {
     editorError,
     isSubmitting,
   } = usePostForm({ initialData });
+
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/category/list-all")
+      .then((res) => setCategories(res.data.message));
+  }, []);
 
   return (
     <section className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700">
@@ -122,15 +133,6 @@ export const PostForm = ({ initialData }: PostFormProps) => {
                 </p>
               )}
             </div>
-            {/* <div className="w-full">
-              <label
-                htmlFor="catDrp"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Categorie Target
-              </label>
-            </div> */}
-
             <div className="w-full">
               <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Immagine di copertina
@@ -187,6 +189,20 @@ export const PostForm = ({ initialData }: PostFormProps) => {
                   {editorError}
                 </p>
               )}
+            </div>
+            <div className="w-full">
+              <span>Categorie Target</span>
+              {categories &&
+                categories.map((category) => (
+                  <div key={category.id}>
+                    <input
+                      type="checkbox"
+                      name={category.name}
+                      id={category.name}
+                    />
+                    <label htmlFor={category.name}>{category.name}</label>
+                  </div>
+                ))}
             </div>
           </div>
           <button
