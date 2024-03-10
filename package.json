@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -14,7 +14,9 @@
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
     "ckeditor5-custom-build": "file:ckeditor5",
+    "cloudinary": "^2.0.3",
     "dayjs": "^1.11.10",
+    "formidable": "^3.5.1",
     "mysql2": "^3.7.0",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
@@ -25,11 +27,13 @@
     "react-icons": "^5.0.1",
     "react-tailwindcss-datepicker": "^1.6.6",
     "react-toastify": "^10.0.4",
+    "resend": "^3.2.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "@types/bcrypt": "^5.0.2",
+    "@types/formidable": "^3.4.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

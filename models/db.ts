@@ -6,4 +6,4 @@ import mysql from "mysql2";
 /**
  * Rapresents the connection object
  */
-export const db = mysql.createConnection(process.env.PLANETSCALE_DB_URL!);
+export const db = mysql.createConnection(process.env.STACKHERO_DB_URL);

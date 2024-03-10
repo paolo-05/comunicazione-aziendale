@@ -45,6 +45,8 @@ export const PostForm = ({ initialData }: PostFormProps) => {
       .then((res) => setCategories(res.data.message));
   }, []);
 
+  console.log(categories);
+
   return (
     <section className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700">
       <UploadCoverImageModal
@@ -192,7 +194,7 @@ export const PostForm = ({ initialData }: PostFormProps) => {
             </div>
             <div className="w-full">
               <span>Categorie Target</span>
-              {categories &&
+              {categories.length > 0 &&
                 categories.map((category) => (
                   <div key={category.id}>
                     <input

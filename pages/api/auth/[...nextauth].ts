@@ -1,5 +1,5 @@
 import { User as UserModel } from "@/models/userModel";
-import { NextAuthOptions, User } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -21,6 +21,7 @@ export const authOptions: NextAuthOptions = {
         if (!res) {
           return null;
         }
+
         const passwordsMatch = await UserModel.comparePassword(
           credentials?.password || "",
           res.password
