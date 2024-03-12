@@ -29,6 +29,10 @@ export default async function handler(
   try {
     const user = await User.findById(parseInt(id.toString()));
 
+    if (!user) {
+      return res.status(404).end();
+    }
+
     res.status(200).json({ message: user });
   } catch (err: any) {
     return res.status(500).json({ error: "Error in server" });

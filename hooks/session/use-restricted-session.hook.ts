@@ -1,5 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 /**
  * This Hooks is responsible to check if a user is authenticated and if he has the admin role
@@ -15,9 +17,12 @@ export const useRestrictedSession = () => {
     },
   });
 
-  if (session?.user.role == 0) {
-    router.push("/dashboard");
-  }
+  useEffect(() => {
+    if (session?.user.role == 0) {
+      router.push("/dashboard");
+      toast.info("Non hai il permesso di accedere a questa parte.");
+    }
+  }, [router, session?.user.role]);
 
   return session;
 };

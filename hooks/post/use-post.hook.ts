@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import { PostType } from "@/types/post";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 /**
  * This hook fetches from the api a post by a given id.
@@ -8,22 +10,25 @@ import { useEffect, useState } from "react";
  * @returns `PostType`
  */
 export const usePost = (id: string | undefined | any) => {
-  const [post, setPost] = useState<PostType | null>(null);
+  const router = useRouter();
+
+  const [post, setPost] = useState<PostType | null>();
 
   useEffect(() => {
     const fetchPostData = async () => {
-      try {
-        const res = await axios.get(`/api/post/${id}`);
-        setPost(res.data.message);
-      } catch (err) {
-        console.log(err);
-      }
+      await axios
+        .get(`/api/post/${id}`)
+        .then((res) => setPost(res.data.message))
+        .catch(() => {
+          toast.error("Evento non trovato.");
+          router.push("/");
+        });
     };
 
     if (id === undefined) return;
 
     fetchPostData();
-  }, [id]);
+  }, [id, router]);
 
   return {
     post,

@@ -1,6 +1,7 @@
 import { PostSummary } from "@/types/post";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const useCalendar = () => {
   const currentDate = new Date();
@@ -13,7 +14,8 @@ export const useCalendar = () => {
   useEffect(() => {
     axios
       .get("/api/post/get-calendarized-events")
-      .then((res) => setEvents(res.data.message));
+      .then((res) => setEvents(res.data.message))
+      .catch(() => toast.error("Network error"));
   }, []);
 
   const goToPreviousMonth = () => {

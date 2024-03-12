@@ -1,14 +1,10 @@
-import { Item } from "@/components/postComponents";
 import Header from "@/components/navbar";
-import DeletePostButton from "@/components/postComponents/deletePostButton";
+import { Item } from "@/components/postComponents";
 import Container from "@/components/ui/container";
-import { Skeleton } from "@/components/ui/skeleton";
 import { usePost } from "@/hooks/post";
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });

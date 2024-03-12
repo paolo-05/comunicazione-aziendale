@@ -9,8 +9,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <SessionProvider session={pageProps.session}>
       <ToastContainer
         position="bottom-center"
-        autoClose={5000}
-        limit={2}
+        autoClose={2000}
+        limit={1}
         hideProgressBar
         newestOnTop={false}
         closeOnClick

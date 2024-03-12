@@ -3,6 +3,7 @@ import axios from "axios";
 import { Session } from "next-auth";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
+import { toast } from "react-toastify";
 
 /**
  * This hook handles the process of a user deletion
@@ -24,8 +25,11 @@ export const useDeleteUser = (
     setStatus("deleting");
     axios
       .delete(`/api/user/delete/${user?.id}`)
-      .then(() => router.reload())
-      .catch((error) => console.log(error))
+      .then(() => {
+        router.reload();
+        toast.info("Utente eliminato");
+      })
+      .catch(() => toast.error("Network error"))
       .finally(() => setStatus("idle"));
   }, [router, user?.id]);
 

@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function ListAll() {
   const session = useRestrictedSession();
-  const { users, showAlert, alertMessage, closeAlert } = useUserList();
+  const { users } = useUserList();
 
   return (
     <>
@@ -22,11 +22,6 @@ export default function ListAll() {
         <Header session={session} />
         <Container>
           <div className="relative pt-36">
-            <SuccessAlert
-              show={showAlert}
-              message={alertMessage}
-              onClose={closeAlert}
-            />
             <ListAllUsers users={users} session={session} />
           </div>
         </Container>

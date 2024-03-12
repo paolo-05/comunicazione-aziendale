@@ -19,9 +19,13 @@ export default async function handler(
   }
 
   try {
-    const user = await Post.findById(parseInt(id.toString()));
+    const post = await Post.findById(parseInt(id.toString()));
 
-    res.status(200).json({ message: user });
+    if (!post) {
+      return res.status(404).end();
+    }
+
+    res.status(200).json({ message: post });
   } catch (err: any) {
     console.log(err);
 
