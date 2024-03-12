@@ -18,7 +18,7 @@ export const ButtonFile: FC<Props> = (props) => {
       disabled={disabled}
       title="Press to clipboard"
     >
-      Choose a file
+      Scegli un file
       <input
         ref={inputRef}
         type="file"

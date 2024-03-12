@@ -76,17 +76,17 @@ export const UploadCoverImageModal = ({
               />
             )}
 
-            {!u.isSuccess && imageURL && !u.wantsToChange && (
+            {(u.image || (imageURL && !u.wantsToChange)) && (
               <ButtonChange onClick={() => u.setWantsToChange(true)} />
             )}
 
-            {!u.isSuccess && (
+            {(!(u.image || imageURL) || u.wantsToChange) && (
               <span className="text-xs text-gray-400 dark:text-gray-300 font-medium">
                 Oppure,
               </span>
             )}
 
-            {(!u.isSuccess || u.wantsToChange) && (
+            {(!(u.image || imageURL) || u.wantsToChange) && (
               <ButtonFile
                 onClick={() => u.inputRef.current?.click()}
                 inputRef={u.inputRef}
