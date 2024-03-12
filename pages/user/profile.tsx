@@ -1,8 +1,6 @@
-import { SuccessAlert } from "@/components/alerts";
 import Header from "@/components/navbar";
 import Container from "@/components/ui/container";
 import { useUnrestrictedSession } from "@/hooks/session";
-import { useProfile } from "@/hooks/user";
 import Avatar from "@/public/default-avatar.jpg";
 import { Inter } from "next/font/google";
 import Head from "next/head";
@@ -13,7 +11,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Profile() {
   const session = useUnrestrictedSession();
-  const { showAlert, alertMessage, closeAlert } = useProfile();
 
   return (
     <>
@@ -59,15 +56,6 @@ export default function Profile() {
                         Cambia Password
                       </Link>
                     </div>
-                    {showAlert && (
-                      <div className="flex mt-4 md:mt-6">
-                        <SuccessAlert
-                          show={showAlert}
-                          message={alertMessage}
-                          onClose={closeAlert}
-                        />
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>

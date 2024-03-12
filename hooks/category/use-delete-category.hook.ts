@@ -2,6 +2,7 @@ import { CategoryType } from "@/types/category";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
+import { toast } from "react-toastify";
 
 export const useDeleteCategory = (category: CategoryType) => {
   const router = useRouter();
@@ -13,8 +14,11 @@ export const useDeleteCategory = (category: CategoryType) => {
     setStatus("deleting");
     axios
       .delete(`/api/category/delete/${category?.id}`)
-      .then(() => router.reload())
-      .catch((error) => console.log(error))
+      .then(() => {
+        router.reload();
+        toast.info("Categoria eliminata");
+      })
+      .catch(() => toast.error("Network error"))
       .finally(() => setStatus("idle"));
   }, [category?.id, router]);
 

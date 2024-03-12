@@ -1,18 +1,22 @@
 import { CategoryType } from "@/types/category";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const useCategories = () => {
-  const [categories, setCategories] = useState<CategoryType[] | null>(null);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [categoryToEdit, setCategoryToEdit] = useState<CategoryType | null>(
     null
   );
 
   useEffect(() => {
-    axios.get("/api/category/list-all").then((res) => {
-      setCategories(res.data.message);
-    });
+    axios
+      .get("/api/category/list-all")
+      .then((res) => {
+        setCategories(res.data.message);
+      })
+      .catch(() => toast.error("Network error"));
   }, []);
 
   const handleEditCategoryTabOpened = (category: CategoryType) => {

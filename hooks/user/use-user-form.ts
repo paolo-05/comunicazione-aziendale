@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export const useUSerForm = (initialUserData?: UserSecure | null) => {
   const router = useRouter();
@@ -52,17 +53,16 @@ export const useUSerForm = (initialUserData?: UserSecure | null) => {
           name: data.name,
           lastName: data.lastName,
         })
-        .then((res) =>
-          router.push({
-            pathname: "/user/list-all",
-            query: { success: "userCreated" },
-          })
-        )
-        .catch((err) =>
+        .then(() => {
+          router.push("/user/list-all");
+          toast.success("Utente registrato con successo");
+        })
+        .catch(() => {
           setError("email", {
             message: "Esiste già un utente con questa email.",
-          })
-        );
+          });
+          toast.error("Esiste già un utente con questa email.");
+        });
     } else {
       await axios
         .put("/api/user/edit", {
@@ -73,17 +73,16 @@ export const useUSerForm = (initialUserData?: UserSecure | null) => {
           name: data.name,
           lastName: data.lastName,
         })
-        .then((res) =>
-          router.push({
-            pathname: "/user/list-all",
-            query: { success: "userUpdated" },
-          })
-        )
-        .catch((err) =>
+        .then(() => {
+          router.push("/user/list-all");
+          toast.success("Utente registrato con successo");
+        })
+        .catch(() => {
           setError("email", {
             message: "Esiste già un utente con questa email.",
-          })
-        );
+          });
+          toast.error("Esiste già un utente con questa email.");
+        });
     }
   };
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export const usePostForm = ({ initialData }: PostFormProps) => {
   const router = useRouter();
@@ -110,7 +111,11 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
           endDate: range.endDate,
           imageURL: imageURL,
         })
-        .finally(() => router.push("/dashboard"));
+        .catch(() => toast.error("Errore nella creazione dell'evento"))
+        .finally(() => {
+          router.push("/dashboard");
+          toast.success("Evento creato con sucesso!");
+        });
     } else {
       // edit post
       await axios
@@ -123,7 +128,11 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
           endDate: range.endDate,
           imageURL: imageURL,
         })
-        .finally(() => router.push("/dashboard"));
+        .catch(() => toast.error("Errore nella modifica dell'evento"))
+        .finally(() => {
+          router.push("/dashboard");
+          toast.success("Evento modificato con successo!");
+        });
     }
   };
 

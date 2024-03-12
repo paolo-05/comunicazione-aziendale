@@ -1,11 +1,9 @@
+import { useCategories } from "@/hooks/category";
 import { usePostForm } from "@/hooks/post";
 import { PostFormProps } from "@/types/post";
 import dynamic from "next/dynamic";
 import Datepicker from "react-tailwindcss-datepicker";
 import { UploadCoverImageModal } from ".";
-import { useEffect, useState } from "react";
-import { CategoryType } from "@/types/category";
-import axios from "axios";
 
 const CustomEditor = dynamic(
   () => {
@@ -37,13 +35,7 @@ export const PostForm = ({ initialData }: PostFormProps) => {
     isSubmitting,
   } = usePostForm({ initialData });
 
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-
-  useEffect(() => {
-    axios
-      .get("/api/category/list-all")
-      .then((res) => setCategories(res.data.message));
-  }, []);
+  const { categories } = useCategories();
 
   return (
     <section className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700">

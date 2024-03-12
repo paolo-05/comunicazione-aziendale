@@ -2,6 +2,7 @@ import { UserSecure } from "@/types/user";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 /**
  * This hook fetches the users and handles alert for CRUD operations
@@ -10,11 +11,7 @@ import { useEffect, useState } from "react";
 export const useUserList = () => {
   const router = useRouter();
 
-  const { success } = router.query;
-
   const [users, setUsers] = useState<Array<UserSecure> | null>(null);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     axios
@@ -23,35 +20,10 @@ export const useUserList = () => {
         const users: Array<UserSecure> = response.data.message;
         setUsers(users);
       })
-      .catch((err: any) => {});
+      .catch(() => toast.error("Network error"));
   }, []);
-
-  useEffect(() => {
-    if (!success) return;
-
-    setShowAlert(true);
-
-    switch (success) {
-      case "userCreated":
-        setAlertMessage("Utente creato correttamente!");
-        break;
-      case "userUpdated":
-        setAlertMessage("Utente aggiornato correttamente!");
-        break;
-
-      default:
-        break;
-    }
-  }, [success]);
-
-  const closeAlert = () => {
-    setShowAlert(false);
-  };
 
   return {
     users,
-    showAlert,
-    alertMessage,
-    closeAlert,
   };
 };

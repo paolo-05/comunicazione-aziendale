@@ -2,6 +2,7 @@ import { PostType } from "@/types/post";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
+import { toast } from "react-toastify";
 
 export const useDeletePost = (post: PostType) => {
   const router = useRouter();
@@ -13,7 +14,11 @@ export const useDeletePost = (post: PostType) => {
     setStatus("deleting");
     axios
       .delete(`/api/post/delete/${post?.id}`)
-      .then(() => router.push("/dashboard"))
+      .then(() => {
+        router.push("/dashboard");
+        toast.info("Evento eliminato");
+      })
+      .catch(() => toast.error("Network error"))
       .finally(() => setStatus("idle"));
   }, [post?.id, router]);
 

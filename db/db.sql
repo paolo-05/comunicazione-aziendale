@@ -28,6 +28,8 @@ CREATE TABLE posts(
     endDate DATE NOT NULL,
     creatorId INT,
     lastModificatorId INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (creatorID) REFERENCES admins(id),
     FOREIGN KEY (lastModificatorID) REFERENCES admins(id)
 );
