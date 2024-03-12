@@ -9,7 +9,7 @@ import axios from "axios";
 
 const CustomEditor = dynamic(
   () => {
-    return import("@/components/customEditor/index");
+    return import("@/components/customEditor");
   },
   { ssr: false }
 );
@@ -44,8 +44,6 @@ export const PostForm = ({ initialData }: PostFormProps) => {
       .get("/api/category/list-all")
       .then((res) => setCategories(res.data.message));
   }, []);
-
-  console.log(categories);
 
   return (
     <section className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700">
