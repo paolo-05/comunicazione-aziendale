@@ -3,7 +3,7 @@
 
 import { RowDataPacket } from "mysql2";
 import { db } from "./db";
-import { PostType } from "@/types/post";
+import { PostType, RecentPostEdit } from "@/types/post";
 
 /**
  * This object is responsible for all the db interaction methods
@@ -89,5 +89,13 @@ export const Post = {
       .promise()
       .query<RowDataPacket[]>("SELECT * FROM posts");
     return rows as PostType[];
+  },
+  getLastUpdates: async (): Promise<RecentPostEdit[] | undefined> => {
+    const [rows] = await db
+      .promise()
+      .query<RowDataPacket[]>(
+        "SELECT p.id, p.title, p.updated_at, a.name, a.lastName FROM posts p JOIN admins a ON p.lastModificatorId = a.id ORDER BY p.updated_at DESC LIMIT 5"
+      );
+    return rows as RecentPostEdit[] | undefined;
   },
 };

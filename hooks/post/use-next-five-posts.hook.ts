@@ -13,5 +13,5 @@ export const useNextFivePots = () => {
       .catch(() => toast.error("Network error"));
   }, []);
 
-  return posts;
+  return { posts };
 };

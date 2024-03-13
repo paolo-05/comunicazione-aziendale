@@ -45,7 +45,6 @@ export default async function handler(
       .status(201)
       .json({ message: "Password modifcata con successo." });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Error in server." });
   }
 }
