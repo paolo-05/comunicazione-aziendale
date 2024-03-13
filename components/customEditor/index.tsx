@@ -15,7 +15,6 @@ export default function MyCKEditor(props: MyCKEditorProps) {
           data={props.initialData}
           onChange={(event, editor) => {
             const data = editor.getData();
-            // console.log({ event, editor, data });
             props.setData(data);
           }}
         />

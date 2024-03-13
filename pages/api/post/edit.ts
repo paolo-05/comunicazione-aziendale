@@ -42,8 +42,6 @@ export default async function handler(
 
     res.status(201).json({ message: "OK" });
   } catch (error) {
-    console.log(error);
-
     res.status(500).json({ error: "Error in server" });
   }
 }

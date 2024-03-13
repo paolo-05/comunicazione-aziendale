@@ -24,6 +24,14 @@ export type PostSummary = {
   actualDate: string;
 };
 
+export type RecentPostEdit = {
+  id: number;
+  title: string;
+  updated_at: Date;
+  name: string;
+  lastName: string;
+};
+
 export type PostSummaryProps = {
   posts: Array<PostType>;
   session: Session | null;
