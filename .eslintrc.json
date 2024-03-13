@@ -7,6 +7,8 @@
   "extends": [
     "standard-with-typescript",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@next/next/recommended",
     "prettier",
     "plugin:prettier/recommended"
   ],
@@ -24,6 +26,8 @@
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "react/prop-types": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

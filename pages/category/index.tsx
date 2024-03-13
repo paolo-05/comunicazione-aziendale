@@ -1,14 +1,15 @@
-import { CategoryFormModal, ListAll } from '@/components/categoryComponents';
-import Header from '@/components/navbar';
-import Container from '@/components/ui/container';
-import { useCategories } from '@/hooks/category';
-import { useUnrestrictedSession } from '@/hooks/session';
-import { Inter } from 'next/font/google';
-import Head from 'next/head';
+import { CategoryFormModal, ListAll } from "@/components/categoryComponents";
+import Header from "@/components/navbar";
+import { Container } from "@/components/ui";
+import { useCategories } from "@/hooks/category";
+import { useUnrestrictedSession } from "@/hooks/session";
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
-export default function Category() {
+export default function Category(): JSX.Element {
   const session = useUnrestrictedSession();
 
   const {
@@ -72,7 +73,7 @@ export default function Category() {
                         </p>
                         <div className="items-center mx-auto mb-1 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
                           <div className="relative w-full">
-                            {' '}
+                            {" "}
                             <button
                               type="button"
                               onClick={() => {

@@ -1,15 +1,15 @@
-import { SuccessAlert } from '@/components/alerts';
-import ListAllUsers from '@/components/list-all-users';
-import Header from '@/components/navbar/';
-import Container from '@/components/ui/container';
-import { useRestrictedSession } from '@/hooks/session';
-import { useUserList } from '@/hooks/user';
-import { Inter } from 'next/font/google';
-import Head from 'next/head';
+import ListAllUsers from "@/components/list-all-users";
+import Header from "@/components/navbar/";
+import { Container } from "@/components/ui";
+import { useRestrictedSession } from "@/hooks/session";
+import { useUserList } from "@/hooks/user";
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
-export default function ListAll() {
+export default function ListAll(): JSX.Element {
   const session = useRestrictedSession();
   const { users } = useUserList();
 

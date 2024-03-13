@@ -1,7 +1,7 @@
-import Modal from "@/components/ui/modal";
 import { useDeleteCategory } from "@/hooks/category";
 import { type CategoryItemProps } from "@/types/category";
 import React from "react";
+import { Modal } from "../ui";
 
 export const DeleteCategoryButton = ({
   category,

@@ -19,21 +19,8 @@ interface ImageRes {
 
 const imageTypeRegex = /image\/(png|gif|jpg|jpeg)/gm;
 
-export const useUpload = ({
-  setImageURL,
-}: UploadCoverImageModalProps): {
-  isFetching: boolean;
-  isDragActive: boolean;
-  isSuccess: boolean;
-  image: ImageRes | null;
-  progressStatus: number;
-  inputRef: any;
-  onChangeFile: (e: ChangeEvent<HTMLInputElement>) => void;
-  getRootProps: () => Record<string, unknown>;
-  getInputProps: () => Record<string, unknown>;
-  wantsToChange: boolean;
-  setWantsToChange: (value: boolean) => void;
-} => {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const useUpload = ({ setImageURL }: UploadCoverImageModalProps) => {
   const [formatImage, setFormatImage] = useState<FormData | null>(null);
   const [image, setImage] = useState<ImageRes | null>(null);
   const [isFetching, setIsFetching] = useState(false);

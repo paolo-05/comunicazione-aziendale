@@ -1,7 +1,7 @@
-import Modal from "@/components/ui/modal";
 import { useDeletePost } from "@/hooks/post";
 import { type PostItemProps } from "@/types/post";
 import React from "react";
+import { Modal } from "../ui";
 
 export default function DeletePostButton({
   post,

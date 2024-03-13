@@ -1,6 +1,6 @@
 import Header from "@/components/navbar";
 import { Item } from "@/components/postComponents";
-import Container from "@/components/ui/container";
+import { Container } from "@/components/ui";
 import { usePost } from "@/hooks/post";
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";

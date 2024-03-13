@@ -3,7 +3,7 @@ import { type PostSummary } from "@/types/post";
 import Link from "next/link";
 import React from "react";
 
-const Calendar: React.FC = () => {
+export const Calendar: React.FC = () => {
   const {
     firstDayOfWeek,
     year,
@@ -124,5 +124,3 @@ const Calendar: React.FC = () => {
     </div>
   );
 };
-
-export default Calendar;

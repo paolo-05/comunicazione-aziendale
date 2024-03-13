@@ -137,15 +137,15 @@ export const Item = ({ post, session }: PostItemProps): React.ReactElement => {
               />
             </svg>
             Modificato
-            {post.updated_at !== post.created_at
-              ? `: il ${new Date(post.updated_at).toLocaleString("it-IT", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric" as const,
-                })}`
-              : ": mai"}
+            {post.updated_at !== post.created_at ? " il: " : ": mai"}
+            {post.updated_at !== post.created_at &&
+              new Date(post.updated_at).toLocaleString("it-IT", {
+                hour: "2-digit",
+                minute: "2-digit",
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
           </h4>
         </div>
       )}

@@ -1,6 +1,6 @@
 import { type CategoryType } from "@/types/category";
 import { type Session } from "next-auth";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../ui";
 import { Item } from ".";
 import React from "react";
 

@@ -1,7 +1,7 @@
 import { type UserSecure } from "@/types/user";
 import { type Session } from "next-auth";
 import Link from "next/link";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../ui";
 import { Item } from "./item";
 import React from "react";
 

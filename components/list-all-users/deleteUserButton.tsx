@@ -1,7 +1,7 @@
-import Modal from "@/components/ui/modal";
 import { useDeleteUser } from "@/hooks/user";
 import { type UserItemProps } from "@/types/user";
 import React from "react";
+import { Modal } from "../ui";
 
 export default function DeleteUserButton({
   user,
@@ -18,7 +18,7 @@ export default function DeleteUserButton({
         content={`Procedere con l'eliminazione dell'utente ${user?.name} ${user?.lastName}?`}
         discardText="Annulla"
         confirmText="Continua"
-        confirmDisabled={status === "delete"}
+        confirmDisabled={status === "deleting"}
         action={handleModal}
       />
       <div className="py-1">

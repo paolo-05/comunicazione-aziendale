@@ -3,19 +3,19 @@ import {
   PostManager,
   RecentEdits,
   UserManager,
-} from '@/components/dashboardActions';
-import Header from '@/components/navbar/';
-import Calendar from '@/components/ui/calendar';
-import Container from '@/components/ui/container';
-import { useLastEdits, useNextFivePots } from '@/hooks/post';
-import { useUnrestrictedSession } from '@/hooks/session';
-import { Inter } from 'next/font/google';
-import Head from 'next/head';
-import Image from 'next/image';
+} from "@/components/dashboardActions";
+import Header from "@/components/navbar/";
+import { Calendar, Container } from "@/components/ui";
+import { useLastEdits, useNextFivePots } from "@/hooks/post";
+import { useUnrestrictedSession } from "@/hooks/session";
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import Image from "next/image";
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
-export default function Dashboard() {
+export default function Dashboard(): JSX.Element {
   const session = useUnrestrictedSession();
 
   const { posts } = useNextFivePots();

@@ -10,7 +10,7 @@ interface ModalProps {
   action: (value: any) => void;
 }
 
-export default function Modal({
+export const Modal = ({
   id,
   show,
   content,
@@ -18,7 +18,7 @@ export default function Modal({
   confirmText,
   confirmDisabled,
   action,
-}: ModalProps): React.ReactElement {
+}: ModalProps): React.ReactElement => {
   const handleModal = (value: boolean): void => {
     action(value);
   };
@@ -61,4 +61,4 @@ export default function Modal({
       </div>
     </div>
   );
-}
+};

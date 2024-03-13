@@ -1,5 +1,5 @@
 import User from "@/components/navbar/user";
-import Container from "@/components/ui/container";
+import { Container } from "@/components/ui";
 import { type Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";

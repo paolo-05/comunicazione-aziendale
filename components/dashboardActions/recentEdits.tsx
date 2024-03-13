@@ -1,5 +1,5 @@
 import { type RecentPostEdit } from "@/types/post";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../ui";
 import React from "react";
 
 interface RecentEditsProps {

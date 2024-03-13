@@ -1,16 +1,16 @@
-import { UserForm } from '@/components/forms/';
-import Header from '@/components/navbar/';
-import Container from '@/components/ui/container';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useRestrictedSession } from '@/hooks/session';
-import { useUser } from '@/hooks/user';
-import { Inter } from 'next/font/google';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { UserForm } from "@/components/forms/";
+import Header from "@/components/navbar/";
+import { Container, Skeleton } from "@/components/ui";
+import { useRestrictedSession } from "@/hooks/session";
+import { useUser } from "@/hooks/user";
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
-export default function Edit() {
+export default function Edit(): JSX.Element {
   const router = useRouter();
   const { id } = router.query;
   const session = useRestrictedSession();
@@ -31,7 +31,11 @@ export default function Edit() {
                   Aggiorna un utente
                 </h2>
 
-                {user ? <UserForm initialUserData={user} /> : <Skeleton />}
+                {user != null ? (
+                  <UserForm initialUserData={user} />
+                ) : (
+                  <Skeleton />
+                )}
               </div>
             </section>
           </Container>
