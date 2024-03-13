@@ -1,13 +1,26 @@
-import { ChangePasswordFormFields, changePasswordSchema } from "@/types/user";
+import {
+  type ChangePasswordFormFields,
+  changePasswordSchema,
+} from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-export const useChangePassword = (session: Session | null) => {
+export const useChangePassword = (
+  session: Session | null,
+): {
+  register: any;
+  handleSubmit: any;
+  errors: any;
+  isSubmitting: boolean;
+  showPsw: number;
+  handleShowPswChange: () => void;
+  onSubmit: SubmitHandler<ChangePasswordFormFields>;
+} => {
   const router = useRouter();
 
   const {
@@ -21,7 +34,7 @@ export const useChangePassword = (session: Session | null) => {
 
   const [showPsw, setShowPsw] = useState(0);
 
-  const handleShowPswChange = () => {
+  const handleShowPswChange = (): void => {
     setShowPsw(showPsw ^ 1);
   };
 
@@ -41,7 +54,7 @@ export const useChangePassword = (session: Session | null) => {
           data,
         })
         .then(() => {
-          router.push("/user/profile");
+          void router.push("/user/profile");
           toast.success("Password cambiata correttamente.");
         });
     } catch (err) {

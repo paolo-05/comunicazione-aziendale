@@ -1,18 +1,18 @@
-import { UserItemProps } from "@/types/user";
-import { useEffect, useState } from "react";
+import { type UserItemProps } from "@/types/user";
+import React, { useEffect, useState } from "react";
 import DeleteUserButton from "./deleteUserButton";
 import ModifyUserButton from "./modifyUserButton";
 
-export const Item = ({ user, session }: UserItemProps) => {
+export const Item = ({ user, session }: UserItemProps): React.ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
   };
 
   useEffect(() => {
-    const handleCloseDropdown = () => {
+    const handleCloseDropdown = (): void => {
       if (isMenuOpen) setIsMenuOpen(false);
     };
 
@@ -41,7 +41,9 @@ export const Item = ({ user, session }: UserItemProps) => {
           id={""}
           className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
           type="button"
-          onClick={(e) => toggleDropdown(e)}
+          onClick={(e) => {
+            toggleDropdown(e);
+          }}
         >
           <svg
             className="w-5 h-5"

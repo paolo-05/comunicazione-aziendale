@@ -1,12 +1,12 @@
 // Alexis Rossi 20/02/2024
-import { Post } from "@/models/postModel";
-import { NextApiRequest, NextApiResponse } from "next";
+import { Post } from '@/models';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
-  if (req.method !== "GET") {
+  if (req.method !== 'GET') {
     return res.status(405).end();
   }
 
@@ -15,8 +15,8 @@ export default async function handler(
   try {
     const posts = await Post.getNextFiveShort();
 
-    return res.status(200).json({ message: posts });
+    res.status(200).json({ message: posts });
   } catch (err: any) {
-    return res.status(500).json({ error: "Error in server" });
+    res.status(500).json({ error: 'Error in server' });
   }
 }

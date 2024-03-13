@@ -1,31 +1,40 @@
 // Alexis Rossi 20/02/2024
 // This endpoint creates a new Post
 
-import { Post } from "@/models/postModel";
+import { Post } from "@/models";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { PostType } from "@/types/post";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type PostType } from "@/types/post";
+import { type NextApiRequest, type NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
-) {
+  res: NextApiResponse,
+): Promise<void> {
   if (req.method !== "POST") {
-    return res.status(405).end();
+    res.status(405).end();
+    return;
   }
 
   const session = await getServerSession(req, res, authOptions);
 
-  if (!session) {
-    return res.status(401).json({ message: "Unauthorized" });
+  if (session == null) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
   }
 
   const { title, description, actualDate, startDate, endDate, imageURL } =
     req.body;
 
-  if (!title || !description || !actualDate || !startDate || !endDate) {
-    return res.status(400).json({ message: "Missing arguments" });
+  if (
+    title == null ||
+    description == null ||
+    actualDate == null ||
+    startDate == null ||
+    endDate == null
+  ) {
+    res.status(400).json({ message: "Missing arguments" });
+    return;
   }
 
   const post: PostType = {
@@ -38,6 +47,8 @@ export default async function handler(
     endDate,
     creatorId: session.user.id,
     lastModificatorId: 0,
+    created_at: new Date(),
+    updated_at: new Date(),
   };
 
   try {

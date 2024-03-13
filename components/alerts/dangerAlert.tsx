@@ -1,8 +1,13 @@
-import { AlertProps } from "alert";
+import { type AlertProps } from "alert";
+import React from "react";
 
-export const DangerAlert = ({ show, message, onClose }: AlertProps) => {
+export const DangerAlert = ({
+  show,
+  message,
+  onClose,
+}: AlertProps): React.ReactElement => {
   if (!show) {
-    return null;
+    return <></>;
   }
 
   return (

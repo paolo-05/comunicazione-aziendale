@@ -1,7 +1,10 @@
-import { PostSummaryProps } from "@/types/post";
+import { type PostSummaryProps } from "@/types/post";
 import { useRouter } from "next/router";
+import React from "react";
 
-export const DeadlineNearPosts = ({ posts }: PostSummaryProps) => {
+export const DeadlineNearPosts = ({
+  posts,
+}: PostSummaryProps): React.ReactElement => {
   const router = useRouter();
 
   return (
@@ -24,12 +27,13 @@ export const DeadlineNearPosts = ({ posts }: PostSummaryProps) => {
           </tr>
         </thead>
         <tbody>
-          {posts ? (
+          {posts.length > 0 ? (
             posts.map((post) => (
               <tr
                 key={post.id}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                onClick={() => router.push(`/post/${post.id}`)}
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onClick={async () => await router.push(`/post/${post.id}`)}
               >
                 <th
                   scope="row"

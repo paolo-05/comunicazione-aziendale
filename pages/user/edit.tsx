@@ -1,14 +1,14 @@
-import { UserForm } from "@/components/forms/";
-import Header from "@/components/navbar/";
-import Container from "@/components/ui/container";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useRestrictedSession } from "@/hooks/session";
-import { useUser } from "@/hooks/user";
-import { Inter } from "next/font/google";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import { UserForm } from '@/components/forms/';
+import Header from '@/components/navbar/';
+import Container from '@/components/ui/container';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useRestrictedSession } from '@/hooks/session';
+import { useUser } from '@/hooks/user';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Edit() {
   const router = useRouter();

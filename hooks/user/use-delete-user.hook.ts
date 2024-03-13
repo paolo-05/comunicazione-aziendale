@@ -1,6 +1,6 @@
-import { UserSecure } from "@/types/user";
+import { type UserSecure } from "@/types/user";
 import axios from "axios";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
@@ -13,12 +13,18 @@ import { toast } from "react-toastify";
  */
 export const useDeleteUser = (
   session: Session | null,
-  user: UserSecure | null
-) => {
+  user: UserSecure | null,
+): {
+  showModal: boolean;
+  handleModal: (confirm: boolean) => void;
+  toggleModal: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  status: "idle" | "deleting";
+  areTheyTheSamePerson: boolean;
+} => {
   const areTheyTheSamePerson = user?.id === session?.user.id;
   const router = useRouter();
 
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState<"idle" | "deleting">("idle");
   const [showModal, setShowModal] = useState(false);
 
   const deleteUser = useCallback(() => {
@@ -30,10 +36,12 @@ export const useDeleteUser = (
         toast.info("Utente eliminato");
       })
       .catch(() => toast.error("Network error"))
-      .finally(() => setStatus("idle"));
+      .finally(() => {
+        setStatus("idle");
+      });
   }, [router, user?.id]);
 
-  const handleModal = (confirm: boolean) => {
+  const handleModal = (confirm: boolean): void => {
     if (confirm && status !== "deleting") {
       // delete the user
       deleteUser();
@@ -41,7 +49,7 @@ export const useDeleteUser = (
     setShowModal(false);
   };
 
-  const toggleModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleModal = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     setShowModal(!showModal);
   };

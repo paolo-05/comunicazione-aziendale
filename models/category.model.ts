@@ -1,9 +1,9 @@
 // Alexis Rossi, 27/01/2024
 // The following code provides the methods about the category
 
-import { RowDataPacket } from "mysql2";
-import { db } from "./db";
-import { CategoryType } from "@/types/category";
+import { type CategoryType } from "@/types/category";
+import { type RowDataPacket } from "mysql2";
+import { db } from ".";
 
 /**
  * This object is responsible for all the db interaction methods
@@ -28,9 +28,9 @@ export const Category = {
   findByName: async (name: string): Promise<CategoryType | undefined> => {
     const [rows] = await db
       .promise()
-      .query<RowDataPacket[]>("SELECT * FROM categories WHERE name = ?", [
-        name,
-      ]);
+      .query<
+        RowDataPacket[]
+      >("SELECT * FROM categories WHERE name = ?", [name]);
     return rows[0] as CategoryType | undefined;
   },
 
@@ -40,13 +40,13 @@ export const Category = {
   createCategory: async (
     name: string,
     description: string,
-    colour: string
+    colour: string,
   ): Promise<boolean> => {
     await db
       .promise()
       .query(
         "INSERT INTO categories (name, description, colour) VALUES (?, ?, ?)",
-        [name, description, colour]
+        [name, description, colour],
       );
     return true;
   },
@@ -69,14 +69,13 @@ export const Category = {
     id: number,
     name: string,
     description: string,
-    colour: string
+    colour: string,
   ): Promise<boolean> => {
     await db
       .promise()
-      .query<RowDataPacket[]>(
-        "UPDATE categories SET name = ?, description = ?, colour = ? WHERE id = ?",
-        [name, description, colour, id]
-      );
+      .query<
+        RowDataPacket[]
+      >("UPDATE categories SET name = ?, description = ?, colour = ? WHERE id = ?", [name, description, colour, id]);
     return true;
   },
 

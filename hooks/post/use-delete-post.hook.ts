@@ -1,10 +1,17 @@
-import { PostType } from "@/types/post";
+import { type PostType } from "@/types/post";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useDeletePost = (post: PostType) => {
+export const useDeletePost = (
+  post: PostType,
+): {
+  showModal: boolean;
+  status: string;
+  handleModal: (confirm: boolean) => void;
+  toggleModal: (event: React.MouseEvent<HTMLButtonElement>) => void;
+} => {
   const router = useRouter();
 
   const [status, setStatus] = useState("idle");
@@ -15,14 +22,16 @@ export const useDeletePost = (post: PostType) => {
     axios
       .delete(`/api/post/delete/${post?.id}`)
       .then(() => {
-        router.push("/dashboard");
+        void router.push("/dashboard");
         toast.info("Evento eliminato");
       })
       .catch(() => toast.error("Network error"))
-      .finally(() => setStatus("idle"));
+      .finally(() => {
+        setStatus("idle");
+      });
   }, [post?.id, router]);
 
-  const handleModal = (confirm: boolean) => {
+  const handleModal = (confirm: boolean): void => {
     if (confirm && status !== "deleting") {
       // delete the user
       deletePost();
@@ -30,7 +39,7 @@ export const useDeletePost = (post: PostType) => {
     setShowModal(false);
   };
 
-  const toggleModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleModal = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     setShowModal(!showModal);
   };

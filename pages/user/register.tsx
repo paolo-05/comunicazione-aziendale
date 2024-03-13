@@ -1,11 +1,11 @@
-import { UserForm } from "@/components/forms/";
-import Navbar from "@/components/navbar/";
-import Container from "@/components/ui/container";
-import { useRestrictedSession } from "@/hooks/session";
-import { Inter } from "next/font/google";
-import Head from "next/head";
+import { UserForm } from '@/components/forms/';
+import Navbar from '@/components/navbar/';
+import Container from '@/components/ui/container';
+import { useRestrictedSession } from '@/hooks/session';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Register() {
   const session = useRestrictedSession();

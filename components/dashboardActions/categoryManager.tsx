@@ -1,6 +1,7 @@
 import Link from "next/link";
+import React from "react";
 
-export const CategoryManager = () => {
+export const CategoryManager = (): React.ReactElement => {
   return (
     <>
       <div className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">

@@ -1,18 +1,21 @@
 import { useCategories } from "@/hooks/category";
 import { usePostForm } from "@/hooks/post";
-import { PostFormProps } from "@/types/post";
+import { type PostFormProps } from "@/types/post";
 import dynamic from "next/dynamic";
 import Datepicker from "react-tailwindcss-datepicker";
 import { UploadCoverImageModal } from ".";
+import React from "react";
 
 const CustomEditor = dynamic(
-  () => {
-    return import("@/components/customEditor");
+  async () => {
+    return await import("@/components/customEditor");
   },
-  { ssr: false }
+  { ssr: false },
 );
 
-export const PostForm = ({ initialData }: PostFormProps) => {
+export const PostForm = ({
+  initialData,
+}: PostFormProps): React.ReactElement => {
   const {
     handleSubmit,
     onSubmit,
@@ -43,13 +46,14 @@ export const PostForm = ({ initialData }: PostFormProps) => {
         show={showImageModal}
         onClose={handleModalChange}
         setImageURL={handleImageUrlChange}
-        imageURL={initialData?.imageURL || null}
+        imageURL={initialData?.imageURL ?? null}
       />
 
       <div className="py-8 px-10 mx-auto">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           Creazione nuovo annuncio
         </h2>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 mb-4">
             <div className="sm:col-span-2">
@@ -67,7 +71,7 @@ export const PostForm = ({ initialData }: PostFormProps) => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Gita Aziendale"
               />
-              {errors.title && (
+              {errors.title != null && (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   {errors.title.message}
                 </p>
@@ -93,7 +97,7 @@ export const PostForm = ({ initialData }: PostFormProps) => {
                 inputId="dataRange"
                 inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               />
-              {rangeError && (
+              {rangeError.length > 0 && (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   {rangeError}
                 </p>
@@ -119,7 +123,7 @@ export const PostForm = ({ initialData }: PostFormProps) => {
                 asSingle={true}
                 inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               />
-              {valueError && (
+              {valueError.length > 0 && (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   {valueError}
                 </p>
@@ -152,14 +156,14 @@ export const PostForm = ({ initialData }: PostFormProps) => {
                     clipRule="evenodd"
                   />
                 </svg>
-                {initialData ? "Cambia Immagine" : "Carica"}
+                {initialData != null ? "Cambia Immagine" : "Carica"}
               </button>
-              {imageURL && initialData?.imageURL !== imageURL && (
+              {imageURL != null && initialData?.imageURL !== imageURL && (
                 <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
                   Bene, hai caricato l&apos;immagine di copertina!
                 </p>
               )}
-              {imageURLError && (
+              {imageURLError.length > 0 && (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   {imageURLError}
                 </p>
@@ -176,7 +180,7 @@ export const PostForm = ({ initialData }: PostFormProps) => {
                   setData={handleEditorDataChange}
                 />
               </div>
-              {editorError && (
+              {editorError.length > 0 && (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   {editorError}
                 </p>
@@ -220,7 +224,7 @@ export const PostForm = ({ initialData }: PostFormProps) => {
                 </svg>
                 Caricamento
               </>
-            ) : initialData ? (
+            ) : initialData != null ? (
               <>
                 <svg
                   className="me-1 -ms-1 w-5 h-5"

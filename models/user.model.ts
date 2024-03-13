@@ -1,10 +1,10 @@
 // Paolo Bianchessi, 29/10/2023
 // The following code provides the methods about the user
 
-import { UserSecure, UserType } from "@/types/user";
+import { type UserSecure, type UserType } from "@/types/user";
 import bcrypt from "bcrypt";
-import { RowDataPacket } from "mysql2";
-import { db } from "./db";
+import { type RowDataPacket } from "mysql2";
+import { db } from ".";
 
 /**
  * This object is responsible for all the db interaction methods
@@ -31,10 +31,9 @@ export const User = {
   findById: async (id: number): Promise<UserSecure | undefined> => {
     const [rows] = await db
       .promise()
-      .query<RowDataPacket[]>(
-        "SELECT id, email, role, name, lastName FROM admins JOIN roles on roles.adminId=admins.id WHERE id = ?",
-        [id]
-      );
+      .query<
+        RowDataPacket[]
+      >("SELECT id, email, role, name, lastName FROM admins JOIN roles on roles.adminId=admins.id WHERE id = ?", [id]);
     return rows[0] as UserSecure | undefined;
   },
 
@@ -46,14 +45,14 @@ export const User = {
     password: string | Buffer,
     role: number,
     name: string,
-    lastName: string
+    lastName: string,
   ): Promise<boolean> => {
     const hashedPassword = await bcrypt.hash(password, 10);
     await db
       .promise()
       .query(
         "INSERT INTO admins (email, password, name, lastName) VALUES (?, ?, ?, ?)",
-        [email, hashedPassword, name, lastName]
+        [email, hashedPassword, name, lastName],
       );
 
     const user = await User.findByEmail(email);
@@ -74,7 +73,7 @@ export const User = {
    */
   comparePassword: async (
     password: string | Buffer,
-    hashedPassword: string
+    hashedPassword: string,
   ): Promise<boolean> => {
     return await bcrypt.compare(password, hashedPassword);
   },
@@ -86,9 +85,9 @@ export const User = {
   listAll: async (): Promise<UserSecure[]> => {
     const [rows] = await db
       .promise()
-      .query<RowDataPacket[]>(
-        "SELECT id, email, role, name, lastName FROM admins JOIN roles on roles.adminId=admins.id ORDER BY id"
-      );
+      .query<
+        RowDataPacket[]
+      >("SELECT id, email, role, name, lastName FROM admins JOIN roles on roles.adminId=admins.id ORDER BY id");
     return rows as UserSecure[];
   },
 
@@ -100,18 +99,17 @@ export const User = {
     email: string,
     role: number,
     name: string,
-    lastName: string
+    lastName: string,
   ): Promise<boolean> => {
     const existingUser = await User.findByEmail(email);
-    if (existingUser) {
+    if (existingUser != null) {
       if (existingUser.id !== id) return false;
     }
     await db
       .promise()
-      .query<RowDataPacket[]>(
-        "UPDATE admins SET email = ?, name = ?, lastName = ? WHERE id = ?",
-        [email, name, lastName, id]
-      );
+      .query<
+        RowDataPacket[]
+      >("UPDATE admins SET email = ?, name = ?, lastName = ? WHERE id = ?", [email, name, lastName, id]);
 
     await db
       .promise()
@@ -136,10 +134,9 @@ export const User = {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await db
       .promise()
-      .query<RowDataPacket[]>("UPDATE admins SET password = ? WHERE id = ?", [
-        hashedPassword,
-        id,
-      ]);
+      .query<
+        RowDataPacket[]
+      >("UPDATE admins SET password = ? WHERE id = ?", [hashedPassword, id]);
   },
 
   /**
@@ -150,9 +147,9 @@ export const User = {
   getRoleLevel: async (adminId: number): Promise<number | undefined> => {
     const [rows] = await db
       .promise()
-      .query<RowDataPacket[]>("SELECT role FROM roles WHERE adminId = ?", [
-        adminId,
-      ]);
+      .query<
+        RowDataPacket[]
+      >("SELECT role FROM roles WHERE adminId = ?", [adminId]);
     return rows[0].role as number | undefined;
   },
 };

@@ -1,12 +1,44 @@
-import { PostFormField, PostFormProps, postSchema } from "@/types/post";
+import {
+  type PostFormField,
+  type PostFormProps,
+  postSchema,
+} from "@/types/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-export const usePostForm = ({ initialData }: PostFormProps) => {
+export const usePostForm = ({
+  initialData,
+}: PostFormProps): {
+  handleSubmit: any;
+  onSubmit: SubmitHandler<PostFormField>;
+  register: any;
+  errors: any;
+  range: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
+  handleRangeChange: (newValue: any) => void;
+  rangeError: string;
+  value: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
+  handleValueChange: (newValue: any) => void;
+  showImageModal: boolean;
+  handleModalChange: () => void;
+  imageURL: string | null;
+  handleImageUrlChange: (value: string) => void;
+  imageURLError: string;
+  valueError: string;
+  editorData: string;
+  handleEditorDataChange: (value: string) => void;
+  editorError: string;
+  isSubmitting: boolean;
+} => {
   const router = useRouter();
 
   const {
@@ -15,61 +47,61 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<PostFormField>({
     defaultValues: {
-      id: initialData?.id || -1,
-      title: initialData?.title || "",
+      id: initialData?.id ?? -1,
+      title: initialData?.title ?? "",
     },
     resolver: zodResolver(postSchema),
   });
 
   const [editorData, setEditorData] = useState<string>(
-    initialData?.description || "<h2>Scrivi Qua</h2>"
+    initialData?.description ?? "<h2>Scrivi Qua</h2>",
   );
   const [editorError, setEditorError] = useState<string>("");
 
   const [range, setRange] = useState<any>({
-    startDate: initialData?.startDate || null,
-    endDate: initialData?.endDate || null,
+    startDate: initialData?.startDate ?? null,
+    endDate: initialData?.endDate ?? null,
   });
   const [rangeError, setRangeError] = useState<string>("");
 
   const [value, setValue] = useState<any>({
-    startDate: initialData?.actualDate || null,
-    endDate: initialData?.actualDate || null,
+    startDate: initialData?.actualDate ?? null,
+    endDate: initialData?.actualDate ?? null,
   });
   const [valueError, setValueError] = useState<string>("");
 
   const [showImageModal, setShowImageModal] = useState(false);
   const [imageURL, setImageURL] = useState<string | null>(
-    initialData?.imageURL || null
+    initialData?.imageURL ?? null,
   );
   const [imageURLError, setImageURLError] = useState("");
 
-  const handleRangeChange = (newValue: any) => {
+  const handleRangeChange = (newValue: any): void => {
     setRange(newValue);
     setRangeError("");
   };
 
-  const handleValueChange = (newValue: any) => {
+  const handleValueChange = (newValue: any): void => {
     setValue(newValue);
     setValueError("");
   };
 
-  const handleEditorDataChange = (value: string) => {
+  const handleEditorDataChange = (value: string): void => {
     setEditorData(value);
     setEditorError("");
   };
 
-  const handleImageUrlChange = (value: string) => {
+  const handleImageUrlChange = (value: string): void => {
     setImageURL(value);
     setImageURLError("");
   };
 
-  const handleModalChange = () => {
+  const handleModalChange = (): void => {
     setShowImageModal(!showImageModal);
   };
 
   const onSubmit: SubmitHandler<PostFormField> = async (data) => {
-    var errs = false;
+    let errs = false;
 
     if (range.startDate === null || range.endDate === null) {
       setRangeError("Campo richiesto");
@@ -79,14 +111,14 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
       setValueError("Campo richiesto");
       errs = true;
     }
-    if (!editorData) {
+    if (editorData.length === 0) {
       setEditorError("Campo richiesto");
       errs = true;
     }
 
     if (value.startDate < range.endDate) {
       setValueError(
-        "La data effettiva di un evento deve essere dopo il suo range di visualizzazione"
+        "La data effettiva di un evento deve essere dopo il suo range di visualizzazione",
       );
       errs = true;
     }
@@ -100,7 +132,7 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
       return;
     }
 
-    if (!initialData) {
+    if (initialData == null) {
       // new post
       await axios
         .post("/api/post/create", {
@@ -109,11 +141,11 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
           actualDate: value.startDate,
           startDate: range.startDate,
           endDate: range.endDate,
-          imageURL: imageURL,
+          imageURL,
         })
         .catch(() => toast.error("Errore nella creazione dell'evento"))
         .finally(() => {
-          router.push("/dashboard");
+          void router.push("/dashboard");
           toast.success("Evento creato con sucesso!");
         });
     } else {
@@ -126,11 +158,11 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
           actualDate: value.startDate,
           startDate: range.startDate,
           endDate: range.endDate,
-          imageURL: imageURL,
+          imageURL,
         })
         .catch(() => toast.error("Errore nella modifica dell'evento"))
         .finally(() => {
-          router.push("/dashboard");
+          void router.push("/dashboard");
           toast.success("Evento modificato con successo!");
         });
     }

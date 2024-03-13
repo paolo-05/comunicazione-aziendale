@@ -1,9 +1,23 @@
-import { PostSummary } from "@/types/post";
+import { type PostSummary } from "@/types/post";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useCalendar = () => {
+export const useCalendar = (): {
+  firstDayOfWeek: number;
+  year: number;
+  month: number;
+  daysInMonth: number;
+  events: PostSummary[];
+  hoveredDay: number | null;
+  handleDayHover: (day: number) => void;
+  handleDayLeave: () => void;
+  currentDate: Date;
+  currentDay: number;
+  goToCurrentMonth: () => void;
+  goToNextMonth: () => void;
+  goToPreviousMonth: () => void;
+} => {
   const currentDate = new Date();
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());
@@ -14,11 +28,13 @@ export const useCalendar = () => {
   useEffect(() => {
     axios
       .get("/api/post/get-calendarized-events")
-      .then((res) => setEvents(res.data.message))
+      .then((res) => {
+        setEvents(res.data.message as PostSummary[]);
+      })
       .catch(() => toast.error("Network error"));
   }, []);
 
-  const goToPreviousMonth = () => {
+  const goToPreviousMonth = (): void => {
     if (month === 0) {
       setYear((prevYear) => prevYear - 1);
       setMonth(11);
@@ -27,7 +43,7 @@ export const useCalendar = () => {
     }
   };
 
-  const goToNextMonth = () => {
+  const goToNextMonth = (): void => {
     if (month === 11) {
       setYear((prevYear) => prevYear + 1);
       setMonth(0);
@@ -36,7 +52,7 @@ export const useCalendar = () => {
     }
   };
 
-  const goToCurrentMonth = () => {
+  const goToCurrentMonth = (): void => {
     const currentDate = new Date();
     setYear(currentDate.getFullYear());
     setMonth(currentDate.getMonth());
@@ -45,11 +61,11 @@ export const useCalendar = () => {
   const daysInMonth: number = new Date(year, month + 1, 0).getDate(); // Get total number of days in the month
   const firstDayOfWeek: number = new Date(year, month, 1).getDay(); // Get day of the week for the first day of the month (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
 
-  const handleDayHover = (day: number) => {
+  const handleDayHover = (day: number): void => {
     setHoveredDay(day);
   };
 
-  const handleDayLeave = () => {
+  const handleDayLeave = (): void => {
     setHoveredDay(null);
   };
 

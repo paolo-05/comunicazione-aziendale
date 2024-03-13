@@ -1,14 +1,14 @@
 import axios from "axios";
 
-type ImageResponse = {
+interface ImageResponse {
   public_id: string;
   secure_url: string;
-};
+}
 
-type UploadFileProps = {
+interface UploadFileProps {
   formData: FormData | null;
   onUploadProgress: (progress: number) => void;
-};
+}
 
 export const uploadFile = async ({
   formData,
@@ -17,11 +17,11 @@ export const uploadFile = async ({
   const { data } = await axios.request<ImageResponse>({
     method: "POST",
     headers: { "Content-Type": "multipart/form-data" },
-    url: process.env.NEXT_PUBLIC_CLOUDINARY_BASE_URL || "",
+    url: process.env.NEXT_PUBLIC_CLOUDINARY_BASE_URL ?? "",
     data: formData,
     onUploadProgress(progressEvent) {
       const percentCompleted = Math.round(
-        (progressEvent.loaded * 100) / progressEvent.total!
+        (progressEvent.loaded * 100) / (progressEvent.total ?? 1),
       );
       onUploadProgress(percentCompleted);
     },

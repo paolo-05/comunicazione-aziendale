@@ -1,22 +1,24 @@
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-type DiscordUserProps = {
+interface DiscordUserProps {
   session: Session | null;
-};
+}
 
-export default function User({ session }: DiscordUserProps) {
+export default function User({
+  session,
+}: DiscordUserProps): React.ReactElement {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
   };
 
   useEffect(() => {
-    const handleCloseDropdown = () => {
+    const handleCloseDropdown = (): void => {
       if (isMenuOpen) setIsMenuOpen(false);
     };
 
@@ -27,12 +29,15 @@ export default function User({ session }: DiscordUserProps) {
     };
   }, [isMenuOpen]);
 
-  if (!session) {
+  if (session == null) {
     return (
       <div className="mt-12 lg:mt-0">
         <div className="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary-600 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
           <button
-            onClick={() => signIn()}
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onClick={async () => {
+              await signIn();
+            }}
             type="button"
             className="relative text-sm font-semibold text-white"
           >

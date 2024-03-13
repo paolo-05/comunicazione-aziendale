@@ -1,0 +1,13 @@
+ckeditor5/
+node_modules/
+db/
+
+.gitignore
+next-env.d.ts
+next.config.js
+package.json
+package-lock.json
+postcss.config.js
+README.md
+tailwind.config.js
+tsconfig.json

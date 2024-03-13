@@ -3,17 +3,17 @@ import {
   PostManager,
   RecentEdits,
   UserManager,
-} from "@/components/dashboardActions";
-import Header from "@/components/navbar/";
-import Calendar from "@/components/ui/calendar";
-import Container from "@/components/ui/container";
-import { useLastEdits, useNextFivePots } from "@/hooks/post";
-import { useUnrestrictedSession } from "@/hooks/session";
-import { Inter } from "next/font/google";
-import Head from "next/head";
-import Image from "next/image";
+} from '@/components/dashboardActions';
+import Header from '@/components/navbar/';
+import Calendar from '@/components/ui/calendar';
+import Container from '@/components/ui/container';
+import { useLastEdits, useNextFivePots } from '@/hooks/post';
+import { useUnrestrictedSession } from '@/hooks/session';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import Image from 'next/image';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Dashboard() {
   const session = useUnrestrictedSession();
@@ -48,7 +48,7 @@ export default function Dashboard() {
               <Calendar />
             </div>
             <PostManager posts={posts} session={session} />
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <RecentEdits lastEdits={lastEdits} />
               <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
             </div>

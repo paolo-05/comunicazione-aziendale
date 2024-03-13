@@ -1,18 +1,18 @@
-import { DangerAlert } from "@/components/alerts/index";
-import { useSignin } from "@/hooks/session";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { DangerAlert } from '@/components/alerts/index';
+import { useSignin } from '@/hooks/session';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
-} from "next";
-import { getServerSession } from "next-auth";
-import { getCsrfToken } from "next-auth/react";
-import { Inter } from "next/font/google";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
+} from 'next';
+import { getServerSession } from 'next-auth';
+import { getCsrfToken } from 'next-auth/react';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Signin({}: InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -45,7 +45,7 @@ export default function Signin({}: InferGetServerSidePropsType<
                 height={512}
                 width={512}
                 className="h-10 w-10 mr-2"
-                alt={"Logo"}
+                alt={'Logo'}
               />
               Comunicazione Aziendale
             </Link>
@@ -71,11 +71,11 @@ export default function Signin({}: InferGetServerSidePropsType<
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
                       autoComplete="email"
-                      {...register("email")}
+                      {...register('email')}
                     />
                     {errors.email && (
                       <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                        <span className="font-medium">Attento! </span>{" "}
+                        <span className="font-medium">Attento! </span>{' '}
                         {errors.email.message}
                       </p>
                     )}
@@ -92,7 +92,7 @@ export default function Signin({}: InferGetServerSidePropsType<
                       id="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      {...register("password")}
+                      {...register('password')}
                     />
                     {errors.password && (
                       <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -112,7 +112,7 @@ export default function Signin({}: InferGetServerSidePropsType<
                     disabled={isSubmitting}
                     className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800"
                   >
-                    {isSubmitting ? "Caricamento..." : "Entra!"}
+                    {isSubmitting ? 'Caricamento...' : 'Entra!'}
                   </button>
                 </form>
               </div>
@@ -129,7 +129,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   // If the user is already logged in, redirect.
   if (session) {
-    return { redirect: { destination: "/dashboard" } };
+    return { redirect: { destination: '/dashboard' } };
   }
 
   return {

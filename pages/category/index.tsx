@@ -1,12 +1,12 @@
-import { CategoryFormModal, ListAll } from "@/components/categoryComponents";
-import Header from "@/components/navbar";
-import Container from "@/components/ui/container";
-import { useCategories } from "@/hooks/category";
-import { useUnrestrictedSession } from "@/hooks/session";
-import { Inter } from "next/font/google";
-import Head from "next/head";
+import { CategoryFormModal, ListAll } from '@/components/categoryComponents';
+import Header from '@/components/navbar';
+import Container from '@/components/ui/container';
+import { useCategories } from '@/hooks/category';
+import { useUnrestrictedSession } from '@/hooks/session';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Category() {
   const session = useUnrestrictedSession();
@@ -44,7 +44,9 @@ export default function Category() {
                 </h1>
                 <button
                   type="button"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => {
+                    setShowModal(true);
+                  }}
                   className="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
                   Crea nuova categoria
@@ -70,10 +72,12 @@ export default function Category() {
                         </p>
                         <div className="items-center mx-auto mb-1 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
                           <div className="relative w-full">
-                            {" "}
+                            {' '}
                             <button
                               type="button"
-                              onClick={() => setShowModal(true)}
+                              onClick={() => {
+                                setShowModal(true);
+                              }}
                               className="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                             >
                               Crea nuova categoria

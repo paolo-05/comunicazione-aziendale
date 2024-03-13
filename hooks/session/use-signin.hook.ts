@@ -1,15 +1,24 @@
-import { SignInFormFields, signInSchema } from "@/types/user";
+import { type SignInFormFields, signInSchema } from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 
 /**
  * This hook handles the signin process
  * @returns a bunch of utilities for registering forms and displaying errors
  */
-export const useSignin = () => {
+export const useSignin = (): {
+  handleSubmit: any;
+  onSubmit: SubmitHandler<SignInFormFields>;
+  register: any;
+  errors: any;
+  isSubmitting: boolean;
+  showAlert: boolean;
+  alertMessage: string;
+  closeAlert: () => void;
+} => {
   const router = useRouter();
   const { error } = router.query;
 
@@ -27,7 +36,7 @@ export const useSignin = () => {
 
   const onSubmit: SubmitHandler<SignInFormFields> = async (data) => {
     try {
-      signIn("credentials", {
+      void signIn("credentials", {
         email: data.email,
         password: data.password,
       });
@@ -43,7 +52,7 @@ export const useSignin = () => {
     }
   }, [error]);
 
-  const closeAlert = () => {
+  const closeAlert = (): void => {
     setShowAlert(false);
   };
 

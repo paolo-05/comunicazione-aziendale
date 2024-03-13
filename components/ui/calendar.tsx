@@ -1,5 +1,6 @@
 import { useCalendar } from "@/hooks/post";
-import { PostSummary } from "@/types/post";
+import { type PostSummary } from "@/types/post";
+import Link from "next/link";
 import React from "react";
 
 const Calendar: React.FC = () => {
@@ -64,14 +65,16 @@ const Calendar: React.FC = () => {
           const currentDate: Date = new Date(year, month, day + 1);
           const formattedDate: string = currentDate.toISOString().split("T")[0];
           const dayEvents: PostSummary[] = events.filter(
-            (event) => event.actualDate.split("T")[0] === formattedDate
+            (event) => event.actualDate.split("T")[0] === formattedDate,
           );
 
           return (
             <div
               key={day}
               className="text-center relative cursor-pointer"
-              onMouseEnter={() => handleDayHover(day + 1)}
+              onMouseEnter={() => {
+                handleDayHover(day + 1);
+              }}
               onMouseLeave={handleDayLeave}
             >
               <span
@@ -86,7 +89,10 @@ const Calendar: React.FC = () => {
                 <div className="z-50 absolute top-full left-0 bg-white dark:bg-gray-900 shadow-md p-2 rounded-md text-sm">
                   <ul className="list-disc pl-5">
                     {dayEvents.map((event) => (
-                      <li key={event.id}>{event.title}</li>
+                      <li key={event.id}>
+                        {" "}
+                        <Link href={`/post/${event.id}`}>{event.title}</Link>
+                      </li>
                     ))}
                   </ul>
                 </div>

@@ -1,5 +1,5 @@
-import { User as UserModel } from "@/models/userModel";
-import { NextAuthOptions } from "next-auth";
+import { User } from "@/models";
+import { type NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -17,14 +17,14 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await UserModel.findByEmail(credentials?.email || "");
-        if (!res) {
+        const res = await User.findByEmail(credentials?.email ?? "");
+        if (res == null) {
           return null;
         }
 
-        const passwordsMatch = await UserModel.comparePassword(
-          credentials?.password || "",
-          res.password
+        const passwordsMatch = await User.comparePassword(
+          credentials?.password ?? "",
+          res.password,
         );
 
         if (!passwordsMatch) {
@@ -43,10 +43,10 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, account }) {
       // set user id and fetch user role right after sign in
-      if (account) {
-        const adminId = parseInt(token.sub!);
+      if (account != null) {
+        const adminId = parseInt(token.sub ?? "");
         token.id = adminId;
-        token.role = (await UserModel.getRoleLevel(adminId)) || 0;
+        token.role = (await User.getRoleLevel(adminId)) ?? 0;
       }
       return token;
     },

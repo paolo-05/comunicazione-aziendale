@@ -1,9 +1,14 @@
-import { RecentPostEdit } from "@/types/post";
+import { type RecentPostEdit } from "@/types/post";
 import { Skeleton } from "../ui/skeleton";
+import React from "react";
 
-type RecentEditsProps = { lastEdits: Array<RecentPostEdit> };
+interface RecentEditsProps {
+  lastEdits: RecentPostEdit[];
+}
 
-export const RecentEdits = ({ lastEdits }: RecentEditsProps) => {
+export const RecentEdits = ({
+  lastEdits,
+}: RecentEditsProps): React.ReactElement => {
   return (
     <section className="bg-white dark:bg-gray-800 dark:text-white p-6 rounded-lg">
       <div className="max-w-7xl mx-auto">
@@ -11,7 +16,7 @@ export const RecentEdits = ({ lastEdits }: RecentEditsProps) => {
           Modifiche recenti agli annunci
         </h2>
         <div className="flex flex-col gap-4">
-          {lastEdits && lastEdits.length > 0 ? (
+          {lastEdits.length > 0 ? (
             lastEdits.map((edit, index) => (
               <div
                 key={index}

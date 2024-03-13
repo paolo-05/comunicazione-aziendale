@@ -1,11 +1,11 @@
-import { Post } from "@/models/postModel";
+import { Post } from "@/models";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method !== "PUT") {
     return res.status(405).end();
@@ -14,19 +14,22 @@ export default async function handler(
   const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
-    return res.status(401).json({ error: "Unauthorized" });
+    res.status(401).json({ error: "Unauthorized" });
+    return;
   }
 
   const { id, title, description, actualDate, startDate, endDate, imageURL } =
     req.body;
 
   if (!id || !title || !description || !startDate || !endDate) {
-    return res.status(400).json({ error: "Missing Arguments" });
+    res.status(400).json({ error: "Missing Arguments" });
+    return;
   }
   try {
     const post = await Post.findById(parseInt(id.toString()));
     if (!post) {
-      return res.status(404).json({ error: "Not found" });
+      res.status(404).json({ error: "Not found" });
+      return;
     }
 
     await Post.edit(
@@ -37,7 +40,7 @@ export default async function handler(
       new Date(actualDate),
       new Date(startDate),
       new Date(endDate),
-      session.user.id
+      session.user.id,
     );
 
     res.status(201).json({ message: "OK" });

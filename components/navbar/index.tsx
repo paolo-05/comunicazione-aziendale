@@ -1,15 +1,16 @@
 import User from "@/components/navbar/user";
 import Container from "@/components/ui/container";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import NavLinks from "./navLinks";
+import React from "react";
 
-type HeaderProps = {
+interface HeaderProps {
   session: Session | null;
-};
+}
 
-export default function Header({ session }: HeaderProps) {
+export default function Header({ session }: HeaderProps): React.ReactElement {
   return (
     <header>
       <nav className="z-10 w-full absolute bg-gray-100 dark:bg-gray-900">
@@ -78,7 +79,7 @@ export default function Header({ session }: HeaderProps) {
                       <span>Prossimi Eventi</span>
                     </Link>
                   </li>
-                  {session?.user && <NavLinks />}
+                  {session?.user != null && <NavLinks />}
                 </ul>
               </div>
               <User session={session} />

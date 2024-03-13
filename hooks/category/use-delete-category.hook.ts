@@ -1,10 +1,17 @@
-import { CategoryType } from "@/types/category";
+import { type CategoryType } from "@/types/category";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useDeleteCategory = (category: CategoryType) => {
+export const useDeleteCategory = (
+  category: CategoryType,
+): {
+  showModal: boolean;
+  status: string;
+  handleModal: (confirm: boolean) => void;
+  toggleModal: (event: React.MouseEvent<HTMLButtonElement>) => void;
+} => {
   const router = useRouter();
 
   const [status, setStatus] = useState("idle");
@@ -19,10 +26,12 @@ export const useDeleteCategory = (category: CategoryType) => {
         toast.info("Categoria eliminata");
       })
       .catch(() => toast.error("Network error"))
-      .finally(() => setStatus("idle"));
+      .finally(() => {
+        setStatus("idle");
+      });
   }, [category?.id, router]);
 
-  const handleModal = (confirm: boolean) => {
+  const handleModal = (confirm: boolean): void => {
     if (confirm && status !== "deleting") {
       // delete the user
       deleteCategory();
@@ -30,7 +39,7 @@ export const useDeleteCategory = (category: CategoryType) => {
     setShowModal(false);
   };
 
-  const toggleModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleModal = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     setShowModal(!showModal);
   };

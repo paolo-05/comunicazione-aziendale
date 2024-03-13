@@ -1,13 +1,13 @@
-import { signOut } from "next-auth/react";
-import { Inter } from "next/font/google";
-import Head from "next/head";
-import { useEffect } from "react";
+import { signOut } from 'next-auth/react';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import { useEffect } from 'react';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Logout() {
   useEffect(() => {
-    signOut({ callbackUrl: "/" });
+    signOut({ callbackUrl: '/' });
   }, []);
   return (
     <>

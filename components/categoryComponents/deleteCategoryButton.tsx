@@ -1,8 +1,11 @@
 import Modal from "@/components/ui/modal";
 import { useDeleteCategory } from "@/hooks/category";
-import { CategoryItemProps } from "@/types/category";
+import { type CategoryItemProps } from "@/types/category";
+import React from "react";
 
-export const DeleteCategoryButton = ({ category }: CategoryItemProps) => {
+export const DeleteCategoryButton = ({
+  category,
+}: CategoryItemProps): React.ReactElement => {
   const { showModal, status, handleModal, toggleModal } =
     useDeleteCategory(category);
 
@@ -19,7 +22,9 @@ export const DeleteCategoryButton = ({ category }: CategoryItemProps) => {
       />
 
       <button
-        onClick={(e) => toggleModal(e)}
+        onClick={(e) => {
+          toggleModal(e);
+        }}
         className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
       >
         Elimina

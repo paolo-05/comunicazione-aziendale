@@ -1,6 +1,7 @@
 import Link from "next/link";
+import React from "react";
 
-export default function NavLinks() {
+export default function NavLinks(): React.ReactElement {
   return (
     <>
       <li>

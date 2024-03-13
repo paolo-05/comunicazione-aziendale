@@ -1,11 +1,12 @@
-import { PostItemProps } from "@/types/post";
+import { type PostItemProps } from "@/types/post";
 import Image from "next/image";
 import Link from "next/link";
 import DeletePostButton from "./deletePostButton";
+import React from "react";
 
-export const Item = ({ post, session }: PostItemProps) => {
+export const Item = ({ post, session }: PostItemProps): React.ReactElement => {
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 py-6 lg:py-12 rounded-lg">
+    <div className="relative bg-gray-50 dark:bg-gray-900 py-6 lg:py-12 rounded-lg">
       <div className="container px-4 md:px-6">
         <div className="grid items-center gap-6 lg:grid-cols-[1fr_900px]">
           <div className="hidden lg:block">
@@ -28,7 +29,7 @@ export const Item = ({ post, session }: PostItemProps) => {
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="w-6 h-6 mr-2" />
                   <span className="text-sm font-medium">
-                    {new Date(post?.actualDate || "").toLocaleString("it-IT", {
+                    {new Date(post?.actualDate ?? "").toLocaleString("it-IT", {
                       day: "2-digit",
                       month: "long",
                       year: "numeric",
@@ -55,11 +56,11 @@ export const Item = ({ post, session }: PostItemProps) => {
               <dt
                 className="mb-4 sm:mb-5 prose data-from-editor"
                 dangerouslySetInnerHTML={{
-                  __html: post?.description || "",
+                  __html: post?.description ?? "",
                 }}
               ></dt>
             </dl>
-            {session?.user && (
+            {session?.user != null && (
               <div className="flex items-center space-x-4">
                 <Link
                   href={`/post/edit?id=${post.id}`}
@@ -81,17 +82,78 @@ export const Item = ({ post, session }: PostItemProps) => {
                   </svg>
                   Modifica
                 </Link>
-                <DeletePostButton session={session} post={post!} />
+                <DeletePostButton session={session} post={post} />
               </div>
             )}
           </div>
         </div>
       </div>
+      {session?.user != null && (
+        <div className="absolute right-0 bottom-0 m-3 text-gray-800 dark:text-gray-200">
+          <h4 className="inline-flex items-start">
+            <svg
+              className="w-5 h-5 text-gray-800 mr-1 dark:text-gray-200"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            Creato il:{" "}
+            {new Date(post.created_at).toLocaleString("it-IT", {
+              hour: "2-digit",
+              minute: "2-digit",
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            })}
+          </h4>
+          <br />
+          <h4 className="inline-flex items-start">
+            <svg
+              className="w-5 h-5 mr-1 text-gray-800 dark:text-gray-200"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m11.5 11.5 2.071 1.994M4 10h5m11 0h-1.5M12 7V4M7 7V4m10 3V4m-7 13H8v-2l5.227-5.292a1.46 1.46 0 0 1 2.065 2.065L10 17Zm-5 3h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
+              />
+            </svg>
+            Modificato
+            {post.updated_at !== post.created_at
+              ? `: il ${new Date(post.updated_at).toLocaleString("it-IT", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric" as const,
+                })}`
+              : ": mai"}
+          </h4>
+        </div>
+      )}
     </div>
   );
 };
 
-function CalendarIcon(props: any) {
+function CalendarIcon(props: any): React.ReactElement {
   return (
     <svg
       {...props}
@@ -113,7 +175,7 @@ function CalendarIcon(props: any) {
   );
 }
 
-function UsersIcon(props: any) {
+function UsersIcon(props: any): React.ReactElement {
   return (
     <svg
       {...props}

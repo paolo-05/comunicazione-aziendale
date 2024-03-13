@@ -1,7 +1,7 @@
-import { Session } from "next-auth";
-import { z } from "zod";
+import { type Session } from 'next-auth';
+import { z } from 'zod';
 
-export type PostType = {
+export interface PostType {
   id: number;
   imageURL: string;
   title: string;
@@ -11,44 +11,48 @@ export type PostType = {
   endDate: Date;
   creatorId: number;
   lastModificatorId: number;
-};
+  created_at: Date;
+  updated_at: Date;
+}
 
-export type PostItemProps = {
+export interface PostItemProps {
   session: Session | null;
   post: PostType;
-};
+}
 
-export type PostSummary = {
+export interface PostSummary {
   id: number;
   title: string;
   actualDate: string;
-};
+}
 
-export type RecentPostEdit = {
+export interface RecentPostEdit {
   id: number;
   title: string;
   updated_at: Date;
   name: string;
   lastName: string;
-};
+}
 
-export type PostSummaryProps = {
-  posts: Array<PostType>;
+export interface PostSummaryProps {
+  posts: PostType[];
   session: Session | null;
-};
+}
 
 export const postSchema = z.object({
   id: z.number().default(-1),
-  title: z.string().min(1, "Campo richiesto."),
+  title: z.string().min(1, 'Campo richiesto.'),
 });
 
 export type PostFormField = z.infer<typeof postSchema>;
 
-export type PostFormProps = { initialData?: PostType | null };
+export interface PostFormProps {
+  initialData?: PostType | null;
+}
 
-export type UploadCoverImageModalProps = {
+export interface UploadCoverImageModalProps {
   imageURL: string | null;
   show: boolean;
   onClose: () => void;
   setImageURL: (url: string) => void;
-};
+}

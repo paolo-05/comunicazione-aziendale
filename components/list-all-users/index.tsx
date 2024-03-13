@@ -1,15 +1,19 @@
-import { UserSecure } from "@/types/user";
-import { Session } from "next-auth";
+import { type UserSecure } from "@/types/user";
+import { type Session } from "next-auth";
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
 import { Item } from "./item";
+import React from "react";
 
-type ListAllUsersProps = {
+interface ListAllUsersProps {
   users: UserSecure[] | null;
   session: Session | null;
-};
+}
 
-export default function ListAllUsers({ users, session }: ListAllUsersProps) {
+export default function ListAllUsers({
+  users,
+  session,
+}: ListAllUsersProps): React.ReactElement {
   return (
     <section className="p-3 sm:p-5">
       <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -46,7 +50,7 @@ export default function ListAllUsers({ users, session }: ListAllUsersProps) {
             </div>
           </div>
           <div className="overflow-x-auto">
-            {users ? (
+            {users != null ? (
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>

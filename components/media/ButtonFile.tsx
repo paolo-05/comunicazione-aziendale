@@ -1,11 +1,12 @@
 import type { ChangeEvent, FC, LegacyRef } from "react";
+import React from "react";
 
-type Props = {
+interface Props {
   disabled?: boolean;
   inputRef: LegacyRef<HTMLInputElement>;
   onClick: () => void;
   onChange: (ev: ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
 export const ButtonFile: FC<Props> = (props) => {
   const { disabled = false, inputRef, onClick, onChange } = props;

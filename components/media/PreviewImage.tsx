@@ -1,10 +1,10 @@
 import NextImage from "next/image";
-
 import type { FC } from "react";
+import React from "react";
 
-type PreviewImageProps = {
+interface PreviewImageProps {
   imageUrl: string;
-};
+}
 
 export const PreviewImage: FC<PreviewImageProps> = ({ imageUrl = "" }) => {
   return (

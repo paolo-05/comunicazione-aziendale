@@ -1,11 +1,14 @@
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import Link from "next/link";
+import React from "react";
 
-type UserManagerProps = {
+interface UserManagerProps {
   session: Session | null;
-};
+}
 
-export const UserManager = ({ session }: UserManagerProps) => {
+export const UserManager = ({
+  session,
+}: UserManagerProps): React.ReactElement => {
   return (
     <>
       <div className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">

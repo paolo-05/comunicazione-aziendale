@@ -1,4 +1,4 @@
-export type MediaType = {
+export interface MediaType {
   uuid: string;
   title: string;
-};
+}

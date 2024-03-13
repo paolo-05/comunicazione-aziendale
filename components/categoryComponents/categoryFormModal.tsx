@@ -1,12 +1,13 @@
 import { useCategoryForm } from "@/hooks/category";
-import { CategoryFormModalProps } from "@/types/category";
+import { type CategoryFormModalProps } from "@/types/category";
+import React from "react";
 import { ColorPicker } from "../forms";
 
 export const CategoryFormModal = ({
   initialFormData,
   show,
   onClose,
-}: CategoryFormModalProps) => {
+}: CategoryFormModalProps): React.ReactElement => {
   const {
     setSelectedColor,
     register,
@@ -29,7 +30,7 @@ export const CategoryFormModal = ({
       <div className="relative bg-white rounded-lg shadow dark:bg-gray-800">
         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {initialFormData
+            {initialFormData != null
               ? `Modificando la categoria ${initialFormData.name}`
               : "Creando una nuova categoria"}
           </h3>
@@ -55,6 +56,7 @@ export const CategoryFormModal = ({
             <span className="sr-only">Close modal</span>
           </button>
         </div>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form className="p-4 md:p-5" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 mb-4 grid-cols-2">
             <div className="col-span-2 sm:col-span-1">
@@ -72,7 +74,7 @@ export const CategoryFormModal = ({
                 placeholder="Marketing"
                 {...register("name")}
               />
-              {errors.name && (
+              {errors.name != null && (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   {errors.name.message}
                 </p>
@@ -80,8 +82,12 @@ export const CategoryFormModal = ({
             </div>
             <div className="col-span-2 sm:col-span-1">
               <ColorPicker
-                change={(value: string) => setSelectedColor(value)}
-                initialColor={initialFormData?.colour || "red"}
+                change={(value: string) => {
+                  setSelectedColor(value);
+                }}
+                initialColor={
+                  initialFormData != null ? initialFormData.colour : "red"
+                }
               />
             </div>
             <div className="col-span-2">
@@ -123,7 +129,7 @@ export const CategoryFormModal = ({
                 </svg>
                 Caricamento
               </>
-            ) : initialFormData ? (
+            ) : initialFormData !== null ? (
               <>
                 <svg
                   className="me-1 -ms-1 w-5 h-5"

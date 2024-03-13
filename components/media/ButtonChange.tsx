@@ -1,8 +1,8 @@
-import { FC } from "react";
+import React, { type FC } from "react";
 
-type Props = {
+interface Props {
   onClick: () => void;
-};
+}
 
 export const ButtonChange: FC<Props> = (props) => {
   const { onClick } = props;

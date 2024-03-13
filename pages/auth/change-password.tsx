@@ -1,10 +1,10 @@
-import Navbar from "@/components/navbar";
-import { useUnrestrictedSession } from "@/hooks/session";
-import { useChangePassword } from "@/hooks/user";
-import { Inter } from "next/font/google";
-import Head from "next/head";
+import Navbar from '@/components/navbar';
+import { useUnrestrictedSession } from '@/hooks/session';
+import { useChangePassword } from '@/hooks/user';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function ChangePassword() {
   const session = useUnrestrictedSession();
@@ -46,7 +46,7 @@ export default function ChangePassword() {
                     </label>
                     <input
                       id="email"
-                      value={session?.user.email || ""}
+                      value={session?.user.email || ''}
                       type="text"
                       disabled
                       className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -61,10 +61,10 @@ export default function ChangePassword() {
                     </label>
                     <input
                       id="oldPsw"
-                      {...register("oldPsw")}
-                      type={showPsw === 1 ? "text" : "password"}
+                      {...register('oldPsw')}
+                      type={showPsw === 1 ? 'text' : 'password'}
                       placeholder={
-                        showPsw ? "SuperSegretaPassword123" : "••••••••"
+                        showPsw ? 'SuperSegretaPassword123' : '••••••••'
                       }
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
@@ -84,10 +84,10 @@ export default function ChangePassword() {
                     </label>
                     <input
                       id="newPsw"
-                      {...register("newPsw")}
-                      type={showPsw === 1 ? "text" : "password"}
+                      {...register('newPsw')}
+                      type={showPsw === 1 ? 'text' : 'password'}
                       placeholder={
-                        showPsw ? "SuperSegretaPassword123" : "••••••••"
+                        showPsw ? 'SuperSegretaPassword123' : '••••••••'
                       }
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
@@ -106,10 +106,10 @@ export default function ChangePassword() {
                     </label>
                     <input
                       id="confirmPsw"
-                      {...register("confirmPsw")}
-                      type={showPsw === 1 ? "text" : "password"}
+                      {...register('confirmPsw')}
+                      type={showPsw === 1 ? 'text' : 'password'}
                       placeholder={
-                        showPsw ? "SuperSegretaPassword123" : "••••••••"
+                        showPsw ? 'SuperSegretaPassword123' : '••••••••'
                       }
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
@@ -146,7 +146,7 @@ export default function ChangePassword() {
                     disabled={isSubmitting}
                     className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
-                    {isSubmitting ? "Caricamento..." : "Cambia Password!"}
+                    {isSubmitting ? 'Caricamento...' : 'Cambia Password!'}
                   </button>
                 </form>
               </div>

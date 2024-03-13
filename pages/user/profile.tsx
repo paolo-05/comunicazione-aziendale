@@ -1,13 +1,13 @@
-import Header from "@/components/navbar";
-import Container from "@/components/ui/container";
-import { useUnrestrictedSession } from "@/hooks/session";
-import Avatar from "@/public/default-avatar.jpg";
-import { Inter } from "next/font/google";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
+import Header from '@/components/navbar';
+import Container from '@/components/ui/container';
+import { useUnrestrictedSession } from '@/hooks/session';
+import Avatar from '@/public/default-avatar.jpg';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Profile() {
   const session = useUnrestrictedSession();
@@ -46,7 +46,7 @@ export default function Profile() {
                       {session?.user.name}
                     </h5>
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {session?.user.role === 1 ? "Admin" : "HR"}
+                      {session?.user.role === 1 ? 'Admin' : 'HR'}
                     </span>
                     <div className="flex mt-4 md:mt-6">
                       <Link

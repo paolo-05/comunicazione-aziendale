@@ -7,14 +7,15 @@ import {
   PreviewImage,
   ProgressCard,
 } from "../media";
-import { UploadCoverImageModalProps } from "@/types/post";
+import { type UploadCoverImageModalProps } from "@/types/post";
+import React from "react";
 
 export const UploadCoverImageModal = ({
   show,
   onClose,
   imageURL,
   setImageURL,
-}: UploadCoverImageModalProps) => {
+}: UploadCoverImageModalProps): React.ReactElement => {
   const u = useUpload({
     imageURL,
     show,
@@ -54,7 +55,7 @@ export const UploadCoverImageModal = ({
               <span className="sr-only">Close modal</span>
             </button>
             <h2 className="text-xl text-gray-600 dark:text-gray-100 text-center font-semibold">
-              {u.isSuccess || (imageURL && !u.wantsToChange)
+              {u.isSuccess || (imageURL != null && !u.wantsToChange)
                 ? "Caricata con successo!"
                 : "Carica l'immagine di copertina"}
             </h2>
@@ -65,9 +66,9 @@ export const UploadCoverImageModal = ({
               </p>
             )}
 
-            {u.image ? (
+            {u.image != null && !u.wantsToChange ? (
               <PreviewImage imageUrl={u.image.secure_url} />
-            ) : imageURL && !u.wantsToChange ? (
+            ) : imageURL != null && !u.wantsToChange ? (
               <PreviewImage imageUrl={imageURL} />
             ) : (
               <Dropzone
@@ -76,17 +77,21 @@ export const UploadCoverImageModal = ({
               />
             )}
 
-            {(u.image || (imageURL && !u.wantsToChange)) && (
-              <ButtonChange onClick={() => u.setWantsToChange(true)} />
+            {(u.image != null || imageURL != null) && !u.wantsToChange && (
+              <ButtonChange
+                onClick={() => {
+                  u.setWantsToChange(true);
+                }}
+              />
             )}
 
-            {(!(u.image || imageURL) || u.wantsToChange) && (
+            {(!(u.image != null || imageURL != null) || u.wantsToChange) && (
               <span className="text-xs text-gray-400 dark:text-gray-300 font-medium">
                 Oppure,
               </span>
             )}
 
-            {(!(u.image || imageURL) || u.wantsToChange) && (
+            {(!(u.image != null || imageURL != null) || u.wantsToChange) && (
               <ButtonFile
                 onClick={() => u.inputRef.current?.click()}
                 inputRef={u.inputRef}
@@ -94,7 +99,7 @@ export const UploadCoverImageModal = ({
               />
             )}
 
-            {(u.isSuccess || (imageURL && !u.wantsToChange)) && (
+            {(u.isSuccess || (imageURL != null && !u.wantsToChange)) && (
               <ButtonClose onClick={onClose} />
             )}
           </div>

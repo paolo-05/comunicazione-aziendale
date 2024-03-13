@@ -1,12 +1,16 @@
-import { PostSummaryProps } from "@/types/post";
+import { type PostSummaryProps } from "@/types/post";
 import Link from "next/link";
 import { DeadlineNearPosts } from "../postComponents";
+import React from "react";
 
-export const PostManager = ({ posts, session }: PostSummaryProps) => {
+export const PostManager = ({
+  posts,
+  session,
+}: PostSummaryProps): React.ReactElement => {
   return (
     <>
       <article className="p-6 rounded-lg group relative bg-white dark:bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10 mb-4">
-        {session?.user && (
+        {session?.user != null && (
           <div className="flex justify-between items-center mb-5 text-gray-500">
             <span className="bg-info-100 text-info-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-info-200 dark:text-info-800">
               <svg

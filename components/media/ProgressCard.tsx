@@ -1,8 +1,9 @@
 import type { FC } from "react";
+import React from "react";
 
-type ProgressCardProps = {
+interface ProgressCardProps {
   progressStatus: number;
-};
+}
 
 export const ProgressCard: FC<ProgressCardProps> = ({ progressStatus }) => {
   const width = progressStatus.toString().concat("%");

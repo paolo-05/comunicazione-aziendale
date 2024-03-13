@@ -1,4 +1,4 @@
-declare module "alert" {
+declare module 'alert' {
   interface AlertProps {
     show: boolean;
     message: string;

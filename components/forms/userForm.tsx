@@ -1,11 +1,14 @@
 import { useUSerForm } from "@/hooks/user";
-import { UserSecure } from "@/types/user";
+import { type UserSecure } from "@/types/user";
+import React from "react";
 
-type UserFormProps = {
+interface UserFormProps {
   initialUserData?: UserSecure | null;
-};
+}
 
-export const UserForm = ({ initialUserData }: UserFormProps) => {
+export const UserForm = ({
+  initialUserData,
+}: UserFormProps): React.ReactElement => {
   const {
     handleSubmit,
     onSubmit,
@@ -17,6 +20,7 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
   } = useUSerForm(initialUserData);
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
         <div className="sm:col-span-2">
@@ -34,14 +38,14 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             placeholder="john.doe@example.com"
           />
-          {errors.email && (
+          {errors.email != null && (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
               {errors.email.message}
             </p>
           )}
         </div>
 
-        {!initialUserData && (
+        {initialUserData == null && (
           <>
             <div className="sm:col-span-2">
               <div>
@@ -55,10 +59,12 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
                   id="password"
                   {...register("password")}
                   type={showPsw === 1 ? "text" : "password"}
-                  placeholder={showPsw ? "SuperSegretaPassword123" : "••••••••"}
+                  placeholder={
+                    showPsw === 1 ? "SuperSegretaPassword123" : "••••••••"
+                  }
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
-                {errors.password && (
+                {errors.password != null && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                     {errors.password.message}
                   </p>
@@ -77,10 +83,12 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
                   id="confirmPassword"
                   {...register("confirmPassword")}
                   type={showPsw === 1 ? "text" : "password"}
-                  placeholder={showPsw ? "SuperSegretaPassword123" : "••••••••"}
+                  placeholder={
+                    showPsw === 1 ? "SuperSegretaPassword123" : "••••••••"
+                  }
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
-                {errors.confirmPassword && (
+                {errors.confirmPassword != null && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                     {errors.confirmPassword.message}
                   </p>
@@ -125,7 +133,7 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
               placeholder="John"
               {...register("name")}
             />
-            {errors.name && (
+            {errors.name != null && (
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 {errors.name.message}
               </p>
@@ -147,7 +155,7 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
               placeholder="Doe"
               {...register("lastName")}
             />
-            {errors.lastName && (
+            {errors.lastName != null && (
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 {errors.lastName.message}
               </p>
@@ -172,7 +180,7 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
           </select>
 
           <div className="my-2 text-sm text-gray-700 dark:text-gray-300">
-            {errors.role ? (
+            {errors.role != null ? (
               <span>{errors.role.message}</span>
             ) : (
               <>
@@ -200,9 +208,9 @@ export const UserForm = ({ initialUserData }: UserFormProps) => {
       >
         {isSubmitting
           ? "Caricamento..."
-          : initialUserData
-          ? "Aggiorna"
-          : "Registra"}
+          : initialUserData != null
+            ? "Aggiorna"
+            : "Registra"}
       </button>
     </form>
   );

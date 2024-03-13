@@ -1,17 +1,15 @@
+import { type Session } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 
 /**
  * This Hooks is responsible to check if a user is authenticated
  * @returns a session object from NextAuth
  */
-export const useUnrestrictedSession = () => {
-  const router = useRouter();
-
+export const useUnrestrictedSession = (): Session | null => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      signIn();
+      void signIn();
     },
   });
 

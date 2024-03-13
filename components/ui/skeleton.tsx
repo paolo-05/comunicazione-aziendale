@@ -1,4 +1,6 @@
-export const Skeleton = () => {
+import React from "react";
+
+export const Skeleton = (): React.ReactElement => {
   return (
     <div
       role="status"

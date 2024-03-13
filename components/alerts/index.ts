@@ -1,14 +1,14 @@
 // Info Alert
-export * from "./infoAlert";
+export * from './infoAlert';
 
 // Danger Alert
-export * from "./dangerAlert";
+export * from './dangerAlert';
 
 // Success Alert
-export * from "./successAlert";
+export * from './successAlert';
 
 // Warning Alert
-export * from "./warningAlert";
+export * from './warningAlert';
 
 // General Alert
-export * from "./generalAlert";
+export * from './generalAlert';

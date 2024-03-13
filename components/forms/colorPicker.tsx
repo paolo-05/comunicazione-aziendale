@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-type ColorPickerProps = {
+interface ColorPickerProps {
   initialColor?: string | null;
   change: (value: string) => void;
-};
+}
 
 const colorClasses = [
   "red",
@@ -16,13 +16,16 @@ const colorClasses = [
   "pink",
 ];
 
-export const ColorPicker = ({ change, initialColor }: ColorPickerProps) => {
+export const ColorPicker = ({
+  change,
+  initialColor,
+}: ColorPickerProps): React.ReactElement => {
   const [selectedColor, setSelectedColor] = useState<string>(
-    initialColor || "red"
+    initialColor ?? "red",
   );
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
-  const selectColor = (color: string) => {
+  const selectColor = (color: string): void => {
     setSelectedColor(color);
     change(color);
     setDropdownOpen(false);
@@ -37,7 +40,9 @@ export const ColorPicker = ({ change, initialColor }: ColorPickerProps) => {
         <div
           id="selectedColor"
           className={`w-8 h-8 rounded-sm shadow bg-${selectedColor}-500 dark:bg-${selectedColor}-400 text-white`}
-          onClick={() => setDropdownOpen(!isDropdownOpen)}
+          onClick={() => {
+            setDropdownOpen(!isDropdownOpen);
+          }}
         ></div>
       </div>
       {isDropdownOpen && (
@@ -47,7 +52,9 @@ export const ColorPicker = ({ change, initialColor }: ColorPickerProps) => {
               <div
                 key={option}
                 className="color-option cursor-pointer"
-                onClick={() => selectColor(option)}
+                onClick={() => {
+                  selectColor(option);
+                }}
               >
                 <div
                   className={`w-6 h-6 rounded-sm shadow bg-${option}-500 dark:bg-${option}-400 text-white m-2 border hover:border-black`}
