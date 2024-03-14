@@ -1,24 +1,24 @@
-import NextImage from "next/image";
-import type { FC } from "react";
-import React from "react";
+import NextImage from 'next/image';
+import type { FC } from 'react';
+import React from 'react';
 
 interface PreviewImageProps {
-  imageUrl: string;
+	imageUrl: string;
 }
 
-export const PreviewImage: FC<PreviewImageProps> = ({ imageUrl = "" }) => {
-  return (
-    <div className="w-[338px] h-[220px] rounded-xl">
-      <div className="relative w-full h-full">
-        <NextImage
-          src={imageUrl}
-          fill
-          alt="image"
-          priority={true}
-          className="w-full h-full top-0 left-0 object-contain rounded-2xl"
-          sizes="(min-width: 768px) 100%"
-        />
-      </div>
-    </div>
-  );
+export const PreviewImage: FC<PreviewImageProps> = ({ imageUrl = '' }) => {
+	return (
+		<div className='w-[338px] h-[220px] rounded-xl'>
+			<div className='relative w-full h-full'>
+				<NextImage
+					src={imageUrl}
+					fill
+					alt='image'
+					priority={true}
+					className='w-full h-full top-0 left-0 object-contain rounded-2xl'
+					sizes='(min-width: 768px) 100%'
+				/>
+			</div>
+		</div>
+	);
 };

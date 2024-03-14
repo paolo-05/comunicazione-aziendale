@@ -1,2 +1,2 @@
 // Danger Alert
-export * from "./dangerAlert";
+export * from './dangerAlert';

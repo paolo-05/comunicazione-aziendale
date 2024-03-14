@@ -1,62 +1,52 @@
 // Alexis Rossi 20/02/2024
 // This endpoint creates a new Post
 
-import { Post } from "@/models";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { type PostType } from "@/types/post";
-import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
+import { Post } from '@/models';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { type PostType } from '@/types/post';
+import { type NextApiRequest, type NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth/next';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-): Promise<void> {
-  if (req.method !== "POST") {
-    res.status(405).end();
-    return;
-  }
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	if (req.method !== 'POST') {
+		res.status(405).end();
+		return;
+	}
 
-  const session = await getServerSession(req, res, authOptions);
+	const session = await getServerSession(req, res, authOptions);
 
-  if (session == null) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
+	if (session == null) {
+		res.status(401).json({ message: 'Unauthorized' });
+		return;
+	}
 
-  const { title, description, actualDate, startDate, endDate, imageURL } =
-    req.body;
+	const { title, description, actualDate, startDate, endDate, imageURL } = req.body;
 
-  if (
-    title == null ||
-    description == null ||
-    actualDate == null ||
-    startDate == null ||
-    endDate == null
-  ) {
-    res.status(400).json({ message: "Missing arguments" });
-    return;
-  }
+	if (title == null || description == null || actualDate == null || startDate == null || endDate == null) {
+		res.status(400).json({ message: 'Missing arguments' });
+		return;
+	}
 
-  const post: PostType = {
-    id: 0,
-    imageURL,
-    title,
-    description,
-    actualDate,
-    startDate,
-    endDate,
-    creatorId: session.user.id,
-    lastModificatorId: 0,
-    created_at: new Date(),
-    updated_at: new Date(),
-  };
+	const post: PostType = {
+		id: 0,
+		imageURL,
+		title,
+		description,
+		actualDate,
+		startDate,
+		endDate,
+		creatorId: session.user.id,
+		lastModificatorId: 0,
+		created_at: new Date(),
+		updated_at: new Date(),
+	};
 
-  try {
-    // Create a new Category in the database
-    await Post.createPost(post);
+	try {
+		// Create a new Category in the database
+		await Post.createPost(post);
 
-    res.status(201).json({ message: "OK" });
-  } catch (error) {
-    res.status(500).json({ message: "Error in server" });
-  }
+		res.status(201).json({ message: 'OK' });
+	} catch (error) {
+		res.status(500).json({ message: 'Error in server' });
+	}
 }

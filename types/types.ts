@@ -1,4 +1,4 @@
 export interface MediaType {
-  uuid: string;
-  title: string;
+	uuid: string;
+	title: string;
 }

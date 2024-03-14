@@ -1,35 +1,35 @@
-import { PostManager } from "@/components/dashboardActions";
-import Header from "@/components/navbar/";
-import { Container } from "@/components/ui";
-import { useNextFivePots } from "@/hooks/post";
-import { useSession } from "next-auth/react";
-import { Inter } from "next/font/google";
-import Head from "next/head";
-import React from "react";
+import { PostManager } from '@/components/dashboardActions';
+import Header from '@/components/navbar/';
+import { Container } from '@/components/ui';
+import { useNextFivePots } from '@/hooks/post';
+import { useSession } from 'next-auth/react';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import React from 'react';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Home(): JSX.Element {
-  const { data: session } = useSession();
+	const { data: session } = useSession();
 
-  const { posts } = useNextFivePots();
+	const { posts } = useNextFivePots();
 
-  return (
-    <>
-      <Head>
-        <title>Homepage</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <main className={inter.className}>
-        <Header session={session} />
-        <section className="space-y-40 mb-40">
-          <Container>
-            <div className="relative pt-36">
-              <PostManager posts={posts} session={session} />
-            </div>
-          </Container>
-        </section>
-      </main>
-    </>
-  );
+	return (
+		<>
+			<Head>
+				<title>Homepage</title>
+				<meta name='viewport' content='width=device-width, initial-scale=1' />
+			</Head>
+			<main className={inter.className}>
+				<Header session={session} />
+				<section className='space-y-40 mb-40'>
+					<Container>
+						<div className='relative pt-36'>
+							<PostManager posts={posts} session={session} />
+						</div>
+					</Container>
+				</section>
+			</main>
+		</>
+	);
 }

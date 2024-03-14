@@ -1,38 +1,35 @@
 // Alexis Rossi 31/1/2024
 // Here we send back the category object by given ID in the request.
-import { Category } from "@/models";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
+import { Category } from '@/models';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { type NextApiRequest, type NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth/next';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-): Promise<void> {
-  if (req.method !== "GET") {
-    res.status(405).end();
-    return;
-  }
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	if (req.method !== 'GET') {
+		res.status(405).end();
+		return;
+	}
 
-  const session = await getServerSession(req, res, authOptions);
+	const session = await getServerSession(req, res, authOptions);
 
-  if (session == null) {
-    res.status(401).json({ error: "Unauthorized" });
-    return;
-  }
+	if (session == null) {
+		res.status(401).json({ error: 'Unauthorized' });
+		return;
+	}
 
-  const { id } = req.query;
+	const { id } = req.query;
 
-  if (id == null) {
-    res.status(400).json({ error: "Missing arguments" });
-    return;
-  }
+	if (id == null) {
+		res.status(400).json({ error: 'Missing arguments' });
+		return;
+	}
 
-  try {
-    const user = await Category.findById(parseInt(id.toString()));
+	try {
+		const user = await Category.findById(parseInt(id.toString()));
 
-    res.status(200).json({ message: user });
-  } catch (err: any) {
-    res.status(500).json({ error: "Error in server" });
-  }
+		res.status(200).json({ message: user });
+	} catch (err: any) {
+		res.status(500).json({ error: 'Error in server' });
+	}
 }
