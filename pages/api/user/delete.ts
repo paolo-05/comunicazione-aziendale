@@ -1,31 +1,30 @@
-import { User } from "@/models/userModel";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
+import { User } from '@/models';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { type NextApiRequest, type NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth/next';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "DELETE") {
-    return res.status(405).end();
-  }
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	if (req.method !== 'DELETE') {
+		return res.status(405).end();
+	}
 
-  const session = await getServerSession(req, res, authOptions);
+	const session = await getServerSession(req, res, authOptions);
 
-  if (!session || session.user.role === 0) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
+	if (!session || session.user.role === 0) {
+		res.status(401).json({ error: 'Unauthorized' });
+		return;
+	}
 
-  const { deletingId } = req.body;
+	const { deletingId } = req.body;
 
-  if (!deletingId) {
-    return res.status(400).json({ error: "Missing arguments" });
-  }
-  try {
-    await User.deleteUser(deletingId);
-    res.status(200).json({ message: "OK" });
-  } catch (error) {
-    res.status(500).json({ error: "Error in server" });
-  }
+	if (!deletingId) {
+		res.status(400).json({ error: 'Missing arguments' });
+		return;
+	}
+	try {
+		await User.deleteUser(deletingId);
+		res.status(200).json({ message: 'OK' });
+	} catch (error) {
+		res.status(500).json({ error: 'Error in server' });
+	}
 }

@@ -1,15 +1,15 @@
-import "next-auth";
+import 'next-auth';
 
-declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
-  interface Session {
-    user: {
-      id: any | number;
-      email: string;
-      role: any | number;
-      name: string;
-    };
-  }
+declare module 'next-auth' {
+	/**
+	 * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+	 */
+	interface Session {
+		user: {
+			id: any | number;
+			email: string;
+			role: any | number;
+			name: string;
+		};
+	}
 }

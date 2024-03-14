@@ -1,35 +1,27 @@
-import { CategoryType } from "@/types/category";
-import { Session } from "next-auth";
-import { Skeleton } from "../ui/skeleton";
-import { Item } from "./item";
+import { type CategoryType } from '@/types/category';
+import { type Session } from 'next-auth';
+import { Skeleton } from '../ui';
+import { Item } from '.';
+import React from 'react';
 
-type ListAllProps = {
-  session: Session | null;
-  categories: CategoryType[] | null;
-  setEditCategory: (category: CategoryType) => void;
-};
+interface ListAllProps {
+	session: Session | null;
+	categories: CategoryType[] | null;
+	setEditCategory: (category: CategoryType) => void;
+}
 
-export const ListAll = ({
-  session,
-  categories,
-  setEditCategory,
-}: ListAllProps) => {
-  return (
-    <div className="grid gap-4">
-      {categories ? (
-        categories.map((category) => (
-          <Item
-            key={category.id}
-            category={category}
-            session={session}
-            setEditCategory={setEditCategory}
-          />
-        ))
-      ) : (
-        <>
-          <Skeleton />
-        </>
-      )}
-    </div>
-  );
+export const ListAll = ({ session, categories, setEditCategory }: ListAllProps): React.ReactElement => {
+	return (
+		<div className='grid gap-4'>
+			{categories != null ? (
+				categories.map((category) => (
+					<Item key={category.id} category={category} session={session} setEditCategory={setEditCategory} />
+				))
+			) : (
+				<>
+					<Skeleton />
+				</>
+			)}
+		</div>
+	);
 };

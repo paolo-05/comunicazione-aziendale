@@ -1,0 +1,11 @@
+
+*-lock.*
+build
+coverage
+.next
+.vercel
+**/ckeditor5/build
+**/.git
+**/.svn
+**/.hg
+**/node_modules
