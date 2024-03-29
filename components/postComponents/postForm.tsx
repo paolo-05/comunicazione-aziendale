@@ -4,7 +4,8 @@ import { type PostFormProps } from '@/types/post';
 import dynamic from 'next/dynamic';
 import Datepicker from 'react-tailwindcss-datepicker';
 import { UploadCoverImageModal } from '.';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { CategoryType } from '@/types/category';
 
 const CustomEditor = dynamic(
 	async () => {
@@ -33,11 +34,26 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 		editorData,
 		handleEditorDataChange,
 		editorError,
+		targets,
+		setTargets,
+		targetsError,
+		setTargetsError,
 		isSubmitting,
 	} = usePostForm({ initialData });
 
 	const { categories } = useCategories();
 
+	function handleCheckboxChange(event: ChangeEvent<HTMLInputElement>): void {
+		const targetId = event.target.value;
+		const isChecked = event.target.checked;
+		if (isChecked) {
+			setTargets((prevTargets: string[]) => [...prevTargets, targetId]);
+		} else {
+			setTargets((prevTargets: string[]) => prevTargets.filter((target) => target !== targetId));
+		}
+
+		console.log(targets);
+	}
 	return (
 		<section className='bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700'>
 			<UploadCoverImageModal
@@ -152,7 +168,13 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 							{categories.length > 0 &&
 								categories.map((category) => (
 									<div key={category.id}>
-										<input type='checkbox' name={category.name} id={category.name} />
+										<input
+											type='checkbox'
+											name={category.name}
+											id={category.name}
+											value={category.id}
+											onChange={handleCheckboxChange}
+										/>
 										<label htmlFor={category.name}>{category.name}</label>
 									</div>
 								))}

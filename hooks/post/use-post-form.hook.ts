@@ -1,6 +1,8 @@
+import { CategoryType } from '@/types/category';
 import { type PostFormField, type PostFormProps, postSchema } from '@/types/post';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { init } from 'next/dist/compiled/webpack/webpack';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -39,6 +41,9 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 	const [showImageModal, setShowImageModal] = useState(false);
 	const [imageURL, setImageURL] = useState<string | null>(initialData?.imageURL ?? null);
 	const [imageURLError, setImageURLError] = useState('');
+
+	const [targets, setTargets] = useState<string[]>([]);
+	const [targetsError, setTargetsError] = useState('');
 
 	const handleRangeChange = (newValue: any): void => {
 		setRange(newValue);
@@ -149,6 +154,10 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 		editorData,
 		handleEditorDataChange,
 		editorError,
+		targets,
+		setTargets,
+		targetsError,
+		setTargetsError,
 		isSubmitting,
 	};
 };
