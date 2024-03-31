@@ -4,13 +4,14 @@ import Link from 'next/link';
 import DeletePostButton from './deletePostButton';
 import React from 'react';
 
-export const Item = ({ post, session }: PostItemProps): React.ReactElement => {
+export const Item = ({ post, categories, session }: PostItemProps): React.ReactElement => {
 	return (
 		<div className='relative bg-gray-50 dark:bg-gray-900 py-6 lg:py-12 rounded-lg'>
 			<div className='container px-4 md:px-6'>
 				<div className='grid items-center gap-6 lg:grid-cols-[1fr_900px]'>
 					<div className='hidden lg:block'>
 						<Image
+							loading='lazy'
 							alt='Cover Image'
 							className='xs:mt-3 max-h-64 rounded-lg h-32 md:h-64'
 							height={500}
@@ -37,9 +38,16 @@ export const Item = ({ post, session }: PostItemProps): React.ReactElement => {
 							</div>
 							{/* TO DO */}
 							<div className='grid gap-1'>
-								<div className='flex items-center gap-2'>
+								<div className='flex items-center gap-3'>
 									<UsersIcon className='w-6 h-6 mr-2' />
-									<span className='text-sm font-medium'>Developers, Designers, and Business Leaders</span>
+									{categories?.map((category) => (
+										<span
+											key={category.id}
+											className={`ring-${category.colour}-800 dark:ring-${category.colour}-300 text-xs font-medium ring-4 rounded-lg py-1 px-2 bg-gray-100 dark:bg-gray-800`}
+										>
+											{category.name}
+										</span>
+									))}
 								</div>
 							</div>
 						</div>

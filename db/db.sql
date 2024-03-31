@@ -49,7 +49,7 @@ CREATE TABLE categories(
     colour VARCHAR(255)
 );
 
-CREATE TABLE eventsCategories(
+CREATE TABLE post_targets(
     id INT PRIMARY KEY AUTO_INCREMENT,
     eventId INT,
     categoryId INT,

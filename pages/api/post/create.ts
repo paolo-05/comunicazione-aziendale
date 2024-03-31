@@ -20,9 +20,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		return;
 	}
 
-	const { title, description, actualDate, startDate, endDate, imageURL } = req.body;
+	const { title, description, actualDate, startDate, endDate, imageURL, targets } = req.body;
 
-	if (title == null || description == null || actualDate == null || startDate == null || endDate == null) {
+	if (
+		title == null ||
+		description == null ||
+		actualDate == null ||
+		startDate == null ||
+		endDate == null ||
+		imageURL == null ||
+		targets == null
+	) {
 		res.status(400).json({ message: 'Missing arguments' });
 		return;
 	}
@@ -35,6 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		actualDate,
 		startDate,
 		endDate,
+		targetIds: targets,
 		creatorId: session.user.id,
 		lastModificatorId: 0,
 		created_at: new Date(),

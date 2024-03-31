@@ -1,5 +1,6 @@
 import { type Session } from 'next-auth';
 import { z } from 'zod';
+import { CategoryType } from './category';
 
 export interface PostType {
 	id: number;
@@ -9,6 +10,7 @@ export interface PostType {
 	actualDate: Date;
 	startDate: Date;
 	endDate: Date;
+	targetIds: number[];
 	creatorId: number;
 	lastModificatorId: number;
 	created_at: Date;
@@ -18,6 +20,7 @@ export interface PostType {
 export interface PostItemProps {
 	session: Session | null;
 	post: PostType;
+	categories?: CategoryType[];
 }
 
 export interface PostSummary {

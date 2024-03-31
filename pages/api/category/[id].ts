@@ -26,9 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 
 	try {
-		const user = await Category.findById(parseInt(id.toString()));
+		const post = await Category.findById(parseInt(id.toString()));
 
-		res.status(200).json({ message: user });
+		res.status(200).json({ message: post });
 	} catch (err: any) {
 		res.status(500).json({ error: 'Error in server' });
 	}

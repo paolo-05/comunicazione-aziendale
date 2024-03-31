@@ -26,32 +26,59 @@ export const Post = {
 					post.startDate,
 					post.endDate,
 					post.creatorId,
-					post.creatorId,
+					post.creatorId, // Assuming creatorId is the same as lastModificatorId for the initial creation
 				],
 			);
 
+		// Retrieve the last inserted ID using LAST_INSERT_ID()
+		const [result] = await db.promise().query<RowDataPacket[]>('SELECT LAST_INSERT_ID() as id FROM posts');
+		const insertedId = result[0].id as number;
+
+		post.targetIds.forEach(async (target) => {
+			await db.promise().query('INSERT INTO post_targets (postId, categoryId) VALUES (?, ?)', [insertedId, target]);
+		});
+
 		return true;
 	},
+	/**
+	 * Deleting a post by its id
+	 */
 	delete: async (id: number): Promise<void> => {
 		await db.promise().query('DELETE FROM posts WHERE id = ?', [id]);
 	},
-	edit: async (
-		id: number,
-		imageURL: string,
-		title: string,
-		description: string,
-		actualDate: Date,
-		startDate: Date,
-		endDate: Date,
-		lastModificatorId: number,
-	): Promise<boolean> => {
+	/**
+	 * Editing a post by its id
+	 */
+	edit: async (post: PostType): Promise<boolean> => {
 		await db
 			.promise()
-			.query<
-				RowDataPacket[]
-			>('UPDATE posts SET imageURL = ?, title = ?,  description = ?, actualDate = ?, startDate = ?, endDate = ?, lastModificatorId = ? WHERE id = ?', [imageURL, title, description, actualDate, startDate, endDate, lastModificatorId, id]);
+			.query(
+				'UPDATE posts SET imageURL = ?, title = ?,  description = ?, actualDate = ?, startDate = ?, endDate = ?, lastModificatorId = ? WHERE id = ?',
+				[
+					post.imageURL,
+					post.title,
+					post.description,
+					post.actualDate,
+					post.startDate,
+					post.endDate,
+					post.lastModificatorId,
+					post.id,
+				],
+			);
+
+		// Delete all the previous targets
+		await db.promise().query('DELETE FROM post_targets WHERE postId = ?', [post.id]);
+
+		// Insert the new targets
+		post.targetIds.forEach(async (target) => {
+			await db.promise().query('INSERT INTO post_targets (postId, categoryId) VALUES (?, ?)', [post.id, target]);
+		});
+
 		return true;
 	},
+	/**
+	 * Retrieve the next 5 posts
+	 */
 	getNextFiveShort: async (): Promise<PostType[] | null> => {
 		const [rows] = await db
 			.promise()
@@ -60,20 +87,42 @@ export const Post = {
 			>('SELECT id, title, actualDate, startDate, endDate FROM posts WHERE actualDate >= CURDATE() ORDER BY actualDate LIMIT 5');
 		return rows as PostType[] | null;
 	},
+	/**
+	 * Retrieve all the posts to put in the calendar
+	 */
 	getCalendarizedEvents: async (): Promise<PostType[] | null> => {
 		const [rows] = await db.promise().query('SELECT id, title, actualDate FROM posts');
 
 		return rows as PostType[];
 	},
+	/**
+	 * Retrieve a post by its id
+	 */
 	findById: async (id: number): Promise<PostType | undefined> => {
 		const [rows] = await db.promise().query<RowDataPacket[]>('SELECT * FROM posts WHERE id = ?', [id]);
 
+		const post = rows[0] as PostType | undefined;
+
+		const [targets] = await db
+			.promise()
+			.query<RowDataPacket[]>('SELECT categoryId FROM post_targets WHERE postId = ?', [id]);
+
+		if (post != null) {
+			post.targetIds = targets.map((target) => target.categoryId);
+		}
+
 		return rows[0] as PostType | undefined;
 	},
+	/**
+	 * Retrieve all the posts
+	 */
 	listAll: async (): Promise<PostType[]> => {
 		const [rows] = await db.promise().query<RowDataPacket[]>('SELECT * FROM posts');
 		return rows as PostType[];
 	},
+	/**
+	 * Retrieve the last 5 posts edited
+	 */
 	getLastUpdates: async (): Promise<RecentPostEdit[] | undefined> => {
 		const [rows] = await db
 			.promise()

@@ -48,6 +48,19 @@ export const Category = {
 	},
 
 	/**
+	 * Returns all the categories that are related to a post
+	 * @param postId
+	 */
+	getByPostId: async (postId: number): Promise<CategoryType[]> => {
+		const [rows] = await db
+			.promise()
+			.query<
+				RowDataPacket[]
+			>('SELECT c.* FROM categories c INNER JOIN post_targets pc ON c.id = pc.categoryId WHERE pc.postId = ?', [postId]);
+		return rows as CategoryType[];
+	},
+
+	/**
 	 * Edits a category.
 	 */
 	editCategory: async (id: number, name: string, description: string, colour: string): Promise<boolean> => {
