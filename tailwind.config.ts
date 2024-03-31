@@ -10,13 +10,18 @@ const config: Config = {
 		'./node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
 	],
 	safelist: [
+		...colorClasses.map((colour: string) => `bg-${colour}-300 dark:bg-${colour}-800 ms-1 px-3 py-1 rounded-lg`),
 		...colorClasses.map((colour: string) => `bg-${colour}-300 dark:bg-${colour}-800 p-4 rounded-md shadow-sm`),
 		...colorClasses.map(
 			(colour: string) =>
 				`w-6 h-6 rounded-sm shadow bg-${colour}-500 dark:bg-${colour}-400 text-white m-2 border hover:border-black`,
 		),
+		...colorClasses.map(
+			(colour: string) =>
+				`ring-${colour}-800 dark:ring-${colour}-300 text-xs font-medium ring-4 rounded-lg py-1 px-2 bg-gray-100 dark:bg-gray-800`,
+		),
 	],
-	plugins: [require('@tailwindcss/typography')],
+	plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 	darkMode: 'media',
 	theme: {
 		screens: {

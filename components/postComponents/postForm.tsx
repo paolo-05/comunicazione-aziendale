@@ -2,10 +2,11 @@ import { useCategories } from '@/hooks/category';
 import { usePostForm } from '@/hooks/post';
 import { type PostFormProps } from '@/types/post';
 import dynamic from 'next/dynamic';
+import React from 'react';
 import Datepicker from 'react-tailwindcss-datepicker';
 import { UploadCoverImageModal } from '.';
-import React, { ChangeEvent } from 'react';
-import { CategoryType } from '@/types/category';
+import { useRouter } from 'next/router';
+import { Modal } from '../ui';
 
 const CustomEditor = dynamic(
 	async () => {
@@ -15,6 +16,8 @@ const CustomEditor = dynamic(
 );
 
 export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => {
+	const router = useRouter();
+
 	const {
 		handleSubmit,
 		onSubmit,
@@ -26,7 +29,7 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 		value,
 		handleValueChange,
 		showImageModal,
-		handleModalChange,
+		handleImageModalChange,
 		imageURL,
 		handleImageUrlChange,
 		imageURLError,
@@ -35,30 +38,31 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 		handleEditorDataChange,
 		editorError,
 		targets,
-		setTargets,
+		handleCheckboxChange,
 		targetsError,
-		setTargetsError,
 		isSubmitting,
+		showDiscardModal,
+		toggleDiscardModal,
+		handleDiscard,
 	} = usePostForm({ initialData });
 
 	const { categories } = useCategories();
 
-	function handleCheckboxChange(event: ChangeEvent<HTMLInputElement>): void {
-		const targetId = event.target.value;
-		const isChecked = event.target.checked;
-		if (isChecked) {
-			setTargets((prevTargets: string[]) => [...prevTargets, targetId]);
-		} else {
-			setTargets((prevTargets: string[]) => prevTargets.filter((target) => target !== targetId));
-		}
-
-		console.log(targets);
-	}
 	return (
 		<section className='bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700'>
+			<Modal
+				id='discard'
+				show={showDiscardModal}
+				content='Tutte le modifiche andranno perse, sei sicuro di voler uscire?'
+				discardText={'Annulla'}
+				confirmText={'Si, voglio uscire'}
+				confirmDisabled={false}
+				action={handleDiscard}
+			/>
+
 			<UploadCoverImageModal
 				show={showImageModal}
-				onClose={handleModalChange}
+				onClose={handleImageModalChange}
 				setImageURL={handleImageUrlChange}
 				imageURL={initialData?.imageURL ?? null}
 			/>
@@ -128,7 +132,7 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 							<button
 								type='button'
 								className='text-white bg-secondary hover:bg-secondary/90 focus:ring-4 focus:outline-none focus:ring-secondary/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-secondary/55 me-2 mb-2'
-								onClick={handleModalChange}
+								onClick={handleImageModalChange}
 							>
 								<svg
 									className='w-6 h-6 mr-2 text-gray-800 dark:text-white'
@@ -167,73 +171,135 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 							<span>Categorie Target</span>
 							{categories.length > 0 &&
 								categories.map((category) => (
-									<div key={category.id}>
+									<div key={category.id} className='bg-gray-100 dark:bg-gray-800 m-1 w-32 rounded-lg p-1'>
 										<input
+											checked={targets.includes(category.id)}
 											type='checkbox'
 											name={category.name}
 											id={category.name}
 											value={category.id}
 											onChange={handleCheckboxChange}
+											className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
 										/>
-										<label htmlFor={category.name}>{category.name}</label>
+										<label
+											htmlFor={category.name}
+											className={`bg-${category.colour}-300 dark:bg-${category.colour}-800 ms-1 px-3 py-1 rounded-lg`}
+										>
+											{category.name}
+										</label>
 									</div>
 								))}
+							{targetsError.length > 0 && <p className='mt-2 text-sm text-red-600 dark:text-red-500'>{targetsError}</p>}
 						</div>
 					</div>
-					<button
-						type='submit'
-						className='text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
-					>
-						{isSubmitting ? (
-							<>
-								<svg
-									className='me-1 -ms-1 w-5 h-5'
-									aria-hidden='true'
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-								>
-									<path
-										stroke='currentColor'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth='2'
-										d='M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-									/>
-								</svg>
-								Caricamento
-							</>
-						) : initialData != null ? (
-							<>
-								<svg className='me-1 -ms-1 w-5 h-5' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
-									<path
-										stroke='currentColor'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth='2'
-										d='m10.8 17.8-6.4 2.1 2.1-6.4m4.3 4.3L19 9a3 3 0 0 0-4-4l-8.4 8.6m4.3 4.3-4.3-4.3m2.1 2.1L15 9.1m-2.1-2 4.2 4.2'
-									/>
-								</svg>
-								Modifica
-							</>
-						) : (
-							<>
-								<svg
-									className='me-1 -ms-1 w-5 h-5'
-									fill='currentColor'
-									viewBox='0 0 20 20'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<path
-										fillRule='evenodd'
-										d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z'
-										clipRule='evenodd'
-									></path>
-								</svg>
-								Crea un nuovo annuncio
-							</>
-						)}
-					</button>
+					<div className='flex justify-start gap-1'>
+						<button
+							type='submit'
+							className='text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
+						>
+							{isSubmitting ? (
+								<>
+									<svg
+										className='me-1 -ms-1 w-5 h-5'
+										aria-hidden='true'
+										xmlns='http://www.w3.org/2000/svg'
+										fill='none'
+										viewBox='0 0 24 24'
+									>
+										<path
+											stroke='currentColor'
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											strokeWidth='2'
+											d='M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+										/>
+									</svg>
+									Caricamento
+								</>
+							) : initialData != null ? (
+								<>
+									<svg
+										className='me-1 -ms-1 w-5 h-5'
+										xmlns='http://www.w3.org/2000/svg'
+										fill='none'
+										viewBox='0 0 24 24'
+									>
+										<path
+											stroke='currentColor'
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											strokeWidth='2'
+											d='m10.8 17.8-6.4 2.1 2.1-6.4m4.3 4.3L19 9a3 3 0 0 0-4-4l-8.4 8.6m4.3 4.3-4.3-4.3m2.1 2.1L15 9.1m-2.1-2 4.2 4.2'
+										/>
+									</svg>
+									Modifica
+								</>
+							) : (
+								<>
+									<svg
+										className='me-1 -ms-1 w-5 h-5'
+										fill='currentColor'
+										viewBox='0 0 20 20'
+										xmlns='http://www.w3.org/2000/svg'
+									>
+										<path
+											fillRule='evenodd'
+											d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z'
+											clipRule='evenodd'
+										></path>
+									</svg>
+									Crea un nuovo annuncio
+								</>
+							)}
+						</button>
+						<button
+							type='button'
+							onClick={toggleDiscardModal}
+							className='text-white inline-flex items-center bg-stone-700 hover:bg-stone-800 focus:ring-4 focus:outline-none focus:ring-stone-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-stone-600 dark:hover:bg-stone-700 dark:focus:ring-stone-800'
+						>
+							{isSubmitting ? (
+								<>
+									<svg
+										className='me-1 -ms-1 w-5 h-5'
+										aria-hidden='true'
+										xmlns='http://www.w3.org/2000/svg'
+										fill='none'
+										viewBox='0 0 24 24'
+									>
+										<path
+											stroke='currentColor'
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											strokeWidth='2'
+											d='M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+										/>
+									</svg>
+									Caricamento
+								</>
+							) : (
+								<>
+									<svg
+										className='me-1 -ms-1 w-5 h-5'
+										aria-hidden='true'
+										xmlns='http://www.w3.org/2000/svg'
+										width='24'
+										height='24'
+										fill='none'
+										viewBox='0 0 24 24'
+									>
+										<path
+											stroke='currentColor'
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											strokeWidth='2'
+											d='M6 18 17.94 6M18 18 6.06 6'
+										/>
+									</svg>
+									Annulla
+								</>
+							)}
+						</button>
+					</div>
 				</form>
 			</div>
 		</section>

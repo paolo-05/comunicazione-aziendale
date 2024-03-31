@@ -1,11 +1,9 @@
-import { CategoryType } from '@/types/category';
-import { type PostFormField, type PostFormProps, postSchema } from '@/types/post';
+import { postSchema, type PostFormField, type PostFormProps } from '@/types/post';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { init } from 'next/dist/compiled/webpack/webpack';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { type SubmitHandler, useForm } from 'react-hook-form';
+import { ChangeEvent, useState } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 export const usePostForm = ({ initialData }: PostFormProps) => {
@@ -42,8 +40,10 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 	const [imageURL, setImageURL] = useState<string | null>(initialData?.imageURL ?? null);
 	const [imageURLError, setImageURLError] = useState('');
 
-	const [targets, setTargets] = useState<string[]>([]);
+	const [targets, setTargets] = useState<number[]>(initialData?.targetIds || []);
 	const [targetsError, setTargetsError] = useState('');
+
+	const [showDiscardModal, setShowDiscardModal] = useState(false);
 
 	const handleRangeChange = (newValue: any): void => {
 		setRange(newValue);
@@ -65,8 +65,18 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 		setImageURLError('');
 	};
 
-	const handleModalChange = (): void => {
+	const handleImageModalChange = (): void => {
 		setShowImageModal(!showImageModal);
+	};
+
+	const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>): void => {
+		const targetId = event.target.value;
+		const isChecked = event.target.checked;
+		if (isChecked) {
+			setTargets((prevTargets: number[]) => [...prevTargets, parseInt(targetId)]);
+		} else {
+			setTargets((prevTargets: number[]) => prevTargets.filter((target) => target !== parseInt(targetId)));
+		}
 	};
 
 	const onSubmit: SubmitHandler<PostFormField> = async (data) => {
@@ -95,6 +105,11 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 			errs = true;
 		}
 
+		if (targets.length === 0) {
+			setTargetsError('Seleziona almeno una categoria target.');
+			errs = true;
+		}
+
 		if (errs) {
 			return;
 		}
@@ -109,6 +124,7 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 					startDate: range.startDate,
 					endDate: range.endDate,
 					imageURL,
+					targets,
 				})
 				.catch(() => toast.error("Errore nella creazione dell'evento"))
 				.finally(() => {
@@ -126,6 +142,7 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 					startDate: range.startDate,
 					endDate: range.endDate,
 					imageURL,
+					targets,
 				})
 				.catch(() => toast.error("Errore nella modifica dell'evento"))
 				.finally(() => {
@@ -133,6 +150,18 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 					toast.success('Evento modificato con successo!');
 				});
 		}
+	};
+
+	const toggleDiscardModal = (event: React.MouseEvent<HTMLButtonElement>): void => {
+		event.stopPropagation();
+		setShowDiscardModal(!showDiscardModal);
+	};
+
+	const handleDiscard = (confirm: boolean): void => {
+		if (confirm) {
+			void router.push('/dashboard');
+		}
+		setShowDiscardModal(false);
 	};
 
 	return {
@@ -146,7 +175,7 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 		value,
 		handleValueChange,
 		showImageModal,
-		handleModalChange,
+		handleImageModalChange,
 		imageURL,
 		handleImageUrlChange,
 		imageURLError,
@@ -155,9 +184,11 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 		handleEditorDataChange,
 		editorError,
 		targets,
-		setTargets,
+		handleCheckboxChange,
 		targetsError,
-		setTargetsError,
 		isSubmitting,
+		showDiscardModal,
+		toggleDiscardModal,
+		handleDiscard,
 	};
 };

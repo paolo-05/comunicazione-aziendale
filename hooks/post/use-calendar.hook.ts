@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export const useCalendar = () => {
-	const currentDate = new Date();
-	const [year, setYear] = useState(currentDate.getFullYear());
-	const [month, setMonth] = useState(currentDate.getMonth());
-	const [currentDay] = useState(currentDate.getDate());
+	const actualDate = new Date();
+	const [year, setYear] = useState(actualDate.getFullYear());
+	const [month, setMonth] = useState(actualDate.getMonth());
+	const [currentDay] = useState(actualDate.getDate());
 	const [hoveredDay, setHoveredDay] = useState<number | null>(null);
 	const [events, setEvents] = useState<PostSummary[]>([]);
 
@@ -39,9 +39,9 @@ export const useCalendar = () => {
 	};
 
 	const goToCurrentMonth = (): void => {
-		const currentDate = new Date();
-		setYear(currentDate.getFullYear());
-		setMonth(currentDate.getMonth());
+		const actualDate = new Date();
+		setYear(actualDate.getFullYear());
+		setMonth(actualDate.getMonth());
 	};
 
 	const daysInMonth: number = new Date(year, month + 1, 0).getDate(); // Get total number of days in the month
@@ -64,7 +64,7 @@ export const useCalendar = () => {
 		hoveredDay,
 		handleDayHover,
 		handleDayLeave,
-		currentDate,
+		actualDate,
 		currentDay,
 		goToCurrentMonth,
 		goToNextMonth,

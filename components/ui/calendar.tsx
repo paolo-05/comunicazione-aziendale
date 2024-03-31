@@ -13,6 +13,7 @@ export const Calendar: React.FC = () => {
 		hoveredDay,
 		handleDayHover,
 		handleDayLeave,
+		actualDate,
 		currentDay,
 		goToCurrentMonth,
 		goToNextMonth,
@@ -62,7 +63,8 @@ export const Calendar: React.FC = () => {
 						>
 							<span
 								className={`${dayEvents.length > 0 && 'underline'} ${
-									day + 1 === currentDay && 'bg-primary-700 text-white font-bold rounded-lg p-1'
+									currentDate.toDateString() == actualDate.toDateString() &&
+									'bg-primary-700 text-white font-bold rounded-lg p-1'
 								} hover:text-secondary`}
 							>
 								{day + 1}
