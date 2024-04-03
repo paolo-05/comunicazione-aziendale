@@ -54,7 +54,7 @@ export default function Header({ session }: HeaderProps): React.ReactElement {
 							<div className='text-gray-600 dark:text-gray-300 lg:pr-4 lg:w-auto w-full lg:pt-0'>
 								<ul className='tracking-wide font-medium lg:text-sm flex-col flex lg:flex-row gap-6 lg:gap-0'>
 									<li>
-										<Link href='/post/all' className='block md:px-4 transition hover:text-primary-700'>
+										<Link href='/' className='block md:px-4 transition hover:text-primary-700'>
 											<span>Prossimi Eventi</span>
 										</Link>
 									</li>

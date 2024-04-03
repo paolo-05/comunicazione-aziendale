@@ -1,4 +1,5 @@
-import { User } from '@/models';
+import { WelcomeTemplate } from '@/mailer/welcome';
+import { resend, User } from '@/models';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
@@ -33,8 +34,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		// Create a new user in the database
 		await User.createUser(email.toLowerCase(), password, role, name, lastName);
 
+		// Send a welcome email
+		await resend.emails.send({
+			from: 'welcome@posijar.com',
+			to: [email],
+			subject: 'Benvenuto in Comunicazione Aziendale!',
+			text: 'Benvenuto in Comunicazione Aziendale!',
+			react: WelcomeTemplate({ role, name }),
+		});
+
 		res.status(201).json({ message: 'OK' });
 	} catch (error) {
+		console.log(error);
+
 		res.status(500).json({ message: error });
 	}
 }

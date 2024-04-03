@@ -17,6 +17,15 @@
 			"@/*": ["./*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.hook.ts", "**/*.d.ts"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"**/*.hook.ts",
+		"**/*.lib.ts",
+		"**/*.model.ts",
+		"**/*.connection.ts",
+		"**/*.d.ts"
+	],
 	"exclude": ["node_modules"]
 }

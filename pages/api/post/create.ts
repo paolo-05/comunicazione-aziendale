@@ -4,6 +4,8 @@
 import { Post } from '@/models';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { type PostType } from '@/types/post';
+import axios from 'axios';
+import { log } from 'console';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 
@@ -52,10 +54,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	try {
 		// Create a new Category in the database
-		await Post.createPost(post);
+		const postId = await Post.createPost(post);
 
+		const response = await axios.post(`${process.env.NEXTAUTH_URL}/api/mailer/send-post-to-audience`, {
+			targetsIds: targets,
+			postId: postId,
+		});
+		log(response.data);
 		res.status(201).json({ message: 'OK' });
 	} catch (error) {
+		log(error);
 		res.status(500).json({ message: 'Error in server' });
 	}
 }

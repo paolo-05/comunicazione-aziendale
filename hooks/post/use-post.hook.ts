@@ -10,8 +10,9 @@ import { CategoryType } from '@/types/category';
  * @param id the post's id to fetch
  * @returns `PostType`
  */
-export const usePost = (id: string | undefined | any) => {
+export const usePost = () => {
 	const router = useRouter();
+	const { id } = router.query;
 
 	const [post, setPost] = useState<PostType | null>();
 	const [categories, setCategories] = useState<CategoryType[]>();

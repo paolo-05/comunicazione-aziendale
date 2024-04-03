@@ -10,5 +10,7 @@ namespace NodeJS {
 		NEXT_PUBLIC_PROFILE_LINK: string;
 
 		NEXT_PUBBLIC_CLOUDINARY_UPLOADER_URL: string;
+
+		RESEND_API_KEY: string;
 	}
 }

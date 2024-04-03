@@ -1,11 +1,16 @@
 import { type Session } from 'next-auth';
 import { z } from 'zod';
+import { AudienceType } from './audience';
 
 export interface CategoryType {
 	id: number;
 	name: string;
 	description: string;
 	colour: string;
+}
+
+export interface CategoryTypeWithUsers extends CategoryType {
+	users: AudienceType[];
 }
 
 export interface CategoryItemProps {
