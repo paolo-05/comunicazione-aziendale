@@ -5,7 +5,6 @@ import { usePost } from '@/hooks/post';
 import { useSession } from 'next-auth/react';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -16,10 +15,7 @@ export default function Post(): React.ReactElement {
 	// the session from `next-auth`
 	const { data: session } = useSession();
 
-	const router = useRouter();
-	const id = router.query.id;
-
-	const { post, categories } = usePost(id);
+	const { post, categories } = usePost();
 
 	return (
 		<>
