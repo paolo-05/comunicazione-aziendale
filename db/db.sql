@@ -34,14 +34,6 @@ CREATE TABLE posts(
     FOREIGN KEY (lastModificatorID) REFERENCES admins(id)
 );
 
-CREATE TABLE includes(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    eventId INT,
-    mediaId VARCHAR(255),
-    FOREIGN KEY (eventId) REFERENCES events(id),
-    FOREIGN KEY (mediaId) REFERENCES medias(id)
-);
-
 CREATE TABLE categories(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) UNIQUE,
@@ -57,7 +49,14 @@ CREATE TABLE post_targets(
     FOREIGN KEY (categoryId) REFERENCES categories(id)
 );
 
---- demo user:
+CREATE TABLE audiences(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) UNIQUE,
+    categoryId INT,
+    FOREIGN KEY (categoryId) REFERENCES categories(id)
+);
+
+--- demo users:
 INSERT INTO `admins` (`id`, `email`, `password`, `name`, `lastName`, `created_at`) VALUES
 (1, 'paolo@example.com', '$2b$10$.lMw1x2XJayuU.xlAhDmt.VljtKVDhR2fFs0OYPvMetjEsb1hMGPi', 'Paolo', 'Bianchessi', '2023-12-05 15:08:39');
 INSERT INTO `roles` (`adminId`, `role`) VALUES (1, 1);

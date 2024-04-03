@@ -44,7 +44,7 @@ export const User = {
 		role: number,
 		name: string,
 		lastName: string,
-	): Promise<boolean> => {
+	): Promise<number> => {
 		const hashedPassword = await bcrypt.hash(password, 10);
 		await db
 			.promise()
@@ -55,11 +55,13 @@ export const User = {
 				lastName,
 			]);
 
-		const user = await User.findByEmail(email);
+		// Retrieve the last inserted ID using LAST_INSERT_ID()
+		const [result] = await db.promise().query<RowDataPacket[]>('SELECT LAST_INSERT_ID() as id FROM admins');
+		const insertedId = result[0].id as number;
 
-		await db.promise().query('INSERT INTO roles (adminId, role) VALUES (?, ?)', [user?.id, role]);
+		await db.promise().query('INSERT INTO roles (adminId, role) VALUES (?, ?)', [insertedId, role]);
 
-		return true;
+		return insertedId;
 	},
 
 	/**

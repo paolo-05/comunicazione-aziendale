@@ -1,7 +1,7 @@
 // Alexis Rossi, 27/01/2024
 // The following code provides the methods about the category
 
-import { type CategoryType } from '@/types/category';
+import { CategoryTypeWithUsers, type CategoryType } from '@/types/category';
 import { type RowDataPacket } from 'mysql2';
 import { db } from '.';
 
@@ -78,5 +78,53 @@ export const Category = {
 	 */
 	deleteCategory: async (id: number): Promise<void> => {
 		await db.promise().query('DELETE FROM categories WHERE id = ?', [id]);
+	},
+
+	/**
+	 * Returns all the categories with their audiences
+	 */
+	getCategoriesAndAudiences: async (): Promise<CategoryTypeWithUsers[] | undefined> => {
+		const [rows] = await db.promise().query<RowDataPacket[]>(`
+			SELECT
+				c.id AS categoryId,
+				c.name AS categoryName,
+				c.description AS categoryDescription,
+				c.colour AS categoryColour,
+				a.id AS userId,
+				a.email AS userEmail
+			FROM
+				categories c
+			LEFT JOIN
+				audiences a ON c.id = a.categoryId
+		`);
+
+		const categories: CategoryTypeWithUsers[] = [];
+		rows.forEach((row) => {
+			const category = categories.find((c) => c.id === row.categoryId);
+			if (category) {
+				category.users.push({
+					id: row.userId,
+					email: row.userEmail,
+					categoryId: row.categoryId,
+				});
+			} else {
+				categories.push({
+					id: row.categoryId,
+					name: row.categoryName,
+					description: row.categoryDescription,
+					colour: row.categoryColour,
+					users: row.userId
+						? [
+								{
+									id: row.userId,
+									email: row.userEmail,
+									categoryId: row.categoryId,
+								},
+							]
+						: [],
+				});
+			}
+		});
+		return categories;
 	},
 };

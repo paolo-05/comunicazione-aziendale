@@ -20,6 +20,7 @@ const config: Config = {
 			(colour: string) =>
 				`ring-${colour}-800 dark:ring-${colour}-300 text-xs font-medium ring-4 rounded-lg py-1 px-2 bg-gray-100 dark:bg-gray-800`,
 		),
+		...colorClasses.map((colour: string) => `ring-4 ring-${colour}-800 dark:ring-${colour}-300 p-14 flex flex-col`),
 	],
 	plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 	darkMode: 'media',

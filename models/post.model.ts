@@ -13,7 +13,7 @@ export const Post = {
 	/**
 	 * Creating a post defining all its values.
 	 */
-	createPost: async (post: PostType): Promise<boolean> => {
+	createPost: async (post: PostType): Promise<number> => {
 		await db
 			.promise()
 			.query(
@@ -38,7 +38,7 @@ export const Post = {
 			await db.promise().query('INSERT INTO post_targets (postId, categoryId) VALUES (?, ?)', [insertedId, target]);
 		});
 
-		return true;
+		return insertedId;
 	},
 	/**
 	 * Deleting a post by its id

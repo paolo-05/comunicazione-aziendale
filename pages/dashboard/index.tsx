@@ -1,6 +1,7 @@
-import { CategoryManager, PostManager, RecentEdits, UserManager } from '@/components/dashboardActions';
+import { CategoryManager, MailingList, PostManager, RecentEdits, UserManager } from '@/components/dashboardActions';
 import Header from '@/components/navbar/';
 import { Calendar, Container } from '@/components/ui';
+import { useCategories, UseCategoriesAndAudiences } from '@/hooks/category';
 import { useLastEdits, useNextFivePots } from '@/hooks/post';
 import { useUnrestrictedSession } from '@/hooks/session';
 import { Inter } from 'next/font/google';
@@ -16,6 +17,8 @@ export default function Dashboard(): JSX.Element {
 	const { posts } = useNextFivePots();
 
 	const { lastEdits } = useLastEdits();
+
+	const { categories } = UseCategoriesAndAudiences();
 
 	return (
 		<>
@@ -38,22 +41,23 @@ export default function Dashboard(): JSX.Element {
 								placeholder='data:image/svg;base64,L3BsYWNlaG9sZGVyLnN2Zw=='
 							/>
 							<UserManager session={session} />
-							<CategoryManager />
+							<CategoryManager session={session} />
 
 							<Calendar />
 						</div>
 						<PostManager posts={posts} session={session} />
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'>
 							<RecentEdits lastEdits={lastEdits} />
-							<div className='border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72'></div>
+							<MailingList categories={categories} />
 						</div>
-						<div className='border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4'></div>
+						{/* Placeholders for more features */}
+						{/* <div className='border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4'></div>
 						<div className='grid grid-cols-2 gap-4'>
 							<div className='border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72'></div>
 							<div className='border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72'></div>
 							<div className='border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72'></div>
 							<div className='border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72'></div>
-						</div>
+						</div> */}
 					</Container>
 				</section>
 			</main>

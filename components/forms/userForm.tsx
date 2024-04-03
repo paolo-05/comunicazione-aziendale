@@ -164,6 +164,12 @@ export const UserForm = ({ initialUserData }: UserFormProps): React.ReactElement
 			>
 				{isSubmitting ? 'Caricamento...' : initialUserData != null ? 'Aggiorna' : 'Registra'}
 			</button>
+			{!initialUserData && (
+				<div className='mt-2 text-sm text-gray-700 dark:text-gray-300'>
+					L&apos;utente che stai registrando riceverà un&apos;email con le istruzioni per cominciare ad usare la
+					piattaforma.
+				</div>
+			)}
 		</form>
 	);
 };

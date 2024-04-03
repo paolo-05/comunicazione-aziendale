@@ -2,15 +2,14 @@ import { CategoryFormModal, ListAll } from '@/components/categoryComponents';
 import Header from '@/components/navbar';
 import { Container } from '@/components/ui';
 import { useCategories } from '@/hooks/category';
-import { useUnrestrictedSession } from '@/hooks/session';
+import { useRestrictedSession } from '@/hooks/session';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import React from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Category(): JSX.Element {
-	const session = useUnrestrictedSession();
+	const session = useRestrictedSession();
 
 	const { categories, showModal, categoryToEdit, handleEditCategoryTabOpened, setShowModal, handleCloseModal } =
 		useCategories();
@@ -28,8 +27,8 @@ export default function Category(): JSX.Element {
 				<Header session={session} />
 				<section className='relative pt-36'>
 					<Container>
-						<div className='bg-gray-100 dark:bg-gray-900'>
-							<section className='w-full h-16 flex items-center justify-between px-6 bg-white dark:bg-gray-800 shadow-md'>
+						<div className='bg-gray-100 dark:bg-gray-900 rounded-lg'>
+							<section className='w-full h-16 flex items-center justify-between px-6 bg-white dark:bg-gray-800 shadow-md rounded-t-lg'>
 								<h1 className='text-2xl font-semibold text-gray-900 dark:text-gray-100'>Categorie di utenti</h1>
 								<button
 									type='button'

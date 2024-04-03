@@ -169,26 +169,28 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 						</div>
 						<div className='w-full'>
 							<span>Categorie Target</span>
-							{categories.length > 0 &&
-								categories.map((category) => (
-									<div key={category.id} className='bg-gray-100 dark:bg-gray-800 m-1 w-32 rounded-lg p-1'>
-										<input
-											checked={targets.includes(category.id)}
-											type='checkbox'
-											name={category.name}
-											id={category.name}
-											value={category.id}
-											onChange={handleCheckboxChange}
-											className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-										/>
-										<label
-											htmlFor={category.name}
-											className={`bg-${category.colour}-300 dark:bg-${category.colour}-800 ms-1 px-3 py-1 rounded-lg`}
-										>
-											{category.name}
-										</label>
-									</div>
-								))}
+							<section className='bg-gray-100 dark:bg-gray-800 max-w-fit rounded-lg p-1'>
+								{categories.length > 0 &&
+									categories.map((category) => (
+										<div key={category.id} className='m-1 p-1'>
+											<input
+												checked={targets.includes(category.id)}
+												type='checkbox'
+												name={category.name}
+												id={category.name}
+												value={category.id}
+												onChange={handleCheckboxChange}
+												className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+											/>
+											<label
+												htmlFor={category.name}
+												className={`bg-${category.colour}-300 dark:bg-${category.colour}-800 ms-1 px-3 py-1 rounded-lg`}
+											>
+												{category.name}
+											</label>
+										</div>
+									))}
+							</section>
 							{targetsError.length > 0 && <p className='mt-2 text-sm text-red-600 dark:text-red-500'>{targetsError}</p>}
 						</div>
 					</div>
