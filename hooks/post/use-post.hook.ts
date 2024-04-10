@@ -23,6 +23,21 @@ export const usePost = () => {
 				const postResponse = await axios.get(`/api/post/${id}`);
 				setPost(postResponse.data.message as PostType);
 
+				const previousAndNextPostsResponse = await axios.get(`/api/post/get-next-and-previous-posts-ids?postId=${id}`);
+
+				const nextPostId = previousAndNextPostsResponse.data.nextPostId as number | null;
+				const previousPostId = previousAndNextPostsResponse.data.previousPostId as number | null;
+				setPost((prevState) => {
+					if (prevState) {
+						return {
+							...prevState,
+							nextPostId: nextPostId ?? undefined,
+							previousPostId: previousPostId ?? undefined,
+						};
+					}
+					return prevState;
+				});
+
 				const categoriesResponse = await axios.get(`/api/category/get-by-post-id?postId=${id}`);
 				setCategories(categoriesResponse.data.message as CategoryType[]);
 			} catch (error) {

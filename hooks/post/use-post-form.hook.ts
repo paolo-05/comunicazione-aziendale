@@ -77,6 +77,7 @@ export const usePostForm = ({ initialData }: PostFormProps) => {
 		} else {
 			setTargets((prevTargets: number[]) => prevTargets.filter((target) => target !== parseInt(targetId)));
 		}
+		setTargetsError('');
 	};
 
 	const onSubmit: SubmitHandler<PostFormField> = async (data) => {

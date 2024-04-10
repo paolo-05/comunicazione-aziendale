@@ -131,4 +131,32 @@ export const Post = {
 			>('SELECT p.id, p.title, p.updated_at, a.name, a.lastName FROM posts p JOIN admins a ON p.lastModificatorId = a.id ORDER BY p.updated_at DESC LIMIT 5');
 		return rows as RecentPostEdit[] | undefined;
 	},
+
+	getPreviousPostId: async (postId: number): Promise<number | null> => {
+		const [rows] = await db
+			.promise()
+			.query<
+				RowDataPacket[]
+			>('SELECT id FROM posts WHERE actualDate < (SELECT actualDate FROM posts WHERE id = ?) ORDER BY actualDate DESC LIMIT 1', [postId]);
+
+		if (rows.length === 0) {
+			return null;
+		}
+
+		return rows[0].id as number;
+	},
+
+	getNextPostId: async (postId: number): Promise<number | null> => {
+		const [rows] = await db
+			.promise()
+			.query<
+				RowDataPacket[]
+			>('SELECT id FROM posts WHERE actualDate > (SELECT actualDate FROM posts WHERE id = ?) ORDER BY actualDate LIMIT 1', [postId]);
+
+		if (rows.length === 0) {
+			return null;
+		}
+
+		return rows[0].id as number;
+	},
 };

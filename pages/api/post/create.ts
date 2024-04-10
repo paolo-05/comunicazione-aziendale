@@ -56,11 +56,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		// Create a new Category in the database
 		const postId = await Post.createPost(post);
 
-		const response = await axios.post(`${process.env.NEXTAUTH_URL}/api/mailer/send-post-to-audience`, {
+		await axios.post(`${process.env.NEXTAUTH_URL}/api/mailer/send-post-to-audience`, {
 			targetsIds: targets,
 			postId: postId,
 		});
-		log(response.data);
+
 		res.status(201).json({ message: 'OK' });
 	} catch (error) {
 		log(error);
