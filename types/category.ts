@@ -37,3 +37,9 @@ export const categoryFormSchema = z.object({
 });
 
 export type CategoryFormFields = z.infer<typeof categoryFormSchema>;
+
+export const addEmailFormSchema = z.object({
+	email: z.string().email('Formato non valido').min(1, 'Campo richiesto'),
+});
+
+export type AddEmailFormFields = z.infer<typeof addEmailFormSchema>;

@@ -2,6 +2,7 @@ import { useCategoryForm } from '@/hooks/category';
 import { type CategoryFormModalProps } from '@/types/category';
 import React from 'react';
 import { ColorPicker } from '../forms';
+import { CloseIcon, CreateIcon, LoadingIcon } from '../svg';
 
 export const CategoryFormModal = ({ initialFormData, show, onClose }: CategoryFormModalProps): React.ReactElement => {
 	const { setSelectedColor, register, handleSubmit, errors, isSubmitting, onSubmit } = useCategoryForm({
@@ -9,6 +10,31 @@ export const CategoryFormModal = ({ initialFormData, show, onClose }: CategoryFo
 		show,
 		onClose,
 	});
+
+	const renderSubmitButton = () => {
+		if (isSubmitting) {
+			return (
+				<>
+					<LoadingIcon className='me-1 -ms-1 w-5 h-5' />
+					Caricamento
+				</>
+			);
+		}
+		if (!initialFormData) {
+			return (
+				<>
+					<CreateIcon className='me-1 -ms-1 w-5 h-5' />
+					Crea una nuova categoria
+				</>
+			);
+		}
+		return (
+			<>
+				<CreateIcon className='me-1 -ms-1 w-5 h-5' />
+				Modifica
+			</>
+		);
+	};
 
 	if (!show) return <>Loading...</>;
 
@@ -32,15 +58,7 @@ export const CategoryFormModal = ({ initialFormData, show, onClose }: CategoryFo
 						className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white'
 						onClick={onClose}
 					>
-						<svg className='w-3 h-3' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 14 14'>
-							<path
-								stroke='currentColor'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth='2'
-								d='m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6'
-							/>
-						</svg>
+						<CloseIcon className='w-3 h-3' />
 						<span className='sr-only'>Close modal</span>
 					</button>
 				</div>
@@ -87,55 +105,7 @@ export const CategoryFormModal = ({ initialFormData, show, onClose }: CategoryFo
 						type='submit'
 						className='text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
 					>
-						{isSubmitting ? (
-							<>
-								<svg
-									className='me-1 -ms-1 w-5 h-5'
-									aria-hidden='true'
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-								>
-									<path
-										stroke='currentColor'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth='2'
-										d='M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-									/>
-								</svg>
-								Caricamento
-							</>
-						) : initialFormData !== null ? (
-							<>
-								<svg className='me-1 -ms-1 w-5 h-5' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
-									<path
-										stroke='currentColor'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth='2'
-										d='m10.8 17.8-6.4 2.1 2.1-6.4m4.3 4.3L19 9a3 3 0 0 0-4-4l-8.4 8.6m4.3 4.3-4.3-4.3m2.1 2.1L15 9.1m-2.1-2 4.2 4.2'
-									/>
-								</svg>
-								Modifica
-							</>
-						) : (
-							<>
-								<svg
-									className='me-1 -ms-1 w-5 h-5'
-									fill='currentColor'
-									viewBox='0 0 20 20'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<path
-										fillRule='evenodd'
-										d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z'
-										clipRule='evenodd'
-									></path>
-								</svg>
-								Crea una nuova categoria
-							</>
-						)}
+						{renderSubmitButton()}
 					</button>
 				</form>
 			</div>

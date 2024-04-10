@@ -15,6 +15,8 @@ export interface PostType {
 	lastModificatorId: number;
 	created_at: Date;
 	updated_at: Date;
+	nextPostId?: number | undefined;
+	previousPostId?: number | undefined;
 }
 
 export interface PostItemProps {

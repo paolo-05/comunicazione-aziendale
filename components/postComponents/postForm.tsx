@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import Datepicker from 'react-tailwindcss-datepicker';
 import { UploadCoverImageModal } from '.';
-import { useRouter } from 'next/router';
+import { CloseIcon, CreateIcon, EditIcon, LoadingIcon, UploadImageIcon } from '../svg';
 import { Modal } from '../ui';
 
 const CustomEditor = dynamic(
@@ -16,8 +16,6 @@ const CustomEditor = dynamic(
 );
 
 export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => {
-	const router = useRouter();
-
 	const {
 		handleSubmit,
 		onSubmit,
@@ -47,6 +45,50 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 	} = usePostForm({ initialData });
 
 	const { categories } = useCategories();
+
+	const renderSubmitButton = () => {
+		if (isSubmitting) {
+			return (
+				<>
+					<LoadingIcon className='me-1 -ms-1 w-5 h-5' />
+					Caricamento
+				</>
+			);
+		}
+
+		if (!initialData) {
+			return (
+				<>
+					<CreateIcon className='me-1 -ms-1 w-5 h-5' />
+					Crea un nuovo annuncio
+				</>
+			);
+		}
+
+		return (
+			<>
+				<EditIcon className='me-1 -ms-1 w-5 h-5' />
+				Modifica
+			</>
+		);
+	};
+
+	const renderDiscardButton = () => {
+		if (isSubmitting) {
+			return (
+				<>
+					<LoadingIcon className='me-1 -ms-1 w-5 h-5' />
+					Caricamento
+				</>
+			);
+		}
+		return (
+			<>
+				<CloseIcon className='me-1 -ms-1 w-4 h-4' />
+				Annulla
+			</>
+		);
+	};
 
 	return (
 		<section className='bg-white dark:bg-gray-900 border border-gray-200 rounded-lg shadow dark:border-gray-700'>
@@ -134,20 +176,7 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 								className='text-white bg-secondary hover:bg-secondary/90 focus:ring-4 focus:outline-none focus:ring-secondary/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-secondary/55 me-2 mb-2'
 								onClick={handleImageModalChange}
 							>
-								<svg
-									className='w-6 h-6 mr-2 text-gray-800 dark:text-white'
-									aria-hidden='true'
-									xmlns='http://www.w3.org/2000/svg'
-									fill='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path fillRule='evenodd' d='M13 10c0-.6.4-1 1-1a1 1 0 1 1 0 2 1 1 0 0 1-1-1Z' clipRule='evenodd' />
-									<path
-										fillRule='evenodd'
-										d='M2 6c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v12c0 .6-.2 1-.6 1.4a1 1 0 0 1-.9.6H4a2 2 0 0 1-2-2V6Zm6.9 12 3.8-5.4-4-4.3a1 1 0 0 0-1.5.1L4 13V6h16v10l-3.3-3.7a1 1 0 0 0-1.5.1l-4 5.6H8.9Z'
-										clipRule='evenodd'
-									/>
-								</svg>
+								<UploadImageIcon className='w-6 h-6 mr-2 text-gray-800 dark:text-white' />
 								{initialData != null ? 'Cambia Immagine' : 'Carica'}
 							</button>
 							{imageURL != null && initialData?.imageURL !== imageURL && (
@@ -199,107 +228,14 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 							type='submit'
 							className='text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
 						>
-							{isSubmitting ? (
-								<>
-									<svg
-										className='me-1 -ms-1 w-5 h-5'
-										aria-hidden='true'
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 24 24'
-									>
-										<path
-											stroke='currentColor'
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											strokeWidth='2'
-											d='M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-										/>
-									</svg>
-									Caricamento
-								</>
-							) : initialData != null ? (
-								<>
-									<svg
-										className='me-1 -ms-1 w-5 h-5'
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 24 24'
-									>
-										<path
-											stroke='currentColor'
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											strokeWidth='2'
-											d='m10.8 17.8-6.4 2.1 2.1-6.4m4.3 4.3L19 9a3 3 0 0 0-4-4l-8.4 8.6m4.3 4.3-4.3-4.3m2.1 2.1L15 9.1m-2.1-2 4.2 4.2'
-										/>
-									</svg>
-									Modifica
-								</>
-							) : (
-								<>
-									<svg
-										className='me-1 -ms-1 w-5 h-5'
-										fill='currentColor'
-										viewBox='0 0 20 20'
-										xmlns='http://www.w3.org/2000/svg'
-									>
-										<path
-											fillRule='evenodd'
-											d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z'
-											clipRule='evenodd'
-										></path>
-									</svg>
-									Crea un nuovo annuncio
-								</>
-							)}
+							{renderSubmitButton()}
 						</button>
 						<button
 							type='button'
 							onClick={toggleDiscardModal}
 							className='text-white inline-flex items-center bg-stone-700 hover:bg-stone-800 focus:ring-4 focus:outline-none focus:ring-stone-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-stone-600 dark:hover:bg-stone-700 dark:focus:ring-stone-800'
 						>
-							{isSubmitting ? (
-								<>
-									<svg
-										className='me-1 -ms-1 w-5 h-5'
-										aria-hidden='true'
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 24 24'
-									>
-										<path
-											stroke='currentColor'
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											strokeWidth='2'
-											d='M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-										/>
-									</svg>
-									Caricamento
-								</>
-							) : (
-								<>
-									<svg
-										className='me-1 -ms-1 w-5 h-5'
-										aria-hidden='true'
-										xmlns='http://www.w3.org/2000/svg'
-										width='24'
-										height='24'
-										fill='none'
-										viewBox='0 0 24 24'
-									>
-										<path
-											stroke='currentColor'
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											strokeWidth='2'
-											d='M6 18 17.94 6M18 18 6.06 6'
-										/>
-									</svg>
-									Annulla
-								</>
-							)}
+							{renderDiscardButton()}
 						</button>
 					</div>
 				</form>

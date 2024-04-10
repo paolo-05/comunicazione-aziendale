@@ -26,7 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		const audience = await Audience.getByCategoryId(id);
 
 		audience.forEach((target) => {
-			targets.push(target.email);
+			if (!targets.includes(target.email)) {
+				targets.push(target.email);
+			}
 		});
 	}
 
@@ -35,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 
 	await resend.emails.send({
-		from: 'news@posijar.com',
+		from: 'News <news@posijar.com>',
 		to: targets,
 		subject: 'È stato pubblicato un nuovo annuncio che ti riguarda!',
 		text: 'È stato pubblicato un nuovo annuncio che ti riguarda!',
