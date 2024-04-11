@@ -3,17 +3,22 @@ import { useRouter } from 'next/router';
 import { useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
+interface EmailCategory {
+	email: string;
+	categoryId: number;
+}
+
 export const useListEmails = () => {
 	const router = useRouter();
-	const [hoveredEmail, setHoveredEmail] = useState<string | null>(null);
-	const [emailToRemove, setEmailToRemove] = useState<string | null>(null);
+	const [hoveredEmail, setHoveredEmail] = useState<EmailCategory | null>(null);
+	const [emailToRemove, setEmailToRemove] = useState<EmailCategory | null>(null);
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [status, setStatus] = useState('idle');
 
 	const deleteEmail = useCallback(() => {
 		setStatus('deleting');
 		axios
-			.delete(`/api/category/delete-email?email=${emailToRemove}`)
+			.delete(`/api/mailer/delete-email?email=${emailToRemove?.email}&categoryId=${emailToRemove?.categoryId}`)
 			.then(() => {
 				toast.info('Email rimossa');
 				router.reload();
@@ -30,8 +35,8 @@ export const useListEmails = () => {
 		setShowModal(false);
 	};
 
-	const toggleModal = (event: React.MouseEvent<HTMLButtonElement>, email: string): void => {
-		setEmailToRemove(email);
+	const toggleModal = (event: React.MouseEvent<HTMLButtonElement>, email: string, categoryId: number): void => {
+		setEmailToRemove({ email, categoryId });
 		event.stopPropagation();
 		setShowModal(!showModal);
 	};
