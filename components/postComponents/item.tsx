@@ -49,7 +49,7 @@ export const Item = ({ post, categories, session }: PostItemProps): React.ReactE
 						<dl>
 							<dt className='mb-2 font-semibold leading-none text-gray-900 dark:text-white'>Descrzione</dt>
 							<dt
-								className='mb-4 sm:mb-5 prose data-from-editor max-w-5xl prose-img:max-w-lg text-left'
+								className='prose mb-4 sm:mb-5 data-from-editor text-left'
 								dangerouslySetInnerHTML={{
 									__html: post?.description ?? '',
 								}}
@@ -57,7 +57,7 @@ export const Item = ({ post, categories, session }: PostItemProps): React.ReactE
 						</dl>
 					</div>
 				</div>
-				<div className='flex items-center justify-center'>
+				<div className='flex items-center justify-center mb-3'>
 					{session?.user != null && (
 						<div className='flex items-center space-x-4'>
 							<Link
@@ -71,37 +71,36 @@ export const Item = ({ post, categories, session }: PostItemProps): React.ReactE
 						</div>
 					)}
 				</div>
-			</div>
-
-			{session?.user != null && (
-				<div className='absolute right-0 bottom-0 m-3 text-gray-800 dark:text-gray-200'>
-					<h4 className='inline-flex items-start'>
-						<CreatedAtIcon className='w-5 h-5 text-gray-800 mr-1 dark:text-gray-200' />
-						Creato il:{' '}
-						{new Date(post.created_at).toLocaleString('it-IT', {
-							hour: '2-digit',
-							minute: '2-digit',
-							day: '2-digit',
-							month: 'long',
-							year: 'numeric',
-						})}
-					</h4>
-					<br />
-					<h4 className='inline-flex items-start'>
-						<LastEditedIcon className='w-5 h-5 mr-1 text-gray-800 dark:text-gray-200' />
-						Modificato
-						{post.updated_at !== post.created_at ? ' il: ' : ': mai'}
-						{post.updated_at !== post.created_at &&
-							new Date(post.updated_at).toLocaleString('it-IT', {
+				<NavigationButtons nextPostId={post.nextPostId} previousPostId={post.previousPostId} session={session} />
+				{session?.user != null && (
+					<div className='flex flex-col items-end text-gray-800 dark:text-gray-200'>
+						<h4 className='inline-flex items-start'>
+							<CreatedAtIcon className='w-5 h-5 text-gray-800 mr-1 dark:text-gray-200' />
+							Creato il:{' '}
+							{new Date(post.created_at).toLocaleString('it-IT', {
 								hour: '2-digit',
 								minute: '2-digit',
 								day: '2-digit',
 								month: 'long',
 								year: 'numeric',
 							})}
-					</h4>
-				</div>
-			)}
+						</h4>
+						<h4 className='inline-flex items-start'>
+							<LastEditedIcon className='w-5 h-5 mr-1 text-gray-800 dark:text-gray-200' />
+							Modificato
+							{post.updated_at !== post.created_at ? ' il: ' : ': mai'}
+							{post.updated_at !== post.created_at &&
+								new Date(post.updated_at).toLocaleString('it-IT', {
+									hour: '2-digit',
+									minute: '2-digit',
+									day: '2-digit',
+									month: 'long',
+									year: 'numeric',
+								})}
+						</h4>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

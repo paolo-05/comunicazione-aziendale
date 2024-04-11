@@ -38,11 +38,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	await resend.emails.send({
 		from: 'News <news@posijar.com>',
-		to: targets,
+		bcc: targets,
+		to: ['Me <news@posijar.com>'],
 		subject: 'È stato pubblicato un nuovo annuncio che ti riguarda!',
 		text: 'È stato pubblicato un nuovo annuncio che ti riguarda!',
 		react: PostPreviewTemplate({ post }),
 	});
-
 	res.status(200).json({ message: 'Post sent to audience' });
 }

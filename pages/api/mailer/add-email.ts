@@ -18,7 +18,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		await Audience.createAudience(email, selectedCategory);
 		res.status(201).end();
 	} catch (error) {
-		console.log(error);
 		res.status(500).end();
 	}
 }
