@@ -5,7 +5,6 @@ import { UseCategoriesAndAudiences } from '@/hooks/category';
 import { useRestrictedSession } from '@/hooks/session';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 

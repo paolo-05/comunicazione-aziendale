@@ -54,8 +54,8 @@ export const Audience = {
 	 * deletes an audience.
 	 * @param id the id of the audience we're deleting
 	 */
-	deleteAudience: async (id: number): Promise<boolean> => {
-		await db.promise().query('DELETE FROM audiences WHERE id = ?', [id]);
+	deleteEmailFromAudience: async (categoryId: number, email: string): Promise<boolean> => {
+		await db.promise().query('DELETE FROM audiences WHERE categoryId = ? AND email = ?', [categoryId, email]);
 		return true;
 	},
 };

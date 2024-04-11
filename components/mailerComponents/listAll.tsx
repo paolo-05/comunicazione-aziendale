@@ -31,15 +31,15 @@ export const ListAll = ({ categories }: ListAllProps) => {
 				{category.users.map((user, index) => (
 					<div
 						key={index}
-						onMouseEnter={() => setHoveredEmail(user.email)}
+						onMouseEnter={() => setHoveredEmail({ email: user.email, categoryId: category.id })}
 						onMouseLeave={() => setHoveredEmail(null)}
 						className='flex items-start justify-between w-full p-2 bg-gray-300 dark:bg-gray-600 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors duration-300 ease-in-out my-1'
 					>
 						<p key={index} className='text-sm'>
 							{user.email}
 						</p>
-						{hoveredEmail === user.email && (
-							<button onClick={(e) => toggleModal(e, user.email)}>
+						{hoveredEmail?.email === user.email && hoveredEmail.categoryId === category.id && (
+							<button onClick={(e) => toggleModal(e, user.email, category.id)}>
 								<TrashBinIcon className='ms-1 w-6 h-6 text-red-500 dark:text-red-400 cursor-pointer' />
 							</button>
 						)}
