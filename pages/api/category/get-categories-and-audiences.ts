@@ -19,7 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		const categoriesWithUsers = await Category.getCategoriesAndAudiences();
 		return res.status(200).json({ message: categoriesWithUsers });
 	} catch (error) {
-		console.log(error);
 		return res.status(500).end();
 	}
 }

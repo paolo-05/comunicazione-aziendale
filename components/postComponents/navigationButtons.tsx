@@ -18,7 +18,7 @@ export const NavigationButtons = ({ nextPostId, previousPostId, session }: Navig
 					disabled
 				>
 					<PreviousPostIcon className='mr-1 w-6 h-6 text-white' />
-					Annuncio Precedente
+					<span className='hidden md:block'>Annuncio Precedente</span>
 				</button>
 			);
 		}
@@ -28,7 +28,7 @@ export const NavigationButtons = ({ nextPostId, previousPostId, session }: Navig
 				className='text-white bg-primary-700 hover:bg-primary-700/90 focus:ring-4 focus:outline-none focus:ring-primary-700/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-primary-700/55 me-2 mb-2'
 			>
 				<PreviousPostIcon className='mr-1 w-6 h-6 text-white' />
-				Annuncio Precedente
+				<span className='hidden md:block'>Annuncio Precedente</span>
 			</Link>
 		);
 	};
@@ -41,7 +41,7 @@ export const NavigationButtons = ({ nextPostId, previousPostId, session }: Navig
 					className='text-white bg-gray-400 dark:bg-gray-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-right inline-flex items-center dark:focus:ring-primary-700/55 me-2 mb-2'
 					disabled
 				>
-					Prossimo Annuncio
+					<span className='hidden md:block'>Prossimo Annuncio</span>
 					<NextPostIcon className='ml-1 w-6 h-6 text-white' />
 				</button>
 			);
@@ -51,7 +51,7 @@ export const NavigationButtons = ({ nextPostId, previousPostId, session }: Navig
 				href={`/post/${nextPostId}`}
 				className='text-white bg-primary-700 hover:bg-primary-700/90 focus:ring-4 focus:outline-none focus:ring-primary-700/50 font-medium rounded-lg text-sm px-5 py-2.5 text-right inline-flex items-center dark:focus:ring-primary-700/55 me-2 mb-2'
 			>
-				Prossimo Annuncio
+				<span className='hidden md:block'>Prossimo Annuncio</span>
 				<NextPostIcon className='ml-1 w-6 h-6 text-white' />
 			</Link>
 		);
@@ -65,7 +65,7 @@ export const NavigationButtons = ({ nextPostId, previousPostId, session }: Navig
 				className='text-white bg-primary-700 hover:bg-primary-700/90 focus:ring-4 focus:outline-none focus:ring-primary-700/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-primary-700/55 me-2 mb-2'
 			>
 				<HomeIcon className='ml-1 w-6 h-6 text-white' />
-				Torna alla Home
+				<span className='hidden md:block'>Torna alla Home</span>
 			</Link>
 			{renderNextPostButton()}
 		</div>
