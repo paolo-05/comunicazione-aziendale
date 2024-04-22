@@ -7,6 +7,7 @@ import Datepicker from 'react-tailwindcss-datepicker';
 import { UploadCoverImageModal } from '.';
 import { CloseIcon, CreateIcon, EditIcon, LoadingIcon, UploadImageIcon } from '../svg';
 import { Modal } from '../ui';
+import { useWakeUploader } from '@/hooks/media';
 
 const CustomEditor = dynamic(
 	async () => {
@@ -43,6 +44,9 @@ export const PostForm = ({ initialData }: PostFormProps): React.ReactElement => 
 		toggleDiscardModal,
 		handleDiscard,
 	} = usePostForm({ initialData });
+
+	// This isn't working
+	const { loading } = useWakeUploader();
 
 	const { categories } = useCategories();
 

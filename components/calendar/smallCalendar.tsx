@@ -3,7 +3,7 @@ import { type PostSummary } from '@/types/post';
 import Link from 'next/link';
 import React from 'react';
 
-export const Calendar: React.FC = () => {
+export const SmallCalendar: React.FC = () => {
 	const {
 		firstDayOfWeek,
 		year,
@@ -55,7 +55,7 @@ export const Calendar: React.FC = () => {
 					return (
 						<div
 							key={day}
-							className='text-center relative cursor-pointer'
+							className='text-center relative cursor-pointer bg-gray-100 max-w-lg dark:bg-gray-700 rounded-lg p-2'
 							onMouseEnter={() => {
 								handleDayHover(day + 1);
 							}}
@@ -74,8 +74,9 @@ export const Calendar: React.FC = () => {
 									<ul className='list-disc pl-5'>
 										{dayEvents.map((event) => (
 											<li key={event.id}>
-												{' '}
-												<Link href={`/post/${event.id}`}>{event.title}</Link>
+												<Link href={`/post/${event.id}`} className='hover:text-secondary'>
+													{event.title}
+												</Link>
 											</li>
 										))}
 									</ul>

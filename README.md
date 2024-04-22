@@ -30,3 +30,4 @@ There should be some people in the company with the ability to sign in and acces
 
 - Alexis Rossi - [AlexisR728](https://github.com/AlexisR728)
 - Edoardo Barlassina - [Goofyedo](https://github.com/Goofyedo)
+- Andrea Polli [KoShamo143](https://github.com/KoShamo143)
