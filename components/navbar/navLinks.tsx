@@ -11,7 +11,7 @@ export default function NavLinks(): React.ReactElement {
 			</li>
 			<li>
 				<Link href='/dashboard' className='block md:px-4 transition hover:text-primary-700'>
-					<span>Vai alla Dashboard</span>
+					<span>Dashboard</span>
 				</Link>
 			</li>
 		</>

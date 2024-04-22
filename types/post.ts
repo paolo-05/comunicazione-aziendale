@@ -28,6 +28,7 @@ export interface PostItemProps {
 export interface PostSummary {
 	id: number;
 	title: string;
+	imageURL: string;
 	actualDate: string;
 }
 
@@ -42,6 +43,15 @@ export interface RecentPostEdit {
 export interface PostSummaryProps {
 	posts: PostType[];
 	session: Session | null;
+}
+
+export interface VisibilePostType {
+	id: number;
+	title: string;
+	imageURL: string;
+	actualDate: Date;
+	startDate: Date;
+	endDate: Date;
 }
 
 export const postSchema = z.object({

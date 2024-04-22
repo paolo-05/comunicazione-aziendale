@@ -20,7 +20,7 @@ export default function Header({ session }: HeaderProps): React.ReactElement {
 						<div className='relative z-20 w-full flex justify-between lg:w-max md:px-0'>
 							<Link href='/' aria-label='logo' className='flex space-x-2 items-center'>
 								<div aria-hidden='true' className='flex space-x-1'>
-									<Image src='/faviconFrame.svg' height={512} width={512} className='h-10 w-10' alt={'Logo'} />
+									<Image src='/et3.png' height={100} width={100} className='h-10 w-10' alt={'Logo'} />
 								</div>
 								<span className='text-2xl font-bold text-gray-900 dark:text-white'>Comunicazione Aziendale</span>
 							</Link>
@@ -56,6 +56,11 @@ export default function Header({ session }: HeaderProps): React.ReactElement {
 									<li>
 										<Link href='/' className='block md:px-4 transition hover:text-primary-700'>
 											<span>Prossimi Eventi</span>
+										</Link>
+									</li>
+									<li>
+										<Link href='/post/all' className='block md:px-4 transition hover:text-primary-700'>
+											<span>Tutti gli Eventi</span>
 										</Link>
 									</li>
 									{session?.user != null && <NavLinks />}

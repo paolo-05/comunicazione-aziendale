@@ -1,3 +1,4 @@
+export * from './use-all-visibile-posts.hook';
 export * from './use-calendar.hook';
 export * from './use-delete-post.hook';
 export * from './use-last-edits.hook';

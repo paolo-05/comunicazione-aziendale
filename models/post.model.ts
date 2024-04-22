@@ -1,7 +1,7 @@
 // Andrea Polli, 15/02/2024
 // The following code provides the methods about the posts
 
-import { type PostType, type RecentPostEdit } from '@/types/post';
+import { PostSummary, VisibilePostType, type PostType, type RecentPostEdit } from '@/types/post';
 import { type RowDataPacket } from 'mysql2';
 import { db } from '.';
 
@@ -90,10 +90,10 @@ export const Post = {
 	/**
 	 * Retrieve all the posts to put in the calendar
 	 */
-	getCalendarizedEvents: async (): Promise<PostType[] | null> => {
-		const [rows] = await db.promise().query('SELECT id, title, actualDate FROM posts');
+	getCalendarizedEvents: async (): Promise<PostSummary[] | null> => {
+		const [rows] = await db.promise().query('SELECT id, title, imageURL, actualDate FROM posts');
 
-		return rows as PostType[];
+		return rows as PostSummary[];
 	},
 	/**
 	 * Retrieve a post by its id
@@ -114,11 +114,15 @@ export const Post = {
 		return rows[0] as PostType | undefined;
 	},
 	/**
-	 * Retrieve all the posts
+	 * Retrieve all the posts if their visibility range is near the current date
 	 */
-	listAll: async (): Promise<PostType[]> => {
-		const [rows] = await db.promise().query<RowDataPacket[]>('SELECT * FROM posts');
-		return rows as PostType[];
+	listAll: async (): Promise<VisibilePostType[]> => {
+		const [rows] = await db
+			.promise()
+			.query<
+				RowDataPacket[]
+			>('SELECT id, title, imageURL, actualDate, startDate, endDate FROM posts WHERE endDate >= CURDATE() AND startDate <= CURDATE() ORDER BY actualDate ASC');
+		return rows as VisibilePostType[];
 	},
 	/**
 	 * Retrieve the last 5 posts edited
