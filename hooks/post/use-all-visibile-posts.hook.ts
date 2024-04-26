@@ -1,9 +1,10 @@
-import { PostType, VisibilePostType } from '@/types/post';
+import { VisibilePostType } from '@/types/post';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { use, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export const useAllVisiblePosts = () => {
+	const today = new Date();
 	const [posts, setPosts] = useState<VisibilePostType[]>([]);
 
 	useEffect(() => {
@@ -15,5 +16,5 @@ export const useAllVisiblePosts = () => {
 			.catch(() => toast.error('Network error'));
 	}, []);
 
-	return { posts };
+	return { posts, today };
 };

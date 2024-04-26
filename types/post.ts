@@ -52,6 +52,7 @@ export interface VisibilePostType {
 	actualDate: Date;
 	startDate: Date;
 	endDate: Date;
+	targets: CategoryType[];
 }
 
 export const postSchema = z.object({
