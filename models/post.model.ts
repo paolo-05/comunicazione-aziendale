@@ -117,12 +117,41 @@ export const Post = {
 	 * Retrieve all the posts if their visibility range is near the current date
 	 */
 	listAll: async (): Promise<VisibilePostType[]> => {
-		const [rows] = await db
-			.promise()
-			.query<
-				RowDataPacket[]
-			>('SELECT id, title, imageURL, actualDate, startDate, endDate FROM posts WHERE endDate >= CURDATE() AND startDate <= CURDATE() ORDER BY actualDate ASC');
-		return rows as VisibilePostType[];
+		const [rows] = await db.promise().query<RowDataPacket[]>(`
+		SELECT
+			p.id,
+			p.title,
+			p.imageURL,
+			p.actualDate,
+			p.startDate,
+			p.endDate,
+			GROUP_CONCAT(DISTINCT c.name) AS categoryNames
+		FROM
+			posts p
+		JOIN
+			post_targets pt ON p.id = pt.postId
+		JOIN
+			categories c ON pt.categoryId = c.id
+		WHERE
+			(p.startDate <= CURDATE() AND p.endDate >= CURDATE()) OR p.actualDate = CURDATE()
+		GROUP BY
+			p.id
+		ORDER BY
+			p.actualDate ASC
+	`);
+		const visiblePosts: VisibilePostType[] = rows.map((row: any) => {
+			return {
+				id: row.id,
+				title: row.title,
+				imageURL: row.imageURL,
+				actualDate: row.actualDate,
+				startDate: row.startDate,
+				endDate: row.endDate,
+				targets: row.categoryNames.split(',').map((name: string) => ({ name })),
+			};
+		});
+
+		return visiblePosts;
 	},
 	/**
 	 * Retrieve the last 5 posts edited
