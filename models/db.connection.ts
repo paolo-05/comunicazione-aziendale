@@ -6,4 +6,4 @@ import mysql from 'mysql2';
 /**
  * Rapresents the connection object
  */
-export const db = mysql.createPool(process.env.STACKHERO_DB_URL);
+export const db = mysql.createPool(process.env.LOCAL_DB_URL);

@@ -1,6 +1,7 @@
 namespace NodeJS {
 	interface ProcessEnv {
 		STACKHERO_DB_URL: string;
+		LOCAL_DB_URL: string
 
 		NEXTAUTH_URL: string;
 		NEXTAUTH_SECRET: string;
