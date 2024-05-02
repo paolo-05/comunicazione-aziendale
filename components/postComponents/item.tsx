@@ -67,7 +67,7 @@ export const Item = ({ post, categories, session }: PostItemProps): React.ReactE
 								<EditIcon className='mr-1 -ml-1 w-5 h-5' />
 								Modifica
 							</Link>
-							<DeletePostButton session={session} post={post} />
+							<DeletePostButton session={session} post={post} categories={categories} />
 						</div>
 					)}
 				</div>

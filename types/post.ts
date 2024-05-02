@@ -22,7 +22,7 @@ export interface PostType {
 export interface PostItemProps {
 	session: Session | null;
 	post: PostType;
-	categories?: CategoryType[];
+	categories: CategoryType[];
 }
 
 export interface PostSummary {
