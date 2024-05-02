@@ -69,7 +69,7 @@ export default function Home(): React.ReactElement {
 	return (
 		<>
 			<Head>
-				<title>Tutti gli eventi</title>
+				<title>Prossimi Eventi</title>
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 			</Head>
 			<main className={inter.className}>

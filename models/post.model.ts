@@ -125,7 +125,8 @@ export const Post = {
 			p.actualDate,
 			p.startDate,
 			p.endDate,
-			GROUP_CONCAT(DISTINCT c.name) AS categoryNames
+			GROUP_CONCAT(DISTINCT c.name) AS categoryNames,
+			GROUP_CONCAT(DISTINCT c.colour SEPARATOR ',') AS categoryColours
 		FROM
 			posts p
 		JOIN
@@ -147,7 +148,9 @@ export const Post = {
 				actualDate: row.actualDate,
 				startDate: row.startDate,
 				endDate: row.endDate,
-				targets: row.categoryNames.split(',').map((name: string) => ({ name })),
+				targets: row.categoryNames.split(',').map((name: string, index: number) => {
+					return { name: name, colour: row.categoryColours.split(',')[index] };
+				}),
 			};
 		});
 

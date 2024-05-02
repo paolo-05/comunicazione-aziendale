@@ -63,7 +63,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		res.status(201).json({ message: 'OK' });
 	} catch (error) {
-		log(error);
 		res.status(500).json({ message: 'Error in server' });
 	}
 }
