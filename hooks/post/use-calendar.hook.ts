@@ -4,16 +4,12 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export const useCalendar = () => {
-	const [actualDate, setActualDate] = useState(new Date());
+	const actualDate = new Date();
 	const [year, setYear] = useState(actualDate.getFullYear());
 	const [month, setMonth] = useState(actualDate.getMonth());
 	const [currentDay] = useState(actualDate.getDate());
 	const [hoveredDay, setHoveredDay] = useState<number | null>(null);
 	const [events, setEvents] = useState<PostSummary[]>([]);
-
-	useEffect(() => {
-		setActualDate(new Date());
-	}, []);
 
 	useEffect(() => {
 		axios
