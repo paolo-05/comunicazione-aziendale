@@ -48,7 +48,7 @@ export const SmallCalendar: React.FC = () => {
 				<div className='text-center font-bold text-gray-900 dark:text-gray-100'>D</div>
 				{renderEmptyCells()}
 				{[...Array(daysInMonth).keys()].map((day: number) => {
-					const currentDate: Date = new Date(year, month, day + 1);
+					const currentDate: Date = new Date(year, month, day + 2);
 					const formattedDate: string = currentDate.toISOString().split('T')[0];
 					const dayEvents: PostSummary[] = events.filter((event) => event.actualDate.split('T')[0] === formattedDate);
 
